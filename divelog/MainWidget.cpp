@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.45 2002/02/05 20:10:15 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.46 2002/02/13 18:47:25 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.45 2002/02/05 20:10:15 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.46 2002/02/13 18:47:25 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -51,8 +51,8 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.45 2002/02/05 20:1
 #include <qheader.h>
 #include <qcombobox.h>
 
-#include <string>
 // others
+#include <string>
 
 #define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
 #define MOUSE_DEPTH_LABEL "Depth: "     // Label for depth at mouse cursor.

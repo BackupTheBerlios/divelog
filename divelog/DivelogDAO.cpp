@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.20 2002/02/08 16:41:34 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.21 2002/02/13 18:47:25 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.20 2002/02/08 16:41:34 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.21 2002/02/13 18:47:25 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -32,6 +32,7 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.20 2002/02/08 16:41:34 m
 #include <qglobal.h>
 #include <UDCF.h>
 #include <string.h>
+#include <iomanip>
 
 DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD )
 {
@@ -132,9 +133,17 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
                 DiveProfileVO profile( udcfData->groupList[group].diveList[dive].sampleList,
                                        udcfData->groupList[group].diveList[dive].sampleIndex );
 
+                // Calculate dive time
+                int secs     = profile.samples() * profile.secsPerSample();
+                int h,m,s;
+
+                h=secs/3600;
+                m=( secs%3600 )/60;
+                s=secs-h*3600-m*60;
+
                 query << "insert into dive ( date, sync, diver_number, surface_intervall, "
                     <<									    "altitude_mode, water_temperature, start_pressure, "
-                    <<                      "end_pressure,max_depth, profile ) values ( "
+                    <<                      "end_pressure, max_depth, length, profile ) values ( "
                     // date
                     << "\""
                     << udcfData->groupList[group].diveList[dive].year  << "-"
@@ -165,6 +174,10 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
                     << udcfData->groupList[group].diveList[dive].mixList[0].pressureEnd/10.0e4 << ", "
                     // max_depth
                     << profile.maxDepth() << ", "
+                    // dive length
+                    << "\"" << h << ":"
+                    << setfill('0') << setw( 2 ) << m << ":"
+                    << setfill('0') << setw( 2 ) << s << "\", "
                     // profile
                     << "\"" << profile << "\" )";
 

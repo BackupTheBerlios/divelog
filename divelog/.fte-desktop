@@ -1,11 +1,12 @@
 FTE Desktop 2
-F|3|/home/markus/projects/divelog/DiveProfileVO.cpp
-F|5|/home/markus/projects/divelog/DivelogDAO.cpp
-F|1|/home/markus/projects/divelog/MainWidget.cpp
-F|2|/home/markus/projects/divelog/MainWidget.h
-F|4|/home/markus/projects/divelog/DiveProfileVO.h
-F|11|/home/markus/projects/divelog/DivelogDAOException.h
-F|8|/home/markus/projects/divelog/ProfileField.cpp
-F|9|/home/markus/projects/divelog/ProfileField.h
 F|6|/home/markus/projects/divelog/DivelogDAO.h
+F|1|/home/markus/projects/divelog/MainWidget.cpp
+F|5|/home/markus/projects/divelog/DivelogDAO.cpp
+F|3|/home/markus/projects/divelog/DiveProfileVO.cpp
+F|4|/home/markus/projects/divelog/DiveProfileVO.h
+F|11|/home/markus/projects/jmFem/jmFem.cpp
+F|2|/home/markus/projects/divelog/MainWidget.h
+F|10|/home/markus/projects/divelog/mysql/tables
+F|9|/home/markus/projects/divelog/ProfileField.h
+F|8|/home/markus/projects/divelog/ProfileField.cpp
 F|7|/home/markus/projects/udcfview-0.1.14/libUDCF/UDCF.h
