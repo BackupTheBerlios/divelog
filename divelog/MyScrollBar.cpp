@@ -1,6 +1,27 @@
+/* Copyright 2002 Markus Grunwald */
+/* All other Copyrights (especially Qt and mysql) belong to their owners */
+
+/*************************************************************************
+This file is part of divelog.
+
+divelog is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+divelog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with divelog; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+**************************************************************************/
+
 /******************************************************************************
 * Filename : MyScrollBar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.13 2002/03/25 15:26:21 markus Exp $     *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.14 2002/05/15 09:27:51 grunwalm Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : QScrollBar has (nearly?) no slots. We implement some     *
 *                    more to make it more usefull.                            *
@@ -11,7 +32,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.13 2002/03/25 15:26:21 markus Exp $";
+static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.14 2002/05/15 09:27:51 grunwalm Exp $";
 
 #include "MyScrollBar.h"
 

@@ -1,6 +1,27 @@
+/* Copyright 2002 Markus Grunwald */
+/* All other Copyrights (especially Qt and mysql) belong to their owners */
+
+/*************************************************************************
+This file is part of divelog.
+
+divelog is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+divelog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with divelog; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+**************************************************************************/
+
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.27 2002/05/07 16:18:38 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.28 2002/05/15 09:27:51 grunwalm Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,7 +35,7 @@
 *         anything to do with it. ( This refers especially to QString which   *
 *         would be far more powerfull then basic_string...)                   *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.27 2002/05/07 16:18:38 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.28 2002/05/15 09:27:51 grunwalm Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DiveVO.h"
