@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.13 2001/12/06 09:48:37 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.14 2001/12/06 12:45:00 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,10 +12,11 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.13 2001/12/06 09:48:37 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.14 2001/12/06 12:45:00 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
+#include "DiveTypeVO.h"
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
 #include "DiverNotFoundException.h"
@@ -23,7 +24,7 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.13 2001/12/06 09:48:37 m
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
 #include <sqlplus.hh>   // the mysql++ classes
-//#include <custom.hh>    // needed for "sql_create_n"
+//#include <custom.hh>  // needed for "sql_create_n"
 #include <qglobal.h>
 #include <UDCF.h>
 #include <string.h>
@@ -283,6 +284,46 @@ void DivelogDAO::insertFillingStation( const FillingStationVO& fillingStation ) 
         ( fillingStation.first_name()=="" ? query << "NULL, " : query << "\"" << fillingStation.first_name() 	 << "\", " );
         ( fillingStation.last_name()=="" 	? query << "NULL, " : query << "\"" << fillingStation.last_name() 	 << "\" " );
         query << " )";
+
+        query.execute();
+    }
+    catch (BadQuery &er)
+    {
+        cerr << "Error: " << er.error << endl;
+    }
+    catch (BadConversion &er)
+    { // handle bad conversions
+        cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
+            << er.type_name << "\"." << endl;
+    }
+}
+
+// -------------------------------------------------
+// Use : Insert a new dive type into the database
+// Parameters   : DiveTypeVO : a Value Object
+//                containing the Dive Types's data.
+// Outputs      : None
+// Returns      : None
+// Side-Effects : MySQL-Convention: When the number field
+//                  is 0, the number will be auto-incremented
+// Exceptions   : Throws DivelogDAOException on failure
+// -------------------------------------------------
+void DivelogDAO::insertDiveType( const DiveTypeVO& diveType ) throw ( DivelogDAOException )
+{
+    if ( diveType.description() == "" )
+    {
+        throw DivelogDAOException( "DiveTypeVO.description() must not be empty !" );
+    }
+
+    try
+    {
+        Connection con( use_exceptions );
+        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
+
+        Query query = con.query();
+        query << "insert into divetype values( "
+            << diveType.number() << ", "
+            << "\"" << diveType.description() << "\" )";
 
         query.execute();
     }

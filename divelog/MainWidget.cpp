@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.40 2001/12/06 09:48:37 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.41 2001/12/06 12:45:00 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.40 2001/12/06 09:48:37 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.41 2001/12/06 12:45:00 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -29,6 +29,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.40 2001/12/06 09:4
 #include "InfoAreaFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
+#include "DiveTypeVO.h"
 #include "FillingStationVO.h"
 #include "DiveComputerNotFoundException.h"
 #include "DivelogDAOException.h"
@@ -321,15 +322,27 @@ void MainWidget::dbNewFillingStation()
 void MainWidget::dbNewDiveType()
 {
     int result=0;
-    m_newDiveTypeFrm= new NewDiveTypeFrm( "Test", 0, 0 );
+    NewDiveTypeFrm newDiveTypeFrm( this, "newDiveTypeFrm", true );
 
-    result=m_newDiveTypeFrm->exec();
+    result=newDiveTypeFrm.exec();
     qDebug( "NewDiveTypeFrm->result=%d", result );
     if ( result )
     {
-        qDebug( "Dive Type:\t%s", m_newDiveTypeFrm->m_DiveType->text().latin1() );
+        qDebug( "Dive Type:\t%s", newDiveTypeFrm.m_DiveType->text().latin1() );
+
+        DiveTypeVO diveType( 0, // Auto increment
+                             newDiveTypeFrm.m_DiveType->text().latin1()
+                           );
+        DivelogDAO db;
+        try
+        {
+            db.insertDiveType( diveType );
+        }
+        catch( DivelogDAOException e )  
+        {
+            cerr << e << endl;
+        }
     }
-    delete m_newDiveTypeFrm;
 }
 
 void MainWidget::dbNewDiveComputer()
