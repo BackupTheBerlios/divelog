@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.2 2001/08/16 16:24:00 markus Exp $             *
+* CVS Id 	 : $Id: ProfileField.h,v 1.3 2001/08/16 21:33:31 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -68,8 +68,17 @@ private:
 
     void  init();          // General Object initialisation
 
-    float m_depth;
+    void 	drawCoosy( QPainter *p );
+
+    float m_depth;         // Profile depth in meters
     int   m_samples;       // Number of samples the computer made for this dive
     int   m_secsPerSample; // Number of seconds between two samples
+
+    QPoint m_origin;
+    QRect m_timeAxisRect;
+    QRect m_depthAxisRect;
+
+    QFont m_numberFont;
+    QFont m_legendFont;
 };
 #endif
