@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.8 2001/09/12 19:13:59 markus Exp $         *
+* CVS Id 	 : $Id: MainWidget.h,v 1.9 2001/09/13 18:05:23 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -23,6 +23,7 @@ class QVBox;
 class QHBox;
 class QScrollBar;
 class QSpacerItem;
+class QString;
 
 class MainWidget : public QMainWindow
 {

@@ -1,16 +1,19 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.15 2001/09/12 19:13:59 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.16 2001/09/13 18:05:23 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Tue Aug 14 2001                                          *
 * --------------------------------------------------------------------------- *
-* To Do List : Navigation                                             				*
+* To Do List : Show DC Warnings                                       				*
+*              Make graph solid                                               *
+*              Better Zooming (not with Scrollbars)                           *
+*              Handle Dive Profile in its own class                           *
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.15 2001/09/12 19:13:59 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.16 2001/09/13 18:05:23 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -79,6 +82,8 @@ void ProfileField::init()
 
     setPalette( QPalette( m_backgroundColor ) ); // Background color
     setMinimumSize( minimumSize() );
+
+    setMouseTracking( TRUE );
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     profilefield_cvs_id+=0;
@@ -387,6 +392,33 @@ void ProfileField::resizeEvent( QResizeEvent* )
 
     m_timeAxisRect  = QRect( m_origin.x(), 0, width()-m_origin.x()-RIGHT_MARGIN, textHeight+TICK_SIZE/2+1 );
     m_depthAxisRect = QRect( 0, m_origin.y(), m_origin.x()+TICK_SIZE/2+1, height()-m_origin.y()-BOTTOM_MARGIN );
+    m_graphRect     = QRect( m_origin.x(),
+                             m_origin.y(),
+                             m_timeAxisRect.width(),
+                             m_depthAxisRect.height()
+                           );
+}
+
+void ProfileField::mouseMoveEvent( QMouseEvent* e )
+{
+
+    if ( m_graphRect.contains( e->pos() ) )
+    {
+        QString depth;
+
+        float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
+        int sample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
+
+        depth=QString::number( m_profile.point( sample ).y()/10.0, 'f', 1 );
+
+        emit mouseTimeChanged( sampleToTime( sample )  );
+        emit mouseDepthChanged( depth.rightJustify( 4 ) );
+    }
+    else
+    {
+        emit mouseTimeChanged( "" );
+        emit mouseDepthChanged( "" );
+    }
 }
 
 QSize ProfileField::minimumSize() const

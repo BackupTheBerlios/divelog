@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.14 2001/09/12 19:13:59 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.15 2001/09/13 18:05:23 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -9,14 +9,13 @@
 * --------------------------------------------------------------------------- *
 * To Do List : improve menu                                                   *
 *              improve splitters                                              *
-*              add Profile                                                    *
 *              add Dive List                                                  *
 *              add Multi puropse field                                        *
 *              lots to come !                                                 *
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.14 2001/09/12 19:13:59 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.15 2001/09/13 18:05:23 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -122,6 +121,9 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
                                                 QSizePolicy::Fixed,
                                                 QSizePolicy::Fixed
                                               );
+
+    connect( m_profile, SIGNAL( mouseTimeChanged( const QString& ) ), m_profileMouseTime, SLOT( setText( const QString & ) ) );
+    connect( m_profile, SIGNAL( mouseDepthChanged( const QString& ) ), m_profileMouseDepth, SLOT( setText( const QString & ) ) );
 
     /*
     || Set up Tabbed Area

@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.11 2001/09/12 19:13:59 markus Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.12 2001/09/13 18:05:23 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -27,10 +27,6 @@ public:
     ProfileField( QWidget *parent, const char* name, QPointArray profile );
 
     enum TimeFormat{ Minutes, HourMinutes };
-
-    /*
-    || Setting methots
-    */
 
     /*
     || Access methods
@@ -76,10 +72,14 @@ signals:
     void timeStartChanged( int );
     void showSamplesChanged( int );
 
+    void mouseTimeChanged( const QString& );
+    void mouseDepthChanged( const QString& );
+
 protected:
 
     void paintEvent( QPaintEvent* );
     void resizeEvent( QResizeEvent* );
+    void mouseMoveEvent( QMouseEvent* e );
 
 private:
 
@@ -103,6 +103,7 @@ private:
 
     QRect  m_timeAxisRect;
     QRect  m_depthAxisRect;
+    QRect  m_graphRect;
 
     QFont  m_numberFont;
     QFont  m_legendFont;
