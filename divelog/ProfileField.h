@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.10 2001/09/08 09:25:26 markus Exp $       *
+* CVS Id 	 : $Id: ProfileField.h,v 1.11 2001/09/12 19:13:59 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *

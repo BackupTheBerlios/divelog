@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.7 2001/09/10 18:44:54 markus Exp $             *
+* CVS Id 	 : $Id: MainWidget.h,v 1.8 2001/09/12 19:13:59 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -20,7 +20,9 @@ class QSplitter;
 class QLabel;
 class ProfileField;
 class QVBox;
-class MyScrollBar;
+class QHBox;
+class QScrollBar;
+class QSpacerItem;
 
 class MainWidget : public QMainWindow
 {
@@ -31,6 +33,7 @@ public:
 protected slots:
 
     void adaptOffsetBar( int );
+    void profileSamplesInterface( int );
 
     /*
     ||  File Menu
@@ -61,8 +64,16 @@ private:
 
     QVBox*  			m_profileBox;
     ProfileField* m_profile;
-    MyScrollBar*  m_samplesBar;
-    MyScrollBar*  m_offsetBar;
+    QScrollBar*   m_samplesBar;
+    QScrollBar*   m_offsetBar;
+
+    QHBox*				m_profileMouseDataBox;
+    QLabel*				m_profileMouseTimeLabel;
+    QLabel*				m_profileMouseDepthLabel;
+    QLabel*				m_profileMouseTime;
+    QLabel*				m_profileMouseDepth;
+    QSpacerItem*  m_profileMouseDataSpacer;
+
 };
 
 #endif  // MAINWIDGET_H

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.13 2001/09/11 17:34:31 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.14 2001/09/12 19:13:59 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.13 2001/09/11 17:34:31 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.14 2001/09/12 19:13:59 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -27,11 +27,16 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.13 2001/09/11 17:3
 #include <qmessagebox.h>
 #include <qsplitter.h>
 #include <qvbox.h>
+#include <qhbox.h>
 #include <qlabel.h>
 #include <qpointarray.h>
+#include <qscrollbar.h>
+#include <qabstractlayout.h>
 
 #include "dive104.dat"
-#include "myscrollbar.h"
+
+#define MOUSE_TIME_LABEL "Time: "
+#define MOUSE_DEPTH_LABEL "Depth: "
 
 MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     : QMainWindow( parent, name )
@@ -87,27 +92,45 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
 
     /*
+    || Set up Profile Area
+    ||
     || Set up Scrollbars
     */
 
-    m_offsetBar  = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_offsetBar" );
-    m_samplesBar = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_samplesBar" );
+    m_offsetBar  = new QScrollBar( QScrollBar::Horizontal, m_profileBox, "m_offsetBar" );
+    m_samplesBar = new QScrollBar( QScrollBar::Horizontal, m_profileBox, "m_samplesBar" );
 
     m_samplesBar->setMinValue( 3 );
     m_samplesBar->setMaxValue( m_profile->samples() );
-    m_samplesBar->setFlip( TRUE );
-    m_samplesBar->setValue( m_profile->samples() );
+    m_samplesBar->setValue( 3 );
 
     m_offsetBar->setMinValue( 0 );
-    m_offsetBar->setMaxValue( m_profile->samples() - m_samplesBar->value() );
+    m_offsetBar->setMaxValue( 0 );
 
-    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_profile, SLOT( setShowSamples( int ) ) );
-    connect( m_profile   , SIGNAL( showSamplesChanged( int ) ), m_samplesBar, SLOT( setValue( int ) ) );
-
+    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), this, SLOT( profileSamplesInterface( int ) ) );
     connect( m_samplesBar, SIGNAL( valueChanged( int ) ), this, SLOT( adaptOffsetBar( int ) ) );
     connect( m_offsetBar , SIGNAL( valueChanged( int ) ), m_profile, SLOT( setTimeStart( int ) ) );
 
+    m_profileMouseDataBox    = new QHBox( m_profileBox, "m_profileMouseDataBox" );
+    m_profileMouseTimeLabel  = new QLabel( MOUSE_TIME_LABEL,  m_profileMouseDataBox );
+    m_profileMouseTime       = new QLabel( "1:10",  m_profileMouseDataBox );
+    m_profileMouseDepthLabel = new QLabel( MOUSE_DEPTH_LABEL, m_profileMouseDataBox );
+    m_profileMouseDepth      = new QLabel( "20.5", m_profileMouseDataBox );
+
+    m_profileMouseDataSpacer = new QSpacerItem( m_profileMouseTimeLabel->frameRect().width(),
+                                                m_profileMouseTimeLabel->frameRect().height(),
+                                                QSizePolicy::Fixed,
+                                                QSizePolicy::Fixed
+                                              );
+
+    /*
+    || Set up Tabbed Area
+    */
     m_l1->setText( "Depth="+QString::number( m_profile->depth() ) );       // DEBUG
+
+    /*
+    || Set up List Area
+    */
     m_l2->setText( "Samples="+QString::number( m_profile->samples() ) );   // DEBUG
 
     setCentralWidget( m_s1 );
@@ -124,11 +147,17 @@ Slots
 
 void MainWidget::adaptOffsetBar( int v )
 {
-    m_offsetBar->setMaxValue( m_profile->samples()-v );
+    m_offsetBar->setMaxValue( v - m_samplesBar->minValue() );
+
     if ( m_offsetBar->value() > m_offsetBar->maxValue() )
     {
         m_offsetBar->setValue( m_offsetBar->maxValue() );
     }
+}
+
+void MainWidget::profileSamplesInterface( int v )
+{
+    m_profile->setShowSamples( m_samplesBar->maxValue()-v+m_samplesBar->minValue() );
 }
 
 void MainWidget::fileOpen()

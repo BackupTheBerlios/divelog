@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.14 2001/09/10 18:44:54 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.15 2001/09/12 19:13:59 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.14 2001/09/10 18:44:54 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.15 2001/09/12 19:13:59 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -324,7 +324,6 @@ void ProfileField::drawCoosy( QPainter* p )
 
     // one tick is each tick_unit
     tick_unit = (float)m_numberFm->width( sampleToTime( m_showSamples ) ) * TICK_DISTANCE_FACTOR / time_scale;
-    qDebug( "m_showSamples\t=%i", m_showSamples );
     ASSERT( tick_unit>0 );
 
     // Adjust tick_unit. If it is <1 then there are multiple tick marks with the
@@ -380,7 +379,6 @@ void ProfileField::paintEvent( QPaintEvent* )
 
 void ProfileField::resizeEvent( QResizeEvent* )
 {
-    qDebug( "%s resized to %dx%d", name(), width(), height() );
 
     int textHeight = qRound( m_legendFm->height()+m_numberFm->height() );
     int textWidth  = qRound( m_legendFm->height()+m_numberFm->width( "999" ) );
