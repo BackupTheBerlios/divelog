@@ -1,0 +1,116 @@
+<!DOCTYPE UI><UI>
+<class>AboutLicenseBaseFrm</class>
+<widget>
+    <class>QDialog</class>
+    <property stdset="1">
+        <name>name</name>
+        <cstring>AboutLicenseBaseFrm</cstring>
+    </property>
+    <property stdset="1">
+        <name>geometry</name>
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>350</width>
+            <height>230</height>
+        </rect>
+    </property>
+    <property stdset="1">
+        <name>maximumSize</name>
+        <size>
+            <width>800</width>
+            <height>600</height>
+        </size>
+    </property>
+    <property stdset="1">
+        <name>caption</name>
+        <string>About License</string>
+    </property>
+    <vbox>
+        <property stdset="1">
+            <name>margin</name>
+            <number>11</number>
+        </property>
+        <property stdset="1">
+            <name>spacing</name>
+            <number>6</number>
+        </property>
+        <widget>
+            <class>QTextView</class>
+            <property stdset="1">
+                <name>name</name>
+                <cstring>LicenseTextView</cstring>
+            </property>
+            <property stdset="1">
+                <name>textFormat</name>
+                <enum>PlainText</enum>
+            </property>
+        </widget>
+        <widget>
+            <class>QLayoutWidget</class>
+            <property stdset="1">
+                <name>name</name>
+                <cstring>Layout26</cstring>
+            </property>
+            <hbox>
+                <property stdset="1">
+                    <name>margin</name>
+                    <number>0</number>
+                </property>
+                <property stdset="1">
+                    <name>spacing</name>
+                    <number>6</number>
+                </property>
+                <widget>
+                    <class>QPushButton</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>OkBtn</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>text</name>
+                        <string>&amp;Ok</string>
+                    </property>
+                    <property stdset="1">
+                        <name>default</name>
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <spacer>
+                    <property>
+                        <name>name</name>
+                        <cstring>Spacer75</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>orientation</name>
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property stdset="1">
+                        <name>sizeType</name>
+                        <enum>Expanding</enum>
+                    </property>
+                    <property>
+                        <name>sizeHint</name>
+                        <size>
+                            <width>20</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+            </hbox>
+        </widget>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>OkBtn</sender>
+        <signal>clicked()</signal>
+        <receiver>AboutLicenseBaseFrm</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <slot access="protected">showHelp()</slot>
+</connections>
+<tabstops>
+    <tabstop>OkBtn</tabstop>
+</tabstops>
+</UI>
