@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.18 2001/10/24 05:53:19 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.19 2001/10/26 11:57:30 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -29,6 +29,7 @@ class QSpacerItem;
 class QString;
 class QListView;
 class NewDiverFrm;
+class InfoAreaFrm;
 
 class MainWidget : public QMainWindow
 {
@@ -80,6 +81,7 @@ private:
     QListView*    m_diveListView;
 
     NewDiverFrm*	m_newDiverFrm;
+    InfoAreaFrm*  m_infoArea;
 };
 
 #endif  // MAINWIDGET_H

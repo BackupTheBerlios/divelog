@@ -1,0 +1,461 @@
+<!DOCTYPE UI><UI>
+<class>Form1</class>
+<widget>
+    <class>QWidget</class>
+    <property stdset="1">
+        <name>name</name>
+        <cstring>Form1</cstring>
+    </property>
+    <property stdset="1">
+        <name>geometry</name>
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>568</width>
+            <height>349</height>
+        </rect>
+    </property>
+    <property stdset="1">
+        <name>caption</name>
+        <string>Form1</string>
+    </property>
+    <hbox>
+        <property stdset="1">
+            <name>margin</name>
+            <number>11</number>
+        </property>
+        <property stdset="1">
+            <name>spacing</name>
+            <number>6</number>
+        </property>
+        <widget>
+            <class>QTabWidget</class>
+            <property stdset="1">
+                <name>name</name>
+                <cstring>InfoBaseFrm</cstring>
+            </property>
+            <property stdset="1">
+                <name>tabPosition</name>
+                <enum>Top</enum>
+            </property>
+            <widget>
+                <class>QWidget</class>
+                <property stdset="1">
+                    <name>name</name>
+                    <cstring>GeneralInfo</cstring>
+                </property>
+                <attribute>
+                    <name>title</name>
+                    <string>General Info</string>
+                </attribute>
+                <grid>
+                    <property stdset="1">
+                        <name>margin</name>
+                        <number>11</number>
+                    </property>
+                    <property stdset="1">
+                        <name>spacing</name>
+                        <number>6</number>
+                    </property>
+                    <widget row="0"  column="1" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Number</cstring>
+                        </property>
+                    </widget>
+                    <widget row="2"  column="1" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>WaterTemperature</cstring>
+                        </property>
+                    </widget>
+                    <widget row="3"  column="1" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Duration</cstring>
+                        </property>
+                    </widget>
+                    <widget row="4"  column="1" >
+                        <class>QComboBox</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>DiveType</cstring>
+                        </property>
+                    </widget>
+                    <widget row="5"  column="1" >
+                        <class>QComboBox</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Buddy</cstring>
+                        </property>
+                    </widget>
+                    <widget row="6"  column="1" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Weather</cstring>
+                        </property>
+                    </widget>
+                    <widget row="0"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel8</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Number</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Number</cstring>
+                        </property>
+                    </widget>
+                    <widget row="3"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel13</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Duration</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Duration</cstring>
+                        </property>
+                    </widget>
+                    <widget row="4"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel10</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>Dive &amp;Type</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>DiveType</cstring>
+                        </property>
+                    </widget>
+                    <widget row="5"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel9</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Buddy</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Buddy</cstring>
+                        </property>
+                    </widget>
+                    <widget row="6"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel3</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Weather</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Weather</cstring>
+                        </property>
+                    </widget>
+                    <widget row="1"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel5</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Place</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Place</cstring>
+                        </property>
+                    </widget>
+                    <widget row="1"  column="1" >
+                        <class>QComboBox</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Place</cstring>
+                        </property>
+                    </widget>
+                    <widget row="2"  column="0" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel11</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Water Temperature</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>WaterTemperature</cstring>
+                        </property>
+                    </widget>
+                    <widget row="4"  column="3" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Lead</cstring>
+                        </property>
+                    </widget>
+                    <widget row="1"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel6</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Location</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Location</cstring>
+                        </property>
+                    </widget>
+                    <widget row="5"  column="3" >
+                        <class>QComboBox</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>FillingStation</cstring>
+                        </property>
+                    </widget>
+                    <widget row="6"  column="3" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Sight</cstring>
+                        </property>
+                    </widget>
+                    <widget row="0"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel7</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Date</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Date</cstring>
+                        </property>
+                    </widget>
+                    <widget row="2"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel12</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Air Temperature</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>AirTemperature</cstring>
+                        </property>
+                    </widget>
+                    <widget row="5"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel2</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Filling Station</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>FillingStation</cstring>
+                        </property>
+                    </widget>
+                    <widget row="3"  column="3" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>MaxDepth</cstring>
+                        </property>
+                    </widget>
+                    <widget row="0"  column="3" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Date</cstring>
+                        </property>
+                    </widget>
+                    <widget row="1"  column="3" >
+                        <class>QComboBox</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Location</cstring>
+                        </property>
+                    </widget>
+                    <widget row="3"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel14</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Max. Depth</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>MaxDepth</cstring>
+                        </property>
+                    </widget>
+                    <widget row="4"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel1</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Lead</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Lead</cstring>
+                        </property>
+                    </widget>
+                    <widget row="6"  column="2" >
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>SightLabel</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>&amp;Sight</string>
+                        </property>
+                        <property>
+                            <name>buddy</name>
+                            <cstring>Sight</cstring>
+                        </property>
+                    </widget>
+                    <widget row="2"  column="3" >
+                        <class>QLineEdit</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>AirTemperature</cstring>
+                        </property>
+                    </widget>
+                </grid>
+            </widget>
+            <widget>
+                <class>QWidget</class>
+                <property stdset="1">
+                    <name>name</name>
+                    <cstring>Notes</cstring>
+                </property>
+                <attribute>
+                    <name>title</name>
+                    <string>Notes</string>
+                </attribute>
+                <vbox>
+                    <property stdset="1">
+                        <name>margin</name>
+                        <number>11</number>
+                    </property>
+                    <property stdset="1">
+                        <name>spacing</name>
+                        <number>6</number>
+                    </property>
+                    <widget>
+                        <class>QTextBrowser</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextBrowser1</cstring>
+                        </property>
+                    </widget>
+                    <widget>
+                        <class>QLayoutWidget</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>Layout9</cstring>
+                        </property>
+                        <hbox>
+                            <property stdset="1">
+                                <name>margin</name>
+                                <number>0</number>
+                            </property>
+                            <property stdset="1">
+                                <name>spacing</name>
+                                <number>6</number>
+                            </property>
+                            <widget>
+                                <class>QPushButton</class>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>PushButton1</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>text</name>
+                                    <string>&amp;Edit</string>
+                                </property>
+                            </widget>
+                            <spacer>
+                                <property>
+                                    <name>name</name>
+                                    <cstring>Spacer5</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>orientation</name>
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property stdset="1">
+                                    <name>sizeType</name>
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property>
+                                    <name>sizeHint</name>
+                                    <size>
+                                        <width>20</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                        </hbox>
+                    </widget>
+                </vbox>
+            </widget>
+            <widget>
+                <class>QWidget</class>
+                <property stdset="1">
+                    <name>name</name>
+                    <cstring>tab</cstring>
+                </property>
+                <attribute>
+                    <name>title</name>
+                    <string>Dive Gear</string>
+                </attribute>
+            </widget>
+        </widget>
+    </hbox>
+</widget>
+</UI>

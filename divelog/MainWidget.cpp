@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.26 2001/10/24 05:53:19 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.27 2001/10/26 11:57:30 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.26 2001/10/24 05:53:19 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.27 2001/10/26 11:57:30 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
@@ -24,6 +24,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.26 2001/10/24 05:5
 #include "myscrollbar.h"
 #include "dive104.dat"
 #include "newdiverfrm.h"
+#include "infoareafrm.h"
 
 // Qt
 #include <qapplication.h>
@@ -111,7 +112,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_s1 = new QSplitter( QSplitter::Vertical, this , "m_s1" );
     m_s2 = new QSplitter( QSplitter::Horizontal, m_s1 , "m_s2" );
 
-    m_l1 = new QLabel( "", m_s1 );    // DEBUG
+//    m_l1 = new QLabel( "", m_s1 );    // DEBUG
+    m_infoArea = new InfoAreaFrm( m_s1, "m_infoArea" );
     m_diveListView= new QListView( m_s2, "m_diveListView" );
 
     /*
@@ -177,7 +179,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     /*
     || Set up Tabbed Area
     */
-    m_l1->setText( "Depth="+QString::number( m_profile->depth() ) );       // DEBUG
+    //m_l1->setText( "Depth="+QString::number( m_profile->depth() ) );       // DEBUG
 
     /*
     || Set up List Area

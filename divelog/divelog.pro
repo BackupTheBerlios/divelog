@@ -15,15 +15,22 @@ HEADERS  = mainwidget.h\
            myscrollbar.h\
            divelogdao.h\
            UDCF.h\
-           newdiverfrm.h
+           newdiverfrm.h\
+           infoareafrm.h
 
 SOURCES  = main.cpp\
            mainwidget.cpp\
            profilefield.cpp\
            myscrollbar.cpp\
            divelogdao.cpp\
-           newdiverfrm.cpp
+           newdiverfrm.cpp\
+           infoareafrm.cpp
 
-INTERFACES = newdiverbasefrm.ui
+INTERFACES = newdiverbasefrm.ui\
+             infoareabasefrm.ui\
+             newdivecomputerbasefrm.ui\
+             newdivetypebasefrm.ui\
+             newfillingstation.ui
+
 
 TARGET   = divelog
