@@ -2,7 +2,7 @@
 #define MYSCROLLBAR_H
 /******************************************************************************
 * Filename : myscrollbar.h                                                    *
-* CVS Id 	 : $Id: MyScrollBar.h,v 1.3 2001/09/10 18:44:54 markus Exp $                                                             *
+* CVS Id 	 : $Id: MyScrollBar.h,v 1.4 2001/09/11 17:34:31 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for myscrollbar.cpp                               *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -27,6 +27,15 @@ public:
     MyScrollBar( int minValue, int maxValue, int LineStep, int PageStep,
                  int value, Orientation,
                  QWidget *parent, const char *name=0 );
+    MyScrollBar( int minValue, int maxValue, int LineStep, int PageStep,
+                 int value, Orientation, bool bFlip,
+                 QWidget *parent, const char *name=0 );
+
+    int  value() const;
+    bool flip() const;
+
+    void setFlip( bool flip );
+
 
 public slots:
 
@@ -34,8 +43,11 @@ public slots:
     void setMinValue( int );
     void setMaxValue( int );
 
+
 private:
     void init();
+
+    bool m_flip;
 };
 
 #endif // MYSCROLLBAR_H

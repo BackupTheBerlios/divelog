@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.12 2001/09/10 18:44:54 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.13 2001/09/11 17:34:31 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.12 2001/09/10 18:44:54 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.13 2001/09/11 17:34:31 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -95,6 +95,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 
     m_samplesBar->setMinValue( 3 );
     m_samplesBar->setMaxValue( m_profile->samples() );
+    m_samplesBar->setFlip( TRUE );
     m_samplesBar->setValue( m_profile->samples() );
 
     m_offsetBar->setMinValue( 0 );
