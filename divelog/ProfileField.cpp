@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.20 2001/10/02 09:40:14 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.21 2001/10/02 11:12:07 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.20 2001/10/02 09:40:14 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.21 2001/10/02 11:12:07 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -27,7 +27,7 @@ static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.20 2001/10/02 
 #define DEPTH_TEXT "Depth"
 
 #define TICK_SIZE 5
-#define TICK_DISTANCE_FACTOR 3
+#define TICK_DISTANCE_FACTOR 3    // adjust how close the ticks are to each other
 
 #define RIGHT_MARGIN 10
 #define BOTTOM_MARGIN 10
@@ -110,8 +110,8 @@ void ProfileField::init()
                                      // zooming via mouse drag )
     m_mousePressSample=0;            // no mouse-click -> no sample selected
 
-    m_mouseDrag.setWidth( 0 );       // the size of the draging rectangle
-    m_mouseDrag.setHeight( 0 );
+    m_mouseSelectionRect.setWidth( 0 );       // the size of the draging rectangle
+    m_mouseSelectionRect.setHeight( 0 );
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     profilefield_cvs_id+=0;
@@ -226,6 +226,17 @@ void ProfileField::setTimeStart( int start )
 }
 
 void ProfileField::setShowSamples( int showSamples )
+// -------------------------------------------------
+// Use : set number of samples to show, thus
+//       indirectly set zooming.
+//       see setHideSamples()
+// Parameters  : showSamples - samples to show
+// Side-Effects: sets m_showSamples
+//               emits showSamplesChanged and
+//                 hideSamplesChanged which correspond
+//                 to each other
+//               calls paintEvent
+// -------------------------------------------------
 {
     if ( showSamples == m_showSamples )
     {
@@ -233,8 +244,11 @@ void ProfileField::setShowSamples( int showSamples )
     }
 
     m_showSamples=showSamples;
+
     emit showSamplesChanged( showSamples );
     qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
+
+    // the hidden samples are all samples minus the shown ones... doh!
     emit hideSamplesChanged( samples()-showSamples );
     qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
 
@@ -242,6 +256,18 @@ void ProfileField::setShowSamples( int showSamples )
 }
 
 void ProfileField::setHideSamples( int hideSamples )
+// -------------------------------------------------
+// Use : set number of samples to hide, thus
+//       indirectly set zooming.
+//       see setShowSamples()
+//       shown samples are all samples minus the hidden ones
+// Parameters  : hideSamples - samples to hide
+// Side-Effects: sets m_showSamples (!)
+//               emits showSamplesChanged and
+//                 hideSamplesChanged which correspond
+//                 to each other
+//               calls paintEvent
+// -------------------------------------------------
 {
     int showSamples=samples()-hideSamples;
 
@@ -253,8 +279,10 @@ void ProfileField::setHideSamples( int hideSamples )
     qDebug( "%s->setHideSamples( %i )", this->name(), samples()-showSamples );
 
     m_showSamples=showSamples;
+
     emit hideSamplesChanged( hideSamples );
     qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
+
     emit showSamplesChanged( showSamples );
     qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
     repaint( FALSE );
@@ -266,20 +294,28 @@ void ProfileField::setHideSamples( int hideSamples )
 
 QSizePolicy ProfileField::sizePolicy() const
 {
+    // the profile may be shrunken and expanded
     return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
 }
 
 QString ProfileField::sampleToTime( int sample )
+// -------------------------------------------------
+// Use : convert a sample number to its corresponding
+//       time representation
+// Parameters  : sample - sample number
+// Returns     : a string with the time corresponding
+//               to the sample
+// -------------------------------------------------
 {
-    ASSERT( m_secsPerSample!=0 );
+    ASSERT( m_secsPerSample!=0 ); // this would mean trouble...
 
     int secs = sample * m_secsPerSample;
 
     QString timeString;
     QString hour,min,sec;
 
-    int iMinutes = secs/60;
-    if ( secs%60 > 30 )
+    int iMinutes = secs/60;  // round minutes to half a minute
+    if ( secs%60 > 30 )      // = 30 seconds
     {
         iMinutes++;
     }
@@ -309,30 +345,49 @@ QString ProfileField::sampleToTime( int sample )
 }
 
 void ProfileField::drawProfile( QPainter* p )
+// -------------------------------------------------
+// Use : draw the profile
+// Parameters  : p - the painter on which the profile
+//                   will be painted
+// -------------------------------------------------
 {
-    ASSERT( m_depth!=0 );
+    ASSERT( m_depth!=0 );            // Assure sane values
     ASSERT( m_samples!=0 );
     ASSERT( m_showSamples>=3 );
 
     CHECK_PTR( p );
     ASSERT( !m_profile.isEmpty() );
 
-    float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);   // a little helper
-    float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1);    // dito
+    float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);    // a little helper
+    float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1); // dito
 
     p->save();
+
+    // move the first sample to upper left corner of the coosy
     p->translate( m_origin.x()-timeStart()*time_scale, m_origin.y() );
+
+    // scale the coosy to match the profile
     p->scale( time_scale, depth_scale );
+
     p->setPen( m_graphPenColor );
     p->setBrush( m_graphBrushColor );
+
+    // now draw the profile (at last!)
     p->drawPolyline( m_profile, timeStart(), m_showSamples );
+
     p->restore();
 }
 
 
 void ProfileField::drawCoosy( QPainter* p )
+// -------------------------------------------------
+// Use : draw the coordinate system (coosy)
+//       this means arrows, ticks and some
+//       background lines
+// Parameters  : p - the painter to paint on
+// -------------------------------------------------
 {
-    ASSERT( m_depth!=0 );
+    ASSERT( m_depth!=0 );        // assure sane values
     ASSERT( m_samples!=0 );
     ASSERT( m_showSamples>=3 );
 
@@ -462,16 +517,21 @@ void ProfileField::drawCoosy( QPainter* p )
 }
 
 void ProfileField::paintEvent( QPaintEvent* )
+// -------------------------------------------------
+// Use : draw everything. The region passed in the
+//       QPaintEvent is ignored
+// Parameters  : QPaintEvent - ignored
+// -------------------------------------------------
 {                                     
     QRect    canvasSize=rect();
     QPixmap  pix( size() );          		    // Pixmap for double-buffering
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );
 
-    if ( !m_mouseDrag.isNull() )
+    if ( !m_mouseSelectionRect.isNull() )    // draw the selection rectangle
     {
         p.setPen( m_dragColor );
-        p.drawRect( m_mouseDrag );
+        p.drawRect( m_mouseSelectionRect );
         qDebug("Paint DragRect");
     }
 
@@ -484,9 +544,21 @@ void ProfileField::paintEvent( QPaintEvent* )
 }
 
 void ProfileField::resizeEvent( QResizeEvent* )
+// -------------------------------------------------
+// Use : recalculate values which depend on the
+//       widgets size
+// Parameters  : QResizeEvent - ignored. We use
+//                 the widgets methods to get the
+//                 new values
+// Side-Effects: sets m_origin, m_timeAxisRect,
+//                    m_depthAxisRect and
+//                    m_graphRect
+// -------------------------------------------------
 {
 
+    // Space above the time axis for the text
     int textHeight = qRound( m_legendFm->height()+m_numberFm->height() );
+    // Space left of the depth axis for the text
     int textWidth  = qRound( m_legendFm->height()+m_numberFm->width( "999" ) );
 
     m_origin = QPoint( textWidth, textHeight );
@@ -501,22 +573,36 @@ void ProfileField::resizeEvent( QResizeEvent* )
 }
 
 void ProfileField::mouseMoveEvent( QMouseEvent* e )
+// -------------------------------------------------
+// Use : emit the data corresponding to the mouse
+//       position
+// Parameters  : e - contains the mouse position
+// Side-Effects: changes m_mouseSelectionRect
+//               emits mouseTimeChanged and
+//                     mouseDepthChanged
+//               needs mouseTracking to be TRUE
+// -------------------------------------------------
 {
 
     if ( m_graphRect.contains( e->pos() ) )
-    {
+    {                                       // the mouse is in the graph area
         QString depth;
 
         float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
         int sample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
 
+        // convert depth to string
         depth=QString::number( m_profile.point( sample ).y()/10.0, 'f', 1 );
 
         if ( m_validMousePress )
         {
+            // show the selection rectangle
+            // while mouse is pressed
             if ( abs( sample-m_mousePressSample ) >=3 )
             {
-                m_mouseDrag.setRight( e->x() );
+                // show only if the mouse has moved for at least
+                // three samples (otherwise, we treat it as click)
+                m_mouseSelectionRect.setRight( e->x() );
                 repaint( FALSE );
             }
         }
@@ -525,31 +611,53 @@ void ProfileField::mouseMoveEvent( QMouseEvent* e )
         emit mouseDepthChanged( depth.rightJustify( 4 ) );
     }
     else
-    {
+    {   // clear the fields when the mouse is outside the graph area
         emit mouseTimeChanged( "" );
         emit mouseDepthChanged( "" );
     }
 }
 
 void ProfileField::mousePressEvent( QMouseEvent* e )
+// -------------------------------------------------
+// Use : mark valid mouse-press and according mouse
+//       position for zooming with mouse-dragging
+// Parameters  : e - contains mouse position
+// Side-Effects: sets m_mousePressSample
+//                    m_mouseSelectionRect
+//                    m_validMousePress
+// -------------------------------------------------
 {
     if ( m_graphRect.contains( e->pos() ) )
     {
         float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
 
+        // mark mouse-position on press
         m_mousePressSample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
-        m_mouseDrag.setLeft( e->x() );
-        m_mouseDrag.setTop( m_timeAxisRect.bottom() );
-        m_mouseDrag.setBottom( m_depthAxisRect.bottom() );
+
+        // adjust selection rectangle
+        m_mouseSelectionRect.setLeft( e->x() );
+        m_mouseSelectionRect.setTop( m_timeAxisRect.bottom() );
+        m_mouseSelectionRect.setBottom( m_depthAxisRect.bottom() );
+
+        // the mouse press was valid, handle following releases.
         m_validMousePress=TRUE;
     }
     else
     {
+        // the mouse-press was invalid, ignore following releases
         m_validMousePress=FALSE;
     }
 }
 
 void ProfileField::mouseReleaseEvent( QMouseEvent* e)
+// -------------------------------------------------
+// Use : calculate number of shown samples for zooming
+// Parameters  : e - contains mouse position
+// Side-Effects: sets m_validMousePress,
+//                    m_mouseSelectionRect
+//               emits setShowSamples,
+//                     setTimeStart
+// -------------------------------------------------
 {
     if ( m_graphRect.contains( e->pos() ) )
     {
@@ -573,13 +681,13 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
     }
     m_validMousePress=FALSE;
 
-    //m_mouseDrag.setRight( m_mouseDrag.left()-1 );
-    //m_mouseDrag.setBottom( m_mouseDrag.top()-1 );
+    //m_mouseSelectionRect.setRight( m_mouseSelectionRect.left()-1 );
+    //m_mouseSelectionRect.setBottom( m_mouseSelectionRect.top()-1 );
 
-    m_mouseDrag.setWidth( 0 );
-    m_mouseDrag.setHeight( 0 );
+    m_mouseSelectionRect.setWidth( 0 );
+    m_mouseSelectionRect.setHeight( 0 );
 
-    if ( !m_mouseDrag.isNull() )
+    if ( !m_mouseSelectionRect.isNull() )
     {
         qDebug(" is not null " );
     }
@@ -589,6 +697,7 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
 
 
 QSize ProfileField::minimumSize() const
+// calculate the smallest sane size
 {
     QSize size( 6*m_legendFm->width( TIME_TEXT ),
                 3*m_legendFm->width( DEPTH_TEXT ) );

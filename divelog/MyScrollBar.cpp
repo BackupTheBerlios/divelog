@@ -1,16 +1,17 @@
 /******************************************************************************
 * Filename : myscrollbar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.7 2001/09/24 16:49:01 markus Exp $      *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.8 2001/10/02 11:12:07 markus Exp $      *
 * --------------------------------------------------------------------------- *
-* Files subject    : Enhance the QScrollBar                                   *
+* Files subject    : QScrollBar has (nearly?) no slots. We implement some     *
+*                    more to make it more usefull.                            *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Sat Sep 08 2001                                          *
 * --------------------------------------------------------------------------- *
-* To Do List : Provide some given methods as slots                            *
+* To Do List :                                                                *
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.7 2001/09/24 16:49:01 markus Exp $";
+static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.8 2001/10/02 11:12:07 markus Exp $";
 
 #include "myscrollbar.h"
 
@@ -37,6 +38,7 @@ void MyScrollBar::init()
 
 /*
 || Slots
+|| mostly only calls to father-class
 */
 
 void MyScrollBar::setMinValue( int min )
@@ -46,6 +48,7 @@ void MyScrollBar::setMinValue( int min )
 }
 
 void MyScrollBar::setMaxValue( int max )
+// only adding bounds
 {
     if ( value()>max )
     {
@@ -56,6 +59,7 @@ void MyScrollBar::setMaxValue( int max )
 }
 
 void MyScrollBar::setValue( int v )
+// only adding bounds
 {
     if ( v>maxValue() )
     {

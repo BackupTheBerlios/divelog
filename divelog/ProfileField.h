@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.15 2001/09/24 16:49:02 markus Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.16 2001/10/02 11:12:07 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -101,8 +101,8 @@ private:
     int   m_samples;       // Number of samples the computer made for this dive
     int   m_secsPerSample; // Number of seconds between two samples
 
-    int   m_timeStart;
-    int   m_showSamples;
+    int   m_timeStart;     // start of displayed time (offset)
+    int   m_showSamples;   // samples to show (for zooming)
 
     TimeFormat m_timeFormat;
 
@@ -131,7 +131,7 @@ private:
 
     bool m_validMousePress;
     int  m_mousePressSample;
-    QRect m_mouseDrag;
+    QRect m_mouseSelectionRect;
 };
 
 #endif // PROFILEFIELD_H
