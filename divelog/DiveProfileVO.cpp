@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DiveProfileVO.cpp                                                *
-* CVS Id   : $Id: DiveProfileVO.cpp,v 1.2 2002/02/08 16:41:33 markus Exp $    *
+* CVS Id   : $Id: DiveProfileVO.cpp,v 1.3 2002/04/03 11:43:33 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about dive profiles ( Value   *
 *                    Object ), i.e. Depth, sample-time, warnings...           *
@@ -12,7 +12,9 @@
 * Notes :                                                                     *
 ******************************************************************************/
 #include "DiveProfileVO.h"
+#include <strstream.h>
 #include <qpointarray.h>
+
 
 #define DIVE_PROFILE_SEPARATOR " "
 
@@ -127,7 +129,7 @@ DiveProfileVO& DiveProfileVO::operator=( const DiveProfileVO& d )
 }
 
 // Stream/Shift Operators
-ostream& operator<<( ostream& ostr, DiveProfileVO& profile )
+ostream& operator<<( ostream& ostr, const DiveProfileVO& profile )
 // -------------------------------------------------
 // Use : Serialize a Dive Profile Value Object
 // Parameters  : ostr - output stream
@@ -153,8 +155,8 @@ ostream& operator<<( ostream& ostr, DiveProfileVO& profile )
 
     ostr << profile.m_marks.size() << DIVE_PROFILE_SEPARATOR;
 
-    map< uint, UDCFMarkerType >::iterator i;
-    for ( i=profile.m_marks.begin(); i!=profile.m_marks.end(); i++ )
+    DiveProfileVO::marker_map::iterator i;
+    for ( i=profile.marks().begin(); i!=profile.marks().end(); i++ )
     {
         ostr << (*i).first  << DIVE_PROFILE_SEPARATOR
              << (*i).second << DIVE_PROFILE_SEPARATOR;
@@ -210,6 +212,12 @@ istream& operator>>( istream& istr, DiveProfileVO& profile )
     return istr;
 }
 
+string& operator>>( string& str, DiveProfileVO& profile )
+{
+    istrstream istr( str.c_str() );
+    istr >> profile;
+    return str;
+}
 
 /*
 || Accessors

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.24 2002/03/26 10:41:21 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.25 2002/04/03 11:43:33 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,15 +14,17 @@
 *         anything to do with it. ( This refers especially to QString which   *
 *         would be far more powerfull then basic_string...)                   *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.24 2002/03/26 10:41:21 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.25 2002/04/03 11:43:33 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
+#include "DiveVO.h"
 #include "FillingStationVO.h"
 #include "DiveTypeVO.h"
 #include "DiveComputerVO.h"
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
 #include "DiverNotFoundException.h"
+#include "DiveNotFoundException.h"
 #include "DiveProfileVO.h"
 #include "DiveListVO.h"
 
@@ -436,9 +438,11 @@ void DivelogDAO::insertDiveComputer( const DiveComputerVO& diveComputer ) throw 
 }
 
 vector<DiverVO> DivelogDAO::searchDiver( const DiverVO& d, const string& mask="0000000000" )
+// BIG FIXME: mask handling is ugly and wrong. Make it better and document it !
 // mask==1 -> use this field
 // idea: mask==o -> or expression
 //             a -> and expression ???
+// better: >, <, =, contains...
 {
     ASSERT( mask.size()==10 );
     vector<DiverVO> t;
@@ -465,7 +469,7 @@ vector<DiverVO> DivelogDAO::searchDiver( const DiverVO& d, const string& mask="0
                 query << "number=" << d.number();  // FIXME: need posibility to search or "*"
                 if ( mask[ 1 ]=='1' )
                 {
-                    query << " and ";
+                    query << " and "; // FIXME: wrong. What it mask[1]==0, but mask[2]==1 !
                 }
             }
 
@@ -597,6 +601,357 @@ vector<DiverVO> DivelogDAO::searchDiver( const DiverVO& d, const string& mask="0
     return t;
 }
 
+vector<DiveVO> DivelogDAO::searchDive( const DiveVO& d, const string& mask="00000000000000000000000" )
+// mask==1 -> use this field
+// idea: use mask with  >, <, =, contains...
+{
+    ASSERT( mask.size()==32 );
+    vector<DiveVO> t;
+    try
+    {
+        Connection con( use_exceptions );
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
+
+        Query query = con.query();
+        query << "select * from dive";
+
+        bool pred=false; // Predecessor. True, if there have been selections
+                         // before. Used for "and" concatenations
+
+        if( mask!="00000000000000000000000" )
+        {
+            query<< " where ";
+
+            if (mask[ 0 ] == '1' )
+            {
+                query << "number=" << d.number();  // FIXME: need posibility to search for "*"
+                pred=true;
+            }
+
+            if ( (mask[ 1 ] == '1' ) || ( mask[ 2 ] == '1' ) )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "date=" << d.date() << " " << d.time() ;
+                pred=true;
+            }
+
+            if (mask[ 3 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "sync=" << d.sync();
+                pred=true;
+            }
+
+            if (mask[ 4 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "diver_number=" << d.diver_number();
+                pred=true;
+            }
+
+            if (mask[ 5 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "place=" << d.place();
+                pred=true;
+            }
+
+            if (mask[ 6 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "location=" << d.location();
+                pred=true;
+            }
+
+            if (mask[ 7 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "altitude_mode=" << d.altitude_mode();
+                pred=true;
+            }
+
+            if (mask[ 8 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "water_temperature=" << d.water_temperature();
+                pred=true;
+            }
+
+            if (mask[ 9 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "start_pressure=" << d.start_pressure();
+                pred=true;
+            }
+
+            if (mask[ 10 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "end_pressure=" << d.end_pressure();
+                pred=true;
+            }
+
+            if (mask[ 11 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "surface_intervall=" << d.surface_intervall();
+                pred=true;
+            }
+
+            if (mask[ 12 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "max_depth=" << d.max_depth();
+                pred=true;
+            }
+
+            if (mask[ 13 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "length=" << d.length();
+                pred=true;
+            }
+
+            if (mask[ 14 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "profile=" << d.profile();
+                                           
+                pred=true;
+            }
+
+            if (mask[ 15 ] == '1' )          // FIXME: mostly useless this way.
+            {                                // FIXME: better do a "contains" search
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "log=" << d.log();
+                pred=true;
+            }
+
+            if (mask[ 16 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "partner_diver_number=" << d.partner_diver_number();
+                pred=true;
+            }
+
+            if (mask[ 17 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "weather=" << d.weather();
+                pred=true;
+            }
+
+            if (mask[ 18 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "sight=" << d.sight();
+                pred=true;
+            }
+
+            if (mask[ 18 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "lead=" << d.lead();
+                pred=true;
+            }
+
+            if (mask[ 19 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "air_temperature=" << d.air_temperature();
+                pred=true;
+            }
+
+            if (mask[ 20 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "dive_type=" << d.dive_type();
+                pred=true;
+            }
+
+            if (mask[ 21 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "filling_station_number=" << d.filling_station_number();
+                pred=true;
+            }
+
+            if (mask[ 22 ] == '1' )
+            {
+                if ( pred )
+                {
+                    query << " and ";
+                }
+
+                query << "bottle_number=" << d.bottle_number();
+            }
+        }
+
+        Result db_dives = query.store(); // Database result
+    
+        Row row;
+
+        if ( !db_dives.empty() )
+        {
+            Result::iterator i;
+            for ( i=db_dives.begin(); i!=db_dives.end() ;i++ )
+            {
+                row=*i;
+
+                /*
+                || MySQL++ may deliver null-values which give a BadConversion error
+                || -> check for null-values
+                || access via index-number is faster then via string
+                */
+
+                string datetime( (string) row[1] );   // split up date and time
+                int sep_pos = datetime.find( ' ' );
+
+                string date( datetime, 0, sep_pos );
+                string time( datetime, sep_pos+1  );
+
+                DiveProfileVO profile;
+
+                if ( ! row[13].is_null() )
+                {
+                    //profile << (string) row[13];
+                    string tmp = (string) row[13];
+                    tmp >> profile ;
+                }
+
+                DiveVO dive( ( row[ 0].is_null() ? 0  : (int)   row[ 0] ),  // number
+                             date, 																	    		 // date
+                             time,                                          // time
+                             ( row[ 2].is_null() ? 0  : (int)   row[ 2] ),  // sync
+                             ( row[ 3].is_null() ? 0  : (int)   row[ 3] ),  // diver_number
+                             ( row[ 4].is_null() ? "" : (string)row[ 4] ),  // place
+                             ( row[ 5].is_null() ? "" : (string)row[ 5] ),  // location
+                             ( row[ 6].is_null() ? 0  : (double)row[ 6] ),  // altitude_mode
+                             ( row[ 7].is_null() ? 0  : (double)row[ 7] ),  // water_temperature
+                             ( row[ 8].is_null() ? 0  : (double)row[ 8] ),  // start_pressure
+                             ( row[ 9].is_null() ? 0  : (double)row[ 9] ), // end_pressure
+                             ( row[10].is_null() ? 0  : (double)row[10] ),  // surface_intervall
+                             ( row[11].is_null() ? 0  : (double)row[11] ),  // max_depth
+                             ( row[12].is_null() ? "" : (string)row[12] ),  // length
+                             profile,  // profile
+                             ( row[14].is_null() ? "" : (string)row[14] ),  // log
+                             ( row[15].is_null() ? 0  : (int)   row[15] ),  // partner_diver_number
+                             ( row[16].is_null() ? "" : (string)row[16] ),  // weather
+                             ( row[17].is_null() ? "" : (string)row[17] ),  // sight
+                             ( row[18].is_null() ? 0  : (double)row[18] ),  // lead
+                             ( row[19].is_null() ? 0  : (double)row[19] ),   // air_temperature
+                             ( row[20].is_null() ? 0  : (int)   row[20] ),  // dive_type
+                             ( row[21].is_null() ? 0  : (int)   row[21] ),  // filling_station_number
+                             ( row[22].is_null() ? 0  : (int)   row[22] ));  // bottle_number
+
+                t.push_back( dive );
+            }
+        }
+        else
+        {
+            throw DiveNotFoundException();
+        }
+
+    }
+    catch (BadQuery &er)
+    {
+        cerr << "Error: " << er.error << endl;
+    }
+    catch (BadConversion &er)
+    { // handle bad conversions
+        cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
+             << er.type_name << "\"." << endl;
+    }
+    return t;
+}
 vector<DiveListVO> DivelogDAO::diveList( const int& diver_number )
 {
     vector<DiveListVO> diveList;

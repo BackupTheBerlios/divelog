@@ -2,7 +2,7 @@
 #define DIVEPROFILEVO_H
 /******************************************************************************
 * Filename : DiveProfileVO.h                                                  *
-* CVS Id   : $Id: DiveProfileVO.h,v 1.2 2002/02/08 16:41:33 markus Exp $      *
+* CVS Id   : $Id: DiveProfileVO.h,v 1.3 2002/04/03 11:43:33 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveProfileVO.cpp                        *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -22,6 +22,9 @@
 class DiveProfileVO
 {
 public:
+
+    typedef map< uint, UDCFMarkerType> marker_map;
+
     /*
     || Constructors
     */
@@ -37,7 +40,7 @@ public:
 
     QPointArray profile() const { return m_profile; }
 
-    map< uint, UDCFMarkerType > marks() const { return m_marks; }
+    marker_map  marks() const { return m_marks; }
 
     uint        secsPerSample() const { return m_secsPerSample; }
     uint        samples() const { return m_samples; }
@@ -49,14 +52,15 @@ public:
 
     DiveProfileVO& operator=( const DiveProfileVO& p );
 
-    friend ostream& operator<<( ostream& ostr, DiveProfileVO& profile );
+    friend ostream& operator<<( ostream& ostr, const DiveProfileVO& profile );
     friend istream& operator>>( istream& istr, DiveProfileVO& profile );
+    friend string&  operator>>( string&   str, DiveProfileVO& profile );
 
 private:
     void init();
 
     QPointArray m_profile;
-    map< uint, UDCFMarkerType > m_marks;
+    marker_map  m_marks;
 
     uint m_secsPerSample;
     uint m_samples;

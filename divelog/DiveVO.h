@@ -2,7 +2,7 @@
 #define DIVEVO_H
 /******************************************************************************
 * Filename : DiveVO.h                                                         *
-* CVS Id   : $Id: DiveVO.h,v 1.1 2002/02/14 11:31:04 markus Exp $             *
+* CVS Id   : $Id: DiveVO.h,v 1.2 2002/04/03 11:43:33 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveVO.cpp                               *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,8 +14,9 @@
 ******************************************************************************/
 
 #include <string>
+#include "DiveProfileVO.h"
 
-class DiveProfileVO;
+//class DiveProfileVO;
 
 class DiveVO
 {
@@ -39,12 +40,12 @@ public:
             const double& surface_intervall,
             const double& max_depth,
             const string& length,
-            const DiveProfileVO& profile,
+            const DiveProfileVO profile,
             const string& log,      // TEXT
             const int&    partner_diver_number,
             const string& weather,
             const string& sight,
-            const string& lead,
+            const double& lead,
             const double& air_temperature,
             const int& 	  dive_type,
             const int&    filling_station_number,
@@ -64,12 +65,12 @@ public:
                const double& surface_intervall,
                const double& max_depth,
                const string& length,
-               const DiveProfileVO& profile,
+               const DiveProfileVO profile,
                const string& log,      // TEXT
                const int&    partner_diver_number,
                const string& weather,
                const string& sight,
-               const string& lead,
+               const double& lead,
                const double& air_temperature,
                const int& 	 dive_type,
                const int&    filling_station_number,
@@ -97,7 +98,7 @@ public:
     void setPartner_diver_number( const int& partner_diver_number );
     void setWeather( const string& weather );
     void setSight( const string& sight );
-    void setLead( const string& lead );
+    void setLead( const double& lead );
     void setAir_temperature( const double& air_temperature );
     void setDive_type( const int& dive_type );
     void setFilling_station_number( const int& filling_station_number );
@@ -122,7 +123,7 @@ public:
     int    partner_diver_number() const 	{ return m_partner_diver_number; }
     string weather() const 								{ return m_weather; }
     string sight() const   								{ return m_sight; }
-    string lead() const    								{ return m_lead; }
+    double lead() const    								{ return m_lead; }
     double air_temperature() const        { return m_air_temperature; }
     int 	 dive_type() const              { return m_dive_type; }
     int    filling_station_number() const { return m_filling_station_number; }
@@ -156,7 +157,7 @@ private:
     int    m_partner_diver_number;
     string m_weather;
     string m_sight;
-    string m_lead;
+    double m_lead;
     double m_air_temperature;
     int 	 m_dive_type;
     int    m_filling_station_number;

@@ -23,10 +23,12 @@ HEADERS  = MainWidget.h\
            DivelogDAOException.h\
            DiveComputerNotFoundException.h\
            DiverVO.h\
+           DiveVO.h\
            FillingStationVO.h\
            DiveTypeVO.h\
            DiveComputerVO.h\
            DiverNotFoundException.h\
+           DiveNotFoundException.h\
            DiveProfileVO.h\
            DiveListVO.h\
            DiveListViewItem.h
@@ -44,10 +46,12 @@ SOURCES  = main.cpp\
            DivelogDAOException.cpp\
            DiveComputerNotFoundException.cpp\
            DiverVO.cpp\
+           DiveVO.cpp\
            FillingStationVO.cpp\
            DiveTypeVO.cpp\
            DiveComputerVO.cpp\
            DiverNotFoundException.cpp\
+           DiveNotFoundException.cpp\
            DiveProfileVO.cpp\
            DiveListVO.cpp\
            DiveListViewItem.cpp
