@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.22 2002/03/25 08:41:45 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.23 2002/03/25 15:26:21 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,9 +10,11 @@
 *               the corresponding dialog, insert the entry and retry...       *
 *              libUDCF can't handle "Gruni's EON" due to the ' -> FIX it      *
 * --------------------------------------------------------------------------- *
-* Notes :                                                                     *
+* Notes : I want to keep this free of any Qt classes since it simply hasn't   *
+*         anything to do with it. ( This refers especially to QString which   *
+*         would be far more powerfull then basic_string...)                   *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.22 2002/03/25 08:41:45 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.23 2002/03/25 15:26:21 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.47 2002/03/25 08:41:45 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.48 2002/03/25 15:26:21 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.47 2002/03/25 08:41:45 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.48 2002/03/25 15:26:21 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -35,6 +35,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.47 2002/03/25 08:4
 #include "DiveComputerNotFoundException.h"
 #include "DivelogDAOException.h"
 #include "DiveListVO.h"
+#include "DiveListViewItem.h"
 
 // Qt
 #include <qapplication.h>
@@ -202,25 +203,27 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_diveListView->addColumn( "Time" );
 
     m_diveListView->setAllColumnsShowFocus( TRUE );
+    m_diveListView->setSorting( 1 ); // Initially sort by date
 
-    DivelogDAO db;
-    vector< DiveListVO > *allDives;
-    allDives = new vector < DiveListVO > ( db.diveList( 1 ) );
 
+    DivelogDAO db;                  // access object to the database
+    vector< DiveListVO > *allDives; // temporary container for the list entries
+
+    allDives = new vector < DiveListVO > ( db.diveList( 1 ) ); // FIXME: get diver number from rc file
+
+    /*
+    || Strange. Didn't manage to make this an "int i" loop
+    || Had to do it with an iterator...
+    */
+    // Now iterate over all list items and insert them into
+    // the list widget
     vector< DiveListVO >::iterator i;
-
     for ( i=allDives->begin(); i!= allDives->end(); i++ )
     {
         DiveListVO tmp= (*i);
-        (void) new QListViewItem( m_diveListView, QString::number( tmp.number() ), tmp.date().c_str(), tmp.time().c_str() );
+        //(void) new QListViewItem( m_diveListView, QString::number( tmp.number() ), tmp.date().c_str(), tmp.time().c_str() );
+        (void) new DiveListViewItem( tmp, m_diveListView );
     }
-
-/*
-    for ( int i=0; i<allDives->size(); i++ )
-    {
-        DiveListVO tmp=allDives[ i ];
-    }
-*/
     delete allDives;
 
     m_diveListView->setColumnWidthMode( 0, QListView::Maximum );

@@ -1,6 +1,6 @@
 /******************************************************************************
-* Filename : myscrollbar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.12 2001/11/19 19:42:05 markus Exp $      *
+* Filename : MyScrollBar.cpp                                                  *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.13 2002/03/25 15:26:21 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : QScrollBar has (nearly?) no slots. We implement some     *
 *                    more to make it more usefull.                            *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.12 2001/11/19 19:42:05 markus Exp $";
+static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.13 2002/03/25 15:26:21 markus Exp $";
 
 #include "MyScrollBar.h"
 
