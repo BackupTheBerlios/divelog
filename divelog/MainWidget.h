@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.16 2001/10/16 07:16:41 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.17 2001/10/17 13:31:26 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -41,7 +41,7 @@ protected slots:
     ||  File Menu
     */
     void fileImport();
-    void fileNew();
+    void fileNewDiver();
     void fileSave();
     void fileClose();
 

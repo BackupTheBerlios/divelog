@@ -9,7 +9,21 @@ MOC_DIR     = .moc
 OBJECTS_DIR = .objects
 
 LIBS     = -lUDCF -lsqlplus 
-HEADERS  = mainwidget.h  profilefield.h  myscrollbar.h divelogdao.h UDCF.h
-SOURCES  = main.cpp  mainwidget.cpp  profilefield.cpp  myscrollbar.cpp divelogdao.cpp
+
+HEADERS  = mainwidget.h\
+           profilefield.h\
+           myscrollbar.h\
+           divelogdao.h\
+           UDCF.h\
+           newdiverfrm.h
+
+SOURCES  = main.cpp\
+           mainwidget.cpp\
+           profilefield.cpp\
+           myscrollbar.cpp\
+           divelogdao.cpp\
+           newdiverfrm.cpp
+
+INTERFACES = newdiverbasefrm.ui
 
 TARGET   = divelog

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.24 2001/10/16 07:16:40 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.25 2001/10/17 13:31:26 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,13 +16,14 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.24 2001/10/16 07:16:40 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.25 2001/10/17 13:31:26 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
 #include "profilefield.h"
 #include "myscrollbar.h"
 #include "dive104.dat"
+#include "newdiverfrm.h"
 
 // Qt
 #include <qapplication.h>
@@ -74,8 +75,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     CHECK_PTR( file_mn );                           // better check if it worked...
                                                 
     // now add items to the menu
-    file_mn->insertItem( "&Import", this, SLOT( fileImport() ) );
-    file_mn->insertItem( "&New", 		this, SLOT( fileNew() ), CTRL+Key_N );
+    file_mn->insertItem( "&Import",    this, SLOT( fileImport() ) );
+    file_mn->insertItem( "&New Diver", this, SLOT( fileNewDiver() ) );
     file_mn->insertItem( "&Save", 	this, SLOT( fileSave() ), CTRL+Key_S );
     file_mn->insertItem( "&Close",	this, SLOT( fileClose()), CTRL+Key_W );
     file_mn->insertSeparator();
@@ -217,9 +218,9 @@ void MainWidget::fileImport()
     }
 }
 
-void MainWidget::fileNew()
+void MainWidget::fileNewDiver()
 {
-    qWarning( "Not Implemented: MainWidget::fileNew()");
+    qWarning( "Not Implemented: MainWidget::fileNewDiver()");
 }
 
 void MainWidget::fileSave()
