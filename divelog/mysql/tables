@@ -19,9 +19,9 @@
 #along with divelog; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# $Id: tables,v 1.12 2002/05/15 09:27:51 grunwalm Exp $ 
+# $Id: tables,v 1.13 2002/09/16 17:02:23 grunwalm Exp $ 
 
-mysql -h zaphod -u markus --password='ArPPCa' divelog-test <<EOF
+mysql -h localhost -u markus --password='ArPPCa' divelog-test <<EOF
 drop table diver;
 create table diver (
     number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -63,30 +63,30 @@ create table filling_station (
 drop table dive;
 create table dive (
     number INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date DATETIME NOT NULL,
-    sync INTEGER UNSIGNED,
+    date_time DATETIME NOT NULL,
+    sync INTEGER UNSIGNED NOT NULL,
     diver_number INTEGER UNSIGNED NOT NULL REFERENCES diver,
-    place VARCHAR(100) NOT NULL,
+    place VARCHAR(100),
     location VARCHAR(100),
-    altitude_mode DOUBLE NOT NULL,
-    water_temperature DOUBLE NOT NULL,
-    start_pressure DOUBLE NOT NULL,
-    end_pressure DOUBLE NOT NULL,
-    surface_intervall DOUBLE NOT NULL,
-    max_depth DOUBLE NOT NULL,
-    length TIME NOT NULL,
+    altitude_mode DOUBLE,
+    water_temperature DOUBLE,
+    start_pressure DOUBLE,
+    end_pressure DOUBLE,
+    surface_intervall DOUBLE,
+    max_depth DOUBLE,
+    duration TIME,
     profile BLOB, 
     log TEXT,
-    partner_diver_number INTEGER UNSIGNED NOT NULL REFERENCES diver,
+    partner_diver_number INTEGER UNSIGNED REFERENCES diver,
     weather VARCHAR(20),
     sight   VARCHAR(20),
-    lead  FLOAT,
+    lead FLOAT,
     air_temperature DOUBLE,
     dive_type INTEGER UNSIGNED REFERENCES divetype,
-    filling_station_number INTEGER UNSIGNED NOT NULL REFERENCES filling_station,
-    bottle_number INTEGER UNSIGNED NOT NULL,    
-    UNIQUE ( date, diver_number ),
-    KEY ( date, diver_number )
+    filling_station_number INTEGER UNSIGNED  REFERENCES filling_station,
+    bottle_number INTEGER UNSIGNED,    
+    UNIQUE ( date_time, diver_number ),
+    KEY ( date_time, diver_number )
 );
 EOF
     

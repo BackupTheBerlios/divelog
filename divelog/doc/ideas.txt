@@ -23,3 +23,4 @@ html Export
 xml export ?
 tauchgaenge pgp/gpg signieren 
 statistik ueber Tauchbasen/Fuellgrad
+tabelle mit allem was man gesehen hat bzw. zoolog. datenbank
