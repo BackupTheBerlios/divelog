@@ -11,7 +11,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>350</width>
+            <width>346</width>
             <height>230</height>
         </rect>
     </property>
@@ -184,10 +184,6 @@ You have to enter the fields marked in red.</string>
                             <property stdset="1">
                                 <name>name</name>
                                 <cstring>m_Owner</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>editable</name>
-                                <bool>true</bool>
                             </property>
                             <property stdset="1">
                                 <name>duplicatesEnabled</name>

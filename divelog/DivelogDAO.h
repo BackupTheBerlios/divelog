@@ -2,7 +2,7 @@
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.7 2001/11/23 15:59:06 markus Exp $         *
+* CVS Id   : $Id: DivelogDAO.h,v 1.8 2001/12/01 19:21:35 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -15,8 +15,8 @@
 
 // FIXME: move this info to a better place
 #define MYSQL_DATABASE "divelog-test"
-//#define MYSQL_HOST   "localhost"
-#define MYSQL_HOST   "zaphod"
+#define MYSQL_HOST   "localhost"
+//#define MYSQL_HOST   "zaphod"
 #define MYSQL_USER   "markus"
 #define MYSQL_PASSWD "ArPPCa"
 
@@ -35,6 +35,7 @@ public:
     ~DivelogDAO();
 
     void importUDCFFile( const char* filename ) throw ( DivelogDAOException );
+    void insertDiver( const DiverVO& diver ) throw ( DivelogDAOException );
     vector<DiverVO> diverList();
 
 private:

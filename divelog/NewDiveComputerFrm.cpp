@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.7 2001/11/27 08:16:00 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.8 2001/12/01 19:21:35 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,10 +11,11 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.7 2001/11/27 08:16:00 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.8 2001/12/01 19:21:35 markus Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
+#include "DiverNotFoundException.h"
 
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -62,7 +63,9 @@ void NewDiveComputerFrm::init()
     pal.setColor( QColorGroup::Foreground, red );
     m_SerialNumberLbl->setPalette( pal );
 
-    // TODO: Get divers from database -> QComboBox m_Owner
+    /*
+    || Get divers from database -> QComboBox m_Owner
+    */
     DivelogDAO db;
     try
     {
@@ -80,9 +83,10 @@ void NewDiveComputerFrm::init()
             qDebug(" Diver = %s", diver.first_name().c_str() );
         }
     }
-    catch(...)
+    catch( DiverNotFoundException e )
     {
-        qDebug("Exception");
+        cerr << e << endl;
+        // FIXME: open messagebox, maybe even better: open diver input dialog
     }
 
 

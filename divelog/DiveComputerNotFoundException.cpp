@@ -1,17 +1,17 @@
-/******************************************************************************
-* Filename : DiveComputerNotFoundException.cpp																*
-* CVS Id   : $Id: DiveComputerNotFoundException.cpp,v 1.1 2001/11/19 18:52:55 markus Exp $                                                             *
-* --------------------------------------------------------------------------- *
-* Files subject    : Exception thrown by DivelogDAO if a Divecomputer couldn't*
-*                    be identified.                                           *
-* Owner            : Markus Grunwald                                          *
-* Date of Creation : Thu Nov 15 2001                                          *
-* --------------------------------------------------------------------------- *
-* To Do List :                                                                *
-* --------------------------------------------------------------------------- *
-* Notes :                                                                     *
-******************************************************************************/
-static char *DiveComputerNotFoundException_cvs_id="$Id: DiveComputerNotFoundException.cpp,v 1.1 2001/11/19 18:52:55 markus Exp $";
+/*******************************************************************************************
+* Filename : DiveComputerNotFoundException.cpp																             *
+* CVS Id   : $Id: DiveComputerNotFoundException.cpp,v 1.2 2001/12/01 19:21:34 markus Exp $ *
+* ---------------------------------------------------------------------------------------- *
+* Files subject    : Exception thrown by DivelogDAO if a Divecomputer couldn't             *
+*                    be identified.                                                        *
+* Owner            : Markus Grunwald                                                       *
+* Date of Creation : Thu Nov 15 2001                                                       *
+* ---------------------------------------------------------------------------------------- *
+* To Do List :                                                                             *
+* ---------------------------------------------------------------------------------------- *
+* Notes :                                                                                  *
+*******************************************************************************************/
+static char *DiveComputerNotFoundException_cvs_id="$Id: DiveComputerNotFoundException.cpp,v 1.2 2001/12/01 19:21:34 markus Exp $";
 
 #include "DiveComputerNotFoundException.h"
 #include "DivelogDAOException.h"

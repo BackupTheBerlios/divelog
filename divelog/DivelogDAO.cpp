@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.9 2001/11/23 15:59:06 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.10 2001/12/01 19:21:35 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,11 +12,12 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.9 2001/11/23 15:59:06 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.10 2001/12/01 19:21:35 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
+#include "DiverNotFoundException.h"
 
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
@@ -163,28 +164,29 @@ vector<DiverVO> DivelogDAO::diverList()
             {
                 row=*i;
 
-                DiverVO diver( (int)row["number"],
-                               (string)row["first_name"],
-                               (string)row["last_name"],
-                               (string)row["brevet"],
-                               (string)row["street"],
-                               (string)row["house_number"],
-                               (int)row["zip"],
-                               (string)row["place"],
-                               (string)row["phone"],
-                               (string)row["email"] );
+                /*
+                || MySQL++ may deliver null-values which give a BadConversion error
+                || -> check for null-values
+                || access via index-number is faster then via string
+                */
+                DiverVO diver( ( row[0].is_null() ? 0  : (int)   row[0] ),  // number
+                               ( row[1].is_null() ? "" : (string)row[1] ),  // first_name
+                               ( row[2].is_null() ? "" : (string)row[2] ),  // last_name
+                               ( row[3].is_null() ? "" : (string)row[3] ),  // brevet
+                               ( row[4].is_null() ? "" : (string)row[4] ),  // street
+                               ( row[5].is_null() ? "" : (string)row[5] ),  // house_number
+                               ( row[6].is_null() ? 0  : (int)   row[6] ),  // zip
+                               ( row[7].is_null() ? "" : (string)row[7] ),  // place
+                               ( row[8].is_null() ? "" : (string)row[8] ),  // phone
+                               ( row[9].is_null() ? "" : (string)row[9] ) );// email
 
                 t.push_back( diver );
-
-                // better use index number
-                qDebug( "mysql: diver first name =%s", row["first_name"].c_str() );
-                qDebug( "mysql: diver last  name =%s", row["last_name"].c_str() );
             }
         }
         else
         {
-            qDebug("getDivers: no divers found!");
-            // throw DiverNotFound(  );
+            //qDebug("getDivers: no divers found!");
+            throw DiverNotFoundException();
         }
 
     }
@@ -199,3 +201,38 @@ vector<DiverVO> DivelogDAO::diverList()
     }
     return t;
 }
+
+void DivelogDAO::insertDiver( const DiverVO& diver ) throw ( DivelogDAOException )
+{
+    try
+    {
+        Connection con( use_exceptions );
+        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
+        
+        Query query = con.query();
+        query << "insert into diver values( "
+            	<< "\"" << diver.number()     << "\""
+            	<< "\"" << diver.first_name() << "\""
+            	<< ( diver.last_name()=="" 		? "NULL, " : "\"" << diver.last_name() 	  << "\", " )
+            	<< ( diver.brevet()=="" 			? "NULL, " : "\"" << diver.brevet() 		  << "\", " )
+            	<< ( diver.street()=="" 			? "NULL, " : "\"" << diver.street() 		  << "\", " )
+            	<< ( diver.house_number()=="" ? "NULL, " : "\"" << diver.house_number() << "\", " )
+            	<< ( diver.zip()==0  					? "NULL, " : "\"" << diver.zip()          << "\", " )
+            	<< ( diver.place()=="" 				? "NULL, " : "\"" << diver.place() 		    << "\", " )
+            	<< ( diver.phone()=="" 				? "NULL, " : "\"" << diver.phone()        << "\", " )
+              << ( diver.email()=="" 				? "NULL, " : "\"" << diver.email()        << "\", " )
+              << " )";
+
+        query.execute();
+    }
+    catch (BadQuery &er)
+    {
+        cerr << "Error: " << er.error << endl;
+    }
+    catch (BadConversion &er)
+    { // handle bad conversions
+        cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
+             << er.type_name << "\"." << endl;
+    }
+}
+

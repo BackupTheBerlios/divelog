@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DiverVO.cpp                                                      *
-* CVS Id   : $Id: DiverVO.cpp,v 1.2 2001/11/23 15:59:06 markus Exp $                                                             *
+* CVS Id   : $Id: DiverVO.cpp,v 1.3 2001/12/01 19:21:35 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about divers (Value Object)   *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,7 +35,7 @@ DiverVO::DiverVO( const DiverVO& d )
     m_email        = d.m_email;
 }
 
-DiverVO::DiverVO( const int& number, const string& first_name, const string& last_name, const string& brevet,
+DiverVO::DiverVO( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
     			   const string& street, const string& house_number, const int& zip, const string& place,
     			   const string& phone, const string& email )
 {
@@ -43,7 +43,7 @@ DiverVO::DiverVO( const int& number, const string& first_name, const string& las
           house_number, zip, place, phone, email);
 }
 
-void DiverVO::init( const int& number, const string& first_name, const string& last_name, const string& brevet,
+void DiverVO::init( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
     			 const string& street, const string& house_number, const int& zip, const string& place,
     			 const string& phone, const string& email )
 {
@@ -81,7 +81,7 @@ void DiverVO::init()
 || Accessors
 */
 
-int DiverVO::number() const
+unsigned int DiverVO::number() const
 {
     return m_number;
 }
@@ -133,7 +133,7 @@ string DiverVO::email() const
 
 
 
-void DiverVO::setNumber ( const int& number )
+void DiverVO::setNumber ( const unsigned int& number )
 {
     m_number=number;
 }

@@ -2,7 +2,7 @@
 #define DIVERVO_H
 /******************************************************************************
 * Filename : DiverVO.h                                                        *
-* CVS Id   : $Id: DiverVO.h,v 1.2 2001/11/23 15:59:06 markus Exp $                                                             *
+* CVS Id   : $Id: DiverVO.h,v 1.3 2001/12/01 19:21:35 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiverVO.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -23,19 +23,19 @@ public:
     */
     DiverVO();
     DiverVO( const DiverVO& d );
-    DiverVO( const int& number, const string& first_name, const string& last_name, const string& brevet,
+    DiverVO( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
     			   const string& street, const string& house_number, const int& zip, const string& place,
     			   const string& phone, const string& email );
 
-    void init( const int& number, const string& first_name, const string& last_name, const string& brevet,
-    			 const string& street, const string& house_number, const int& zip, const string& place,
-    			 const string& phone, const string& email );
+    void init( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
+    			 		 const string& street, const string& house_number, const int& zip, const string& place,
+    			 		 const string& phone, const string& email );
 
     /*
     || Accessors
     */
 
-    int 	 number() const;
+    unsigned int number() const;
     string first_name() const;
     string last_name() const;
     string brevet() const;
@@ -46,7 +46,7 @@ public:
     string phone() const;
     string email() const;
 
-    void setNumber ( const int& number );
+    void setNumber ( const unsigned int& number );
     void setFirst_name ( const string& first_name );
     void setLast_name ( const string& last_name );
     void setBrevet ( const string& brevet );
@@ -67,7 +67,7 @@ public:
 private:
     void init();
 
-    int m_number;
+    unsigned int m_number;
     string m_first_name;
     string m_last_name;
     string m_brevet;

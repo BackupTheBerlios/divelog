@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.36 2001/11/23 14:36:52 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.37 2001/12/01 19:21:35 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.36 2001/11/23 14:36:52 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.37 2001/12/01 19:21:35 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -309,6 +309,8 @@ void MainWidget::dbNewDiveComputer()
     if ( result )
     {
         qDebug( "Dive Computer:\t%s", newDiveComputerFrm.m_SerialNumber->text().latin1() );
+        qDebug( "Owner:\t%d %s", newDiveComputerFrm.m_Owner->currentItem(), newDiveComputerFrm.m_Owner->currentText().latin1() );
+
     }
 }
 

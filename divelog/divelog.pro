@@ -22,7 +22,8 @@ HEADERS  = MainWidget.h\
            NewDiveComputerFrm.h\
            DivelogDAOException.h\
            DiveComputerNotFoundException.h\
-           DiverVO.h
+           DiverVO.h\
+           DiverNotFoundException.h
 
 SOURCES  = main.cpp\
            MainWidget.cpp\
@@ -36,8 +37,9 @@ SOURCES  = main.cpp\
            NewDiveComputerFrm.cpp\
            DivelogDAOException.cpp\
            DiveComputerNotFoundException.cpp\
-           DiverVO.cpp
-           
+           DiverVO.cpp\
+           DiverNotFoundException.cpp
+                
 
 INTERFACES = NewDiverBaseFrm.ui\
              InfoAreaBaseFrm.ui\
