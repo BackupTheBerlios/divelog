@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.54 2002/06/02 09:55:13 grunwalm Exp $    *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.55 2002/08/10 18:15:44 grunwalm Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.54 2002/06/02 09:55:13 grunwalm Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.55 2002/08/10 18:15:44 grunwalm Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -78,6 +78,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.54 2002/06/02 09:5
 #include <qheader.h>
 #include <qcombobox.h>
 #include <qtextview.h>
+#include <qlineedit.h>
 
 // others
 #include <string>
@@ -86,6 +87,8 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.54 2002/06/02 09:5
 #define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
 #define MOUSE_DEPTH_LABEL "Depth: "     // Label for depth at mouse cursor.
                                         // FIXME: Move to a better place
+
+using namespace std;
 
 MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     : QMainWindow( parent, name )

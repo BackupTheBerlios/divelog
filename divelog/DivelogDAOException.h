@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /*******************************************************************************
 * Filename : DivelogDAOException.h																						 *
-* CVS Id   : $Id: DivelogDAOException.h,v 1.4 2002/06/02 09:55:13 grunwalm Exp $ *
+* CVS Id   : $Id: DivelogDAOException.h,v 1.5 2002/08/10 18:15:44 grunwalm Exp $ *
 * ---------------------------------------------------------------------------- *
 * Files subject    : Header for DivelogDAOException                            *
 * Owner            : Markus Grunwald                                           *
@@ -36,16 +36,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVELOG_DAO_EXCEPTION
 #include <string>                      
 #include <iostream.h>
-class ostream;
 
-class DivelogDAOException : public exception
+using namespace std;
+
+class DivelogDAOException //: public exception
 {
 public:
     
-    DivelogDAOException(const string message = "");
+    DivelogDAOException( const string message = "");
+    ~DivelogDAOException() throw(){};
     friend ostream& operator << (ostream& os, const DivelogDAOException e);
 
-    const char* what () const
+    const char* what () const throw()
     {
         cerr << "Exception.what() called." << endl;
         return m_msg.c_str();

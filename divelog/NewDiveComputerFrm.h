@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "NewDiveComputerBaseFrm.h"
 #include <vector>
 
+using namespace std;
+
 class NewDiveComputerFrm : public NewDiveComputerBaseFrm
 { 
     Q_OBJECT

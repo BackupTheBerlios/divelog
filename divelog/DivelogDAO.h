@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.19 2002/06/02 09:55:13 grunwalm Exp $      *
+* CVS Id   : $Id: DivelogDAO.h,v 1.20 2002/08/10 18:15:44 grunwalm Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -42,22 +42,28 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define MYSQL_USER   "markus"
 #define MYSQL_PASSWD "ArPPCa"
 
+#include "DivelogDAOException.h"
+#include "DiverVO.h"
+#include "DiveVO.h"
+#include "DiveListVO.h"
+#include "FillingStationVO.h"
+#include "DiveTypeVO.h"
+#include "DiveComputerVO.h"
+
 #include <vector>
 #include <string>
 
+class QSqlDatabase;
 
-class DivelogDAOException;
-class DiverVO;
-class DiveVO;
-class DiveListVO;
-class FillingStationVO;
-class DiveTypeVO;
-class DiveComputerVO;
 class DivelogDAO
 {
 
 public:
-    DivelogDAO( char* db=MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD );
+    DivelogDAO( char* db=MYSQL_DATABASE,
+                char* host=MYSQL_HOST,
+                char* user=MYSQL_USER,
+                char* passwd=MYSQL_PASSWD ) throw ( DivelogDAOException );
+
     ~DivelogDAO();
 
     void importUDCFFile( const char* filename ) throw ( DivelogDAOException );
@@ -74,9 +80,6 @@ public:
 
 private:
 
-    char* m_db;
-    char* m_host;
-    char* m_user;
-    char* m_passwd;
+    QSqlDatabase* m_db;
 };
 #endif

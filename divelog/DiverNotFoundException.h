@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /**********************************************************************************
 * Filename : DiverNotFoundException.h																					    *
-* CVS Id   : $Id: DiverNotFoundException.h,v 1.4 2002/06/02 09:55:13 grunwalm Exp $ *
+* CVS Id   : $Id: DiverNotFoundException.h,v 1.5 2002/08/10 18:15:44 grunwalm Exp $ *
 * ------------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Divecomputer couldn't    *
 *                    be identified.                                               *
@@ -36,11 +36,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifndef DIVER_NOT_FOUND_EXCEPTION
 #define DIVER_NOT_FOUND_EXCEPTION
 
+#include "DiverVO.h"
 #include "DivelogDAOException.h"
 #include <string>
+#include <iostream>
 
-class ostream;
-class DiverVO;
 
 class DiverNotFoundException : public DivelogDAOException
 {
@@ -58,6 +58,7 @@ public:
                             const string& email="" );
 
     DiverNotFoundException( const DiverVO& diver );
+    ~DiverNotFoundException() throw() {};
 
     friend ostream& operator << (ostream& os, const DiverNotFoundException e);
 

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /**********************************************************************************
 * Filename : DiveNotFoundException.h																					    *
-* CVS Id   : $Id: DiveNotFoundException.h,v 1.3 2002/06/02 09:55:13 grunwalm Exp $  *
+* CVS Id   : $Id: DiveNotFoundException.h,v 1.4 2002/08/10 18:15:44 grunwalm Exp $  *
 * ------------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Dive couldn't be         *
 *                    identified.                                                  *
@@ -38,8 +38,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "DivelogDAOException.h"
 #include <string>
+#include <iostream>
 
-class ostream;
 class DiveVO;
 
 class DiveNotFoundException : public DivelogDAOException
