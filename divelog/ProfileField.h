@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.3 2001/08/16 21:33:31 markus Exp $             *
+* CVS Id 	 : $Id: ProfileField.h,v 1.4 2001/08/20 11:32:37 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -63,6 +63,7 @@ signals:
 protected:
 
     void paintEvent( QPaintEvent* );
+    void resizeEvent( QResizeEvent* );
 
 private:
 
@@ -75,10 +76,14 @@ private:
     int   m_secsPerSample; // Number of seconds between two samples
 
     QPoint m_origin;
+
     QRect m_timeAxisRect;
     QRect m_depthAxisRect;
 
     QFont m_numberFont;
     QFont m_legendFont;
+
+    QFontMetrics *m_numberFm;
+    QFontMetrics *m_legendFm;
 };
 #endif
