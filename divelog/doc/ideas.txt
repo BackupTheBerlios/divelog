@@ -1,3 +1,4 @@
 html Export
 xml export ?
-tauchgänge pgp/gpg signieren 
+tauchgaenge pgp/gpg signieren 
+statistik ueber Tauchbasen/Fuellgrad
