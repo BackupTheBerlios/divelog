@@ -1,12 +1,13 @@
 FTE Desktop 2
 F|1|/home/markus/projects/divelog/MainWidget.cpp
+D|10|/home/markus/projects/divelog/
+F|2|/home/markus/projects/divelog/MainWidget.h
 F|6|/home/markus/projects/divelog/DivelogDAO.cpp
 F|7|/home/markus/projects/divelog/ProfileField.cpp
 F|3|/home/markus/projects/divelog/DivelogDAO.h
 F|8|/home/markus/projects/divelog/DiverVO.cpp
 F|5|/home/markus/projects/divelog/InfoAreaBaseFrm.h
 F|4|/home/markus/projects/divelog/DiveVO.h
-F|2|/home/markus/projects/divelog/MainWidget.h
 M|243|0|#0|/home/markus/projects/divelog/DiveVO.cpp
 M|243|0|#1|/home/markus/projects/divelog/DiveVO.cpp
 M|289|18|#2|/home/markus/projects/divelog/DiveVO.cpp
