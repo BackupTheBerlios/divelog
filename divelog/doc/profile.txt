@@ -1,0 +1,8 @@
+Feldname	Datentyp	Beschreibung
+DiveRecordID	Long Integer	Die Identifizierungs-Nummer, welche den Basis-Taucheintrag identifiziert muss mit dem RecordID Feld in der Hauptdatendatei übereinstimmen (MYDIVES.CSV ist ein Beispiel)
+SegmentNo	Integer		Die Ordnungsposition dieser Tiefe im Profil. Muliplizieren Sie diese Zahl mit der Aufzeichnungsrate des Tauchcomputers, um die richtige Uhrzeit jedes Tauchsegmentes zu bekommen.
+Depth		Decimal		Die maximale Tiefe des Segmentes; abgespeichert in der Einheit, wie beim Export verwendet.
+ASC		Integer		0 = Kein Alarm, 1 = ASC Alarm während dieses Segmentes
+SLOW		Integer		0 = Kein Alarm, 1 = SLOW Alarm während dieses Segmentes
+Ceiling		Integer		0 = Kein Alarm, 1 = Dekostufenalarm während dieses Segmentes
+SURF		Integer		0 = Kein Alarm, 1 = Dekostufen-Tiefenalarm während dieses Segmentes
