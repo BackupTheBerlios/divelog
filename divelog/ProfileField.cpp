@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.21 2001/10/02 11:12:07 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.22 2001/10/04 13:49:55 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.21 2001/10/02 11:12:07 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.22 2001/10/04 13:49:55 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -203,6 +203,7 @@ void ProfileField::setProfile( QPointArray profile )
 {
     m_profile=profile;
     repaint( FALSE );
+    qDebug( "%s.setProfile: repaint()", this->name() );
 }
 
 void ProfileField::setTimeStart( int start )
@@ -222,7 +223,9 @@ void ProfileField::setTimeStart( int start )
     m_timeStart=start;
     emit timeStartChanged( start );
     qDebug( "SIGNAL %s->timeStartChanged( %i )",this->name() ,start );
-    repaint( FALSE );
+    //repaint( FALSE );
+    //qDebug( "%s.setTimeStart: repaint()", this->name() );
+
 }
 
 void ProfileField::setShowSamples( int showSamples )
@@ -252,7 +255,9 @@ void ProfileField::setShowSamples( int showSamples )
     emit hideSamplesChanged( samples()-showSamples );
     qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
 
-    repaint( FALSE );
+    //repaint( FALSE );
+    //qDebug( "%s.setShowSamples: repaint()", this->name() );
+
 }
 
 void ProfileField::setHideSamples( int hideSamples )
@@ -285,7 +290,9 @@ void ProfileField::setHideSamples( int hideSamples )
 
     emit showSamplesChanged( showSamples );
     qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
-    repaint( FALSE );
+    //repaint( FALSE );
+    //qDebug( "%s.setHideSamples: repaint()", this->name() );
+
 }
 
 /*
@@ -528,6 +535,27 @@ void ProfileField::paintEvent( QPaintEvent* )
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );
 
+    qDebug( "%s->paintEvent", this->name() );
+
+    qDebug( "m_mouseSelectionRect is :" );
+    if ( !m_mouseSelectionRect.isNull() )
+    {
+        qDebug( "\tnot null" );
+    }
+    else
+    {
+        qDebug( "\tnull" );
+    }
+
+    if ( !m_mouseSelectionRect.isValid() )
+    {
+        qDebug("\tnot valid" );
+    }
+    else
+    {
+        qDebug( "\tvalid" );
+    }
+
     if ( !m_mouseSelectionRect.isNull() )    // draw the selection rectangle
     {
         p.setPen( m_dragColor );
@@ -604,6 +632,8 @@ void ProfileField::mouseMoveEvent( QMouseEvent* e )
                 // three samples (otherwise, we treat it as click)
                 m_mouseSelectionRect.setRight( e->x() );
                 repaint( FALSE );
+                qDebug( "%s.mouseMoveEvent: repaint()", this->name() );
+
             }
         }
 
@@ -659,6 +689,7 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
 //                     setTimeStart
 // -------------------------------------------------
 {
+    qDebug( "%s->mouseReleaseEvent", this->name() );
     if ( m_graphRect.contains( e->pos() ) )
     {
         float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
@@ -692,7 +723,14 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
         qDebug(" is not null " );
     }
 
+    if ( !m_mouseSelectionRect.isValid() )
+    {
+        qDebug(" is not valid " );
+    }
+
     repaint( FALSE );
+    qDebug( "%s.mouseReleaseEvent: repaint()", this->name() );
+
 }
 
 
