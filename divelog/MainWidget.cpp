@@ -1,9 +1,10 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.17 2001/09/23 12:36:49 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.18 2001/10/02 09:40:14 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
-*                    other Widgets                                            *
+*                    other Widgets.                                           *
+*                    Supplies application with menus etc.                     *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Sun Aug 12 2001                                          *
 * --------------------------------------------------------------------------- *
@@ -15,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.17 2001/09/23 12:36:49 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.18 2001/10/02 09:40:14 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -34,22 +35,39 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.17 2001/09/23 12:3
 
 #include "dive104.dat"
 
-#define MOUSE_TIME_LABEL "Time: "
-#define MOUSE_DEPTH_LABEL "Depth: "
+#define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
+#define MOUSE_DEPTH_LABEL "Depth: "     // Label for depth at mouse cursor.
+                                        // FIXME: Move to a better place
 
 MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     : QMainWindow( parent, name )
+// -------------------------------------------------
+// Use : Constructor.
+//       Set up of all contained widgets
+//       and connection of SIGNALS and SLOTS
+// Parameters  : parent = parent of this widget.
+//                null means root window
+//               name = name of the widget
+// -------------------------------------------------
 {
+    /*
+    || Set up a test dataset. This has to be removed when
+    || reading of real data is working.
+    */
+
     QPointArray testdata;
     testdata.setPoints( 64, points );
+
+    //---------------------------------------------------
 
     /*
     || Build up the Menu
     */
 
-    QPopupMenu *file_mn = new QPopupMenu( this );
-    CHECK_PTR( file_mn );
+    QPopupMenu *file_mn = new QPopupMenu( this );   // make a file menu
+    CHECK_PTR( file_mn );                           // better check if it worked...
                                                 
+    // now add items to the menu
     file_mn->insertItem( "&Open", 	this, SLOT( fileOpen() ), CTRL+Key_O );
     file_mn->insertItem( "&New", 		this, SLOT( fileNew() ), CTRL+Key_N );
     file_mn->insertItem( "&Save", 	this, SLOT( fileSave() ), CTRL+Key_S );
@@ -57,6 +75,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     file_mn->insertSeparator();
     file_mn->insertItem( "E&xit",  qApp, SLOT( quit() ), CTRL+Key_Q );
 
+    // same as above (see file menu)
     QPopupMenu *settings_mn = new QPopupMenu( this );
     CHECK_PTR( settings_mn );
 
@@ -67,6 +86,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 
     help_mn->insertItem( "&About", this, SLOT( about() ) );
 
+    // Now create the main menu and insert the submenus
     m_main_mn = new QMenuBar( this );
     CHECK_PTR( m_main_mn );
 
@@ -87,18 +107,25 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_l1 = new QLabel( "", m_s1 );    // DEBUG
     m_l2 = new QLabel( "", m_s2 );    // DEBUG
 
+    /*
+    || Set up Profile Area
+    */
+
     m_profileBox = new QVBox( m_s2 ,"m_profileBox" );
     m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
 
     /*
-    || Set up Profile Area
-    ||
     || Set up Scrollbars
     */
 
+    // The offset bar sets the start of the displayed area in the profile field.
     m_offsetBar  = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_offsetBar" );
+    // The samples bar sets the zoom-factor
     m_samplesBar = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_samplesBar" );
 
+    // Handling of the samples bar is a bit weired:
+    // The value means 'hide that much values',
+    // i.e. 0=show all values
     m_samplesBar->setMinValue( 0 );
     m_samplesBar->setMaxValue( m_profile->samples()-3 );
     m_samplesBar->setValue( 0 );
@@ -106,20 +133,30 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_offsetBar->setMinValue( 0 );
     m_offsetBar->setMaxValue( 0 );
 
+    // Cross connect the samples bar value to the profile field
     connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_profile, SLOT( setHideSamples ( int ) ) );
     connect( m_profile   , SIGNAL( hideSamplesChanged( int ) ), m_samplesBar, SLOT( setValue( int ) ) );
 
+    // the offset bar's maximum value depends on the zoom factor=value of samples bar
     connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_offsetBar, SLOT( setMaxValue( int ) ) );
 
+    // Cross connect the offset bar value to the profile field.
     connect( m_offsetBar , SIGNAL( valueChanged( int ) ), m_profile, SLOT( setTimeStart( int ) ) );
     connect( m_profile   , SIGNAL( timeStartChanged( int ) ), m_offsetBar, SLOT( setValue( int ) ) );
 
+    /*
+    || Set up the mouse data fields
+    || how can the layout be change to something not equally spaced or
+    || at least some more space in the middle... ???
+    */
     m_profileMouseDataBox    = new QHBox( m_profileBox, "m_profileMouseDataBox" );
+
     m_profileMouseTimeLabel  = new QLabel( MOUSE_TIME_LABEL,  m_profileMouseDataBox );
     m_profileMouseTime       = new QLabel( "1:10",  m_profileMouseDataBox );
     m_profileMouseDepthLabel = new QLabel( MOUSE_DEPTH_LABEL, m_profileMouseDataBox );
     m_profileMouseDepth      = new QLabel( "20.5", m_profileMouseDataBox );
 
+    // This doesn't work. Why ?
     m_profileMouseDataSpacer = new QSpacerItem( m_profileMouseTimeLabel->frameRect().width(),
                                                 m_profileMouseTimeLabel->frameRect().height(),
                                                 QSizePolicy::Fixed,
@@ -150,6 +187,10 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 =================================================================
 Slots
 =================================================================
+*/
+
+/*
+|| Menu-slots : implement the menu functions
 */
 
 void MainWidget::fileOpen()

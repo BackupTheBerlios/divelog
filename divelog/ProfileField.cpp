@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.19 2001/09/24 16:49:01 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.20 2001/10/02 09:40:14 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -8,12 +8,12 @@
 * --------------------------------------------------------------------------- *
 * To Do List : Show DC Warnings                                       				*
 *              Make graph solid                                               *
-*              Better Zooming (not with Scrollbars)                           *
+*              Show area to-be-zoomed by mouse as solid rectangle             *
 *              Handle Dive Profile in its own class                           *
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.19 2001/09/24 16:49:01 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.20 2001/10/02 09:40:14 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -21,6 +21,8 @@ static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.19 2001/09/24 
 
 #include "profilefield.h"
 
+// Some constants which set the appearance.
+// FIXME: move to a better place...
 #define TIME_TEXT "Time"
 #define DEPTH_TEXT "Depth"
 
@@ -33,33 +35,50 @@ static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.19 2001/09/24 
 /*
 || Constructors
 */
-
 ProfileField::ProfileField( QWidget *parent=0, const char* name=0 )
     : QWidget( parent, name )
+// -------------------------------------------------
+// Use : Standard constructor. Just calls base class
+//       constructor and init() function
+// Parameters: parent= parent of the widget
+//             name  = name of the widget
 {
     init();
 }
 
 ProfileField::ProfileField( QWidget *parent, const char* name, QPointArray profile )
     : QWidget( parent, name )
+// -------------------------------------------------
+// Use : Profile initiaizing constructor
+// Parameters: parent= parent of the widget
+//             name  = name of the widget
+//             profile = profile data to show
+//                       Use an extra class for this sometime!
 {
     init();
     setProfile( profile );
 }
 
 void ProfileField::init()
+// -------------------------------------------------
+// Use : Main initializing method. Called by every
+//       constructor
 {
     // Some sane(?) settings
-    m_depth=21.4; 			//meters
+    m_depth=21.4; 						//meters
     m_samples=64;
-    m_secsPerSample=60;
+    m_secsPerSample=60;       // seconds/samples
+                              // time for the whole dive can be calculated
+                              // as m_samples*m_secsPerSample
 
-    m_timeStart=0;
-    m_showSamples=m_samples;
+    m_timeStart=0;            // start at the beginning
+    m_showSamples=m_samples;  // and show all samples
 
+    // we just changed something important, so tell it to Qt
     emit timeStartChanged( m_timeStart );
     emit showSamplesChanged( m_showSamples );
 
+    // set up font and font metrics
     m_numberFont = QFont( "Courier", 10, QFont::Light );
     m_numberFont.setFixedPitch( true );
     m_numberFm = new QFontMetrics( m_numberFont );
@@ -69,9 +88,10 @@ void ProfileField::init()
 
     m_timeFormat = Minutes;
 
-    CHECK_PTR( m_numberFm );
+    CHECK_PTR( m_numberFm );      // better check if all worked fine...
     CHECK_PTR( m_legendFm );
 
+    // set up colors
     m_backgroundColor = QColor( 250, 250, 200 );
     m_gridPenColor		= lightGray;
     m_axesPenColor		= black;
@@ -84,11 +104,13 @@ void ProfileField::init()
     setPalette( QPalette( m_backgroundColor ) ); // Background color
     setMinimumSize( minimumSize() );
 
-    setMouseTracking( TRUE );
-    m_validMousePress=FALSE;
-    m_mousePressSample=0;
+    setMouseTracking( TRUE );        // emit signals on every
+                                     // mouse move to show mouse data
+    m_validMousePress=FALSE;         // No mouse click up to now (to handle
+                                     // zooming via mouse drag )
+    m_mousePressSample=0;            // no mouse-click -> no sample selected
 
-    m_mouseDrag.setWidth( 0 );
+    m_mouseDrag.setWidth( 0 );       // the size of the draging rectangle
     m_mouseDrag.setHeight( 0 );
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
@@ -98,7 +120,15 @@ void ProfileField::init()
 /*
 || Slots
 */
+
 void ProfileField::setDepth( float depth )
+// -------------------------------------------------
+// Use : Change the absolute depth shown in the
+//       profile
+// Parameters  : depth - the depth to set
+// Side-Effects: sets m_depth
+//               emits depthChanged
+// -------------------------------------------------
 {
     if ( depth == m_depth )
     {
@@ -110,6 +140,13 @@ void ProfileField::setDepth( float depth )
 }
 
 void ProfileField::setSamples( int samples )
+// -------------------------------------------------
+// Use : Change the number od samples shown in the
+//       profile
+// Parameters  : samples - samples to set
+// Side-Effects: sets m_samples
+//               emits samplesChanged
+// -------------------------------------------------
 {
     if ( samples == m_samples )
     {
@@ -121,6 +158,13 @@ void ProfileField::setSamples( int samples )
 }
 
 void ProfileField::setSecsPerSample( int secsPerSample )
+// -------------------------------------------------
+// Use : Change the duration of one sample in seconds
+// Parameters  : secsPerSample - duration of one sample
+//                               in seconds
+// Side-Effects: sets m_secsPerSample
+//               emits secsPerSampleChanged
+// -------------------------------------------------
 {
     if ( secsPerSample == m_secsPerSample )
     {
@@ -132,6 +176,13 @@ void ProfileField::setSecsPerSample( int secsPerSample )
 }
 
 void ProfileField::setTimeFormat( TimeFormat timeFormat )
+// -------------------------------------------------
+// Use : Change the display format of times
+// Parameters  : timeFormat - Format to be used,
+//               eg. h:mm
+// Side-Effects: sets m_timeFormat
+//               emits timeFormatChanged
+// -------------------------------------------------
 {
     if ( timeFormat == m_timeFormat )
     {
@@ -143,12 +194,25 @@ void ProfileField::setTimeFormat( TimeFormat timeFormat )
 }
 
 void ProfileField::setProfile( QPointArray profile )
+// -------------------------------------------------
+// Use : set the data to be displayed
+// Parameters  : profile - the profile to be set
+// Side-Effects: sets m_profile
+//               calls paintEvent
+// -------------------------------------------------
 {
     m_profile=profile;
     repaint( FALSE );
 }
 
 void ProfileField::setTimeStart( int start )
+// -------------------------------------------------
+// Use : set the start of displayed time (offset)
+// Parameters  : start - the first displayed sample
+// Side-Effects: sets m_timeStart
+//               emits timeStartChanged
+//               calls paintEvent
+// -------------------------------------------------
 {
     if ( start == m_timeStart )
     {
