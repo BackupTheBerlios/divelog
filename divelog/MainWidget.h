@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.17 2001/10/17 13:31:26 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.18 2001/10/24 05:53:19 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -28,6 +28,7 @@ class MyScrollBar;
 class QSpacerItem;
 class QString;
 class QListView;
+class NewDiverFrm;
 
 class MainWidget : public QMainWindow
 {
@@ -76,8 +77,9 @@ private:
 
     QSpacerItem*  m_profileMouseDataSpacer; // a spacer which doesn't work :(
 
-    QListView*     m_diveListView;
+    QListView*    m_diveListView;
 
+    NewDiverFrm*	m_newDiverFrm;
 };
 
 #endif  // MAINWIDGET_H

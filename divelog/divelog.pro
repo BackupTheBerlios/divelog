@@ -8,7 +8,7 @@ INCLUDEPATH = /usr/local/include /usr/include/mysql
 MOC_DIR     = .moc
 OBJECTS_DIR = .objects
 
-LIBS     = -lUDCF -lsqlplus 
+LIBS     = -lUDCF -lsqlplus -lmysqlclient 
 
 HEADERS  = mainwidget.h\
            profilefield.h\

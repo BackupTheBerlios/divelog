@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.25 2001/10/17 13:31:26 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.26 2001/10/24 05:53:19 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.25 2001/10/17 13:31:26 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.26 2001/10/24 05:53:19 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
@@ -220,7 +220,23 @@ void MainWidget::fileImport()
 
 void MainWidget::fileNewDiver()
 {
-    qWarning( "Not Implemented: MainWidget::fileNewDiver()");
+    int result=0;
+    m_newDiverFrm= new NewDiverFrm( 0, 0, TRUE );
+
+    result=m_newDiverFrm->exec();
+    qDebug( "NewDiverFrm->result=%d", result );
+    if ( result )
+    {
+        qDebug( "First Name:\t%s", m_newDiverFrm->FirstName->text().latin1() );
+        qDebug( "Last Name:\t%s",  m_newDiverFrm->LastName->text().latin1() );
+        qDebug( "Brevet:\t%s", m_newDiverFrm->Brevet->text().latin1() );
+        qDebug( "Street:\t%s", m_newDiverFrm->Street->text().latin1() );
+        qDebug( "Zip:\t%s", m_newDiverFrm->Zip->text().latin1() );
+        qDebug( "PLace:\t%s", m_newDiverFrm->Place->text().latin1() );
+        qDebug( "Phone:\t%s", m_newDiverFrm->Phone->text().latin1() );
+        qDebug( "EMail:\t%s", m_newDiverFrm->EMail->text().latin1() );
+    }
+    delete m_newDiverFrm;
 }
 
 void MainWidget::fileSave()

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdiverfrm.cpp                                                  *
-* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.1 2001/10/17 13:31:26 markus Exp $      *
+* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.2 2001/10/24 05:53:19 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Form for entering information about a diver.             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.1 2001/10/17 13:31:26 markus Exp $";
+static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.2 2001/10/24 05:53:19 markus Exp $";
 #include "newdiverfrm.h"
 
 /* 
@@ -23,6 +23,8 @@ static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.1 2001/10/17 13:
 NewDiverFrm::NewDiverFrm( QWidget* parent,  const char* name, bool modal, WFlags fl )
     : NewDiverBaseFrm( parent, name, modal, fl )
 {
+    // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
+    newdiverfrm_cvs_id+=0;
 }
 
 /*  
