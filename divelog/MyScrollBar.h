@@ -2,7 +2,7 @@
 #define MYSCROLLBAR_H
 /******************************************************************************
 * Filename : myscrollbar.h                                                    *
-* CVS Id 	 : $Id: MyScrollBar.h,v 1.6 2001/09/23 12:36:49 markus Exp $                                                             *
+* CVS Id 	 : $Id: MyScrollBar.h,v 1.7 2001/09/24 16:49:01 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for myscrollbar.cpp                               *
 * Owner            : Markus Grunwald (MG)                                     *

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : myscrollbar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.6 2001/09/23 12:36:49 markus Exp $                                                             *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.7 2001/09/24 16:49:01 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Enhance the QScrollBar                                   *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.6 2001/09/23 12:36:49 markus Exp $";
+static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.7 2001/09/24 16:49:01 markus Exp $";
 
 #include "myscrollbar.h"
 

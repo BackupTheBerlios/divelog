@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.18 2001/09/23 12:36:49 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.19 2001/09/24 16:49:01 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.18 2001/09/23 12:36:49 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.19 2001/09/24 16:49:01 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -79,6 +79,7 @@ void ProfileField::init()
     m_graphBrushColor	= blue;
     m_legendColor			= black;
     m_numberColor			= black;
+    m_dragColor				= blue;
 
     setPalette( QPalette( m_backgroundColor ) ); // Background color
     setMinimumSize( minimumSize() );
@@ -86,6 +87,9 @@ void ProfileField::init()
     setMouseTracking( TRUE );
     m_validMousePress=FALSE;
     m_mousePressSample=0;
+
+    m_mouseDrag.setWidth( 0 );
+    m_mouseDrag.setHeight( 0 );
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     profilefield_cvs_id+=0;
@@ -400,6 +404,13 @@ void ProfileField::paintEvent( QPaintEvent* )
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );
 
+    if ( !m_mouseDrag.isNull() )
+    {
+        p.setPen( m_dragColor );
+        p.drawRect( m_mouseDrag );
+        qDebug("Paint DragRect");
+    }
+
     drawCoosy( &p );
     drawProfile( &p );
 
@@ -437,6 +448,15 @@ void ProfileField::mouseMoveEvent( QMouseEvent* e )
 
         depth=QString::number( m_profile.point( sample ).y()/10.0, 'f', 1 );
 
+        if ( m_validMousePress )
+        {
+            if ( abs( sample-m_mousePressSample ) >=3 )
+            {
+                m_mouseDrag.setRight( e->x() );
+                repaint( FALSE );
+            }
+        }
+
         emit mouseTimeChanged( sampleToTime( sample )  );
         emit mouseDepthChanged( depth.rightJustify( 4 ) );
     }
@@ -454,6 +474,9 @@ void ProfileField::mousePressEvent( QMouseEvent* e )
         float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
 
         m_mousePressSample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
+        m_mouseDrag.setLeft( e->x() );
+        m_mouseDrag.setTop( m_timeAxisRect.bottom() );
+        m_mouseDrag.setBottom( m_depthAxisRect.bottom() );
         m_validMousePress=TRUE;
     }
     else
@@ -483,9 +506,21 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
             setShowSamples( samples() );
             setTimeStart( 0 );
         }
-        repaint( FALSE );
     }
     m_validMousePress=FALSE;
+
+    //m_mouseDrag.setRight( m_mouseDrag.left()-1 );
+    //m_mouseDrag.setBottom( m_mouseDrag.top()-1 );
+
+    m_mouseDrag.setWidth( 0 );
+    m_mouseDrag.setHeight( 0 );
+
+    if ( !m_mouseDrag.isNull() )
+    {
+        qDebug(" is not null " );
+    }
+
+    repaint( FALSE );
 }
 
 
