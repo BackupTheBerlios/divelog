@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.16 2002/01/23 08:06:50 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.17 2002/02/04 10:24:28 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.16 2002/01/23 08:06:50 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.17 2002/02/04 10:24:28 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -112,7 +112,12 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
                                                   udcfData->personalInfo );
         }
 
-    
+        /*
+        || Now we know the Divecomputer
+        */
+
+        4
+
         int count=0;
     
         for ( int group=0; group<=udcfData->groupIndex; group++)
