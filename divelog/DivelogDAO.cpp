@@ -1,27 +1,39 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.1 2001/10/16 07:19:58 markus Exp $                                                             *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.2 2001/11/09 14:13:26 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Fri Oct 12 2001                                          *
 * --------------------------------------------------------------------------- *
-* To Do List :                                                                *
+* To Do List : throw exception on missing table entries. Then you can call    *
+*              the corresponding dialog, insert the entry and retry...        *
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.1 2001/10/16 07:19:58 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.2 2001/11/09 14:13:26 markus Exp $";
 
 #include "divelogdao.h"
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
-#include <sqlplus.hh>
+#include <vector>
+#include <sqlplus.hh>   // the mysql++ classes
+#include <custom.hh>    // needed for "sql_create_n"
 #include <qglobal.h>
 #include <UDCF.h>
+
+sql_create_3 (diveComputer,    			// table name
+              1, 3,             		// compare by field, nr of attributes
+              string, serial_number,
+              int, diver_number,
+              string, name )
+
+
 
 DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD )
 {
     m_con = new Connection( db, host, user, passwd );
+
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     DivelogDAO_cvs_id+=0;
 }
@@ -45,6 +57,25 @@ void DivelogDAO::importUDCFFile( char* filename )
         qDebug( "Serial ID:\t%s", udcfData->serialID );
         qDebug( "Group Size:\t%ld", udcfData->groupSize );
         qDebug( "Group Index:\t%ld", udcfData->groupIndex );
+
+        /*
+        || First look up if we know that dive-computer
+        */
+
+        Query query = m_con->query();
+        query << "select * from divecomputer where serial_number=" << udcfData->serialID;
+
+        vector < diveComputer > db_diveComputers; // Database result
+
+        query.storein( db_diveComputers );
+
+        vector < diveComputer >::iterator i;
+        for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
+        {
+            qDebug( "mysql: divecomputer serial number =%s", i->serial_number.latin1() );
+            qDebug( "mysql: divecomputer diver  number =%s", i->diver_number.latin1() );
+            qDebug( "mysql: divecomputer name          =%s", i->name.latin1() );
+        }
 
         int count=0;
 

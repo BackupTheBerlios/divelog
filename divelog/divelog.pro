@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-CONFIG   = qt warn_on debug
+CONFIG   = qt debug
 DEFINES  = QT_FATAL_ASSERT
 
 INCLUDEPATH = /usr/local/include /usr/include/mysql
