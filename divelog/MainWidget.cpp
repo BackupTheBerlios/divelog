@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.22 2001/10/05 17:40:57 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.23 2001/10/05 17:48:39 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.22 2001/10/05 17:40:57 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.23 2001/10/05 17:48:39 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -227,6 +227,8 @@ void MainWidget::fileOpen()
         m_udcfGroup = m_udcfData->groupList;
         int count=0;
 
+        m_diveListView->clear();
+
         for ( int group=0; group<=m_udcfData->groupIndex; group++)
         {
             for ( int dive=0; dive<=m_udcfGroup[group].diveIndex; dive++ )
@@ -245,7 +247,7 @@ void MainWidget::fileOpen()
                 QString date;
                 QString time;
 
-                number.sprintf( "%02d", count );
+                number.sprintf( "%03d", count );
                 date.sprintf( "%02d.%02d.%04d", m_udcfGroup[group].diveList[dive].day, m_udcfGroup[group].diveList[dive].month, m_udcfGroup[group].diveList[dive].year );
                 time.sprintf( "%02d:%02d", m_udcfGroup[group].diveList[dive].hour, m_udcfGroup[group].diveList[dive].minute );
 
