@@ -44,8 +44,7 @@ SOURCES  = main.cpp\
            FillingStationVO.cpp\
            DiveTypeVO.cpp\
            DiveComputerVO.cpp\
-           DiverNotFoundException.cpp
-                
+           DiverNotFoundException.cpp                
 
 INTERFACES = NewDiverBaseFrm.ui\
              InfoAreaBaseFrm.ui\

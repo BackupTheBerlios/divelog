@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.43 2002/01/23 08:06:50 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.44 2002/02/04 10:07:44 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.43 2002/01/23 08:06:50 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.44 2002/02/04 10:07:44 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -223,39 +223,38 @@ Slots
 */
 
 void MainWidget::dbImport()
+// -------------------------------------------------
+// Use : Menu slot. Imports a UDCF File into the
+//       database.
+// -------------------------------------------------
 {
+    // Create a standard file dialog
     QString s( QFileDialog::getOpenFileName( QString::null, "Universal Dive Computer Format (*.UDCF)", this ) );
     if ( !s.isEmpty() )
     {
-        qDebug( "Filename: %s", s.latin1() );
+        qDebug( "Filename: %s", s.latin1() );              // DEBUG
         DivelogDAO db;
-        try
-        {
-            db.importUDCFFile( s.latin1() );
-        }
-        catch ( DiveComputerNotFoundException e )
-        {
-            cerr << endl << e << endl;
-
-            DiveComputerVO diveComputer( e.serialNumber(), 0, e.model() );
-            dbNewDiveComputer( diveComputer );
-/*
-            int result=0;
-            NewDiveComputerFrm newDiveComputerFrm( e.serialNumber().c_str() ,
-                                                   e.model().c_str() ,
-                                                   this,
-                                                   "newDiveComputer" );
-
-    				result=newDiveComputerFrm.exec();
-            qDebug( "NewDiveComputerFrm->result=%d", result );
-            if ( result )
+        bool success=false;
+//        while ( ! success ) do  // FIXME : this can lead to an endless loop...
+                                //         give an option to leave without import !
+//        {
+            try
             {
-                qDebug( "Dive Computer Serial Number:\t%s", newDiveComputerFrm.m_SerialNumber->text().latin1() );
-                qDebug( "Dive Computer Model:\t%s", newDiveComputerFrm.m_ComputerName->text().latin1() );
-                qDebug( "Dive Computer Owner:\t%d", newDiveComputerFrm.m_Owner->currentItem() );
+                db.importUDCFFile( s.latin1() );        // Insert the file into the database
+                success= true;
             }
-*/
-        }
+            /*
+            || If the database doesn't know the UDCF files divecomputer, it cannot
+            || identify the according diver. So we have to find out !
+            */
+            catch ( DiveComputerNotFoundException e )
+            {
+                cerr << endl << e << endl;    
+
+                DiveComputerVO diveComputer( e.serialNumber(), 0, e.model() );
+                dbNewDiveComputer( diveComputer );
+            }
+//        }
     }
 }
 
