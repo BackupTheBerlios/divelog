@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.39 2001/12/06 08:10:10 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.40 2001/12/06 09:48:37 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.39 2001/12/06 08:10:10 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.40 2001/12/06 09:48:37 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -29,6 +29,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.39 2001/12/06 08:1
 #include "InfoAreaFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
+#include "FillingStationVO.h"
 #include "DiveComputerNotFoundException.h"
 #include "DivelogDAOException.h"
 
@@ -279,7 +280,7 @@ void MainWidget::dbNewDiver()
         {
             db.insertDiver( diver );
         }
-        catch( DivelogDAOException e )  // FIXME: this is still useless: No exception is thrown...
+        catch( DivelogDAOException e )
         {
             cerr << e << endl;
         }
@@ -289,18 +290,33 @@ void MainWidget::dbNewDiver()
 void MainWidget::dbNewFillingStation()
 {
     int result=0;
-    m_newFillingStationFrm= new NewFillingStationFrm( "Test", 0, 0 );
+    NewFillingStationFrm newFillingStationFrm( this, "newFillingStation", true );
 
-    result=m_newFillingStationFrm->exec();
+    result=newFillingStationFrm.exec();
     qDebug( "NewFillingStationFrm->result=%d", result );
     if ( result )
     {
-        qDebug( "Station Name:\t%s", m_newFillingStationFrm->m_StationName->text().latin1() );
-        qDebug( "First Name:\t%s", m_newFillingStationFrm->m_FirstName->text().latin1() );
-        qDebug( "Last Name:\t%s",  m_newFillingStationFrm->m_LastName->text().latin1() );
+        qDebug( "Station Name:\t%s", newFillingStationFrm.m_StationName->text().latin1() );
+        qDebug( "First Name:\t%s",   newFillingStationFrm.m_FirstName->text().latin1() );
+        qDebug( "Last Name:\t%s",    newFillingStationFrm.m_LastName->text().latin1() );
+
+        FillingStationVO fillingStation( 0, // Auto increment
+                                         newFillingStationFrm.m_StationName->text().latin1(),
+                                         newFillingStationFrm.m_FirstName->text().latin1(),
+                                         newFillingStationFrm.m_LastName->text().latin1()
+                                       );
+        DivelogDAO db;
+        try
+        {
+            db.insertFillingStation( fillingStation );
+        }
+        catch( DivelogDAOException e )  
+        {
+            cerr << e << endl;
+        }
     }
-    delete m_newFillingStationFrm;
 }
+
 
 void MainWidget::dbNewDiveType()
 {

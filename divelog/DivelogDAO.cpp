@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.12 2001/12/06 08:10:10 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.13 2001/12/06 09:48:37 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,9 +12,10 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.12 2001/12/06 08:10:10 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.13 2001/12/06 09:48:37 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
+#include "FillingStationVO.h"
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
 #include "DiverNotFoundException.h"
@@ -22,7 +23,7 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.12 2001/12/06 08:10:10 m
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
 #include <sqlplus.hh>   // the mysql++ classes
-#include <custom.hh>    // needed for "sql_create_n"
+//#include <custom.hh>    // needed for "sql_create_n"
 #include <qglobal.h>
 #include <UDCF.h>
 #include <string.h>
@@ -265,11 +266,9 @@ void DivelogDAO::insertDiver( const DiverVO& diver ) throw ( DivelogDAOException
 // -------------------------------------------------
 void DivelogDAO::insertFillingStation( const FillingStationVO& fillingStation ) throw ( DivelogDAOException )
 {
-    cerr << "Not implemented" << endl;
-    /*
-    if ( fillingStation.first_name() == "" )
+    if ( fillingStation.stationname() == "" )
     {
-        throw DivelogDAOException( "FillingStationVO.first_name() must not be empty !" );
+        throw DivelogDAOException( "FillingStationVO.stationname() must not be empty !" );
     }
 
     try
@@ -278,17 +277,11 @@ void DivelogDAO::insertFillingStation( const FillingStationVO& fillingStation ) 
         con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
 
         Query query = con.query();
-        query << "insert into fillingStation values( "
+        query << "insert into filling_station values( "
             << fillingStation.number() << ", "
-            << "\"" << fillingStation.first_name() << "\", " ;
-        ( fillingStation.last_name()=="" 	 ? query << "NULL, " : query << "\"" << fillingStation.last_name() 	 << "\", " );
-        ( fillingStation.brevet()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.brevet() 		   << "\", " );
-        ( fillingStation.street()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.street() 		   << "\", " );
-        ( fillingStation.house_number()=="" ? query << "NULL, " : query << "\"" << fillingStation.house_number() << "\", " );
-        ( fillingStation.zip()==0  				 ? query << "NULL, " : query << "\"" << fillingStation.zip()          << "\", " );
-        ( fillingStation.place()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.place() 		   << "\", " );
-        ( fillingStation.phone()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.phone()        << "\", " );
-        ( fillingStation.email()=="" 			 ? query << "NULL  " : query << "\"" << fillingStation.email()        << "\" " );
+            << "\"" << fillingStation.stationname() << "\", " ;
+        ( fillingStation.first_name()=="" ? query << "NULL, " : query << "\"" << fillingStation.first_name() 	 << "\", " );
+        ( fillingStation.last_name()=="" 	? query << "NULL, " : query << "\"" << fillingStation.last_name() 	 << "\" " );
         query << " )";
 
         query.execute();
@@ -300,8 +293,7 @@ void DivelogDAO::insertFillingStation( const FillingStationVO& fillingStation ) 
     catch (BadConversion &er)
     { // handle bad conversions
         cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
-             << er.type_name << "\"." << endl;
-             }
-   */
+            << er.type_name << "\"." << endl;
+    }
 }
 
