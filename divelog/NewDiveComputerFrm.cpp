@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.2 2001/11/08 08:35:17 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.3 2001/11/19 18:52:55 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.2 2001/11/08 08:35:17 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.3 2001/11/19 18:52:55 markus Exp $";
 #include "newdivecomputerfrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -36,11 +36,14 @@ NewDiveComputerFrm::NewDiveComputerFrm( QWidget* parent,  const char* name, bool
 // Parameters  : 
 // Side-Effects: 
 // -------------------------------------------------
-NewDiveComputerFrm::NewDiveComputerFrm( const QString& serialNumber, QWidget* parent = 0, const char* name = 0)
+NewDiveComputerFrm::NewDiveComputerFrm( const QString& serialNumber, 
+                        								const QString& computerName=0,
+                        								QWidget* parent = 0, const char* name = 0)
 		: NewDiveComputerBaseFrm( parent, name, TRUE )
 {
     init();
     m_SerialNumber->setText( serialNumber );
+    m_ComputerName->setText( computerName );
 }
 
 // -------------------------------------------------
@@ -55,6 +58,8 @@ void NewDiveComputerFrm::init()
     QPalette pal = m_SerialNumberLbl->palette();
     pal.setColor( QColorGroup::Foreground, red );
     m_SerialNumberLbl->setPalette( pal );
+
+    // TODO: Get divers from database -> QComboBox m_Owner
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     newdivecomputerfrm_cvs_id+=0;

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.32 2001/11/13 19:25:53 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.33 2001/11/19 18:52:55 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.32 2001/11/13 19:25:53 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.33 2001/11/19 18:52:55 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
@@ -29,6 +29,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.32 2001/11/13 19:2
 #include "newfillingstationfrm.h"
 #include "infoareafrm.h"
 #include "divelogdao.h"
+#include "DiveComputerNotFoundException.h"
 
 // Qt
 #include <qapplication.h>
@@ -44,6 +45,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.32 2001/11/13 19:2
 #include <qfiledialog.h>
 #include <qlistbox.h>
 #include <qheader.h>
+#include <qcombobox.h>
 
 // others
 
@@ -222,7 +224,28 @@ void MainWidget::dbImport()
     {
         qDebug( "Filename: %s", s.latin1() );
         DivelogDAO db;
-        db.importUDCFFile( s.latin1() );
+        try
+        {
+            db.importUDCFFile( s.latin1() );
+        }
+        catch ( DiveComputerNotFoundException e )
+        {
+            cerr << endl << e << endl;
+
+            NewDiveComputerFrm newDiveComputerFrm( e.serialNumber().c_str() ,
+                                                   e.model().c_str() ,
+                                                   this,
+                                                   "newDiveComputer" );
+
+    				int result=m_newDiveComputerFrm->exec();
+            qDebug( "NewDiveComputerFrm->result=%d", result );
+            if ( result )
+            {
+                qDebug( "Dive Computer Serial Number:\t%s", m_newDiveComputerFrm->m_SerialNumber->text().latin1() );
+                qDebug( "Dive Computer Model:\t%s", m_newDiveComputerFrm->m_ComputerName->text().latin1() );
+                qDebug( "Dive Computer Owner:\t%d", m_newDiveComputerFrm->m_Owner->currentItem() );
+            }
+        }
     }
 }
 

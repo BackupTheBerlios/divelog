@@ -19,7 +19,9 @@ HEADERS  = mainwidget.h\
            infoareafrm.h\
            newfillingstationfrm.h\
            newdivetypefrm.h\
-           newdivecomputerfrm.h
+           newdivecomputerfrm.h\
+           DivelogDAOException.h\
+           DiveComputerNotFoundException.h
 
 SOURCES  = main.cpp\
            mainwidget.cpp\
@@ -30,7 +32,9 @@ SOURCES  = main.cpp\
            infoareafrm.cpp\
            newfillingstationfrm.cpp\
            newdivetypefrm.cpp\
-           newdivecomputerfrm.cpp
+           newdivecomputerfrm.cpp\
+           DivelogDAOException.cpp\
+           DiveComputerNotFoundException.cpp
            
 
 INTERFACES = newdiverbasefrm.ui\

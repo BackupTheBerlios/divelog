@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.5 2001/11/14 16:13:19 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.6 2001/11/19 18:52:55 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -11,8 +11,10 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.5 2001/11/14 16:13:19 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.6 2001/11/19 18:52:55 markus Exp $";
 #include "divelogdao.h"
+#include "DivelogDAOException.h"
+#include "DiveComputerNotFoundException.h"
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
 #include <sqlplus.hh>   // the mysql++ classes
@@ -21,22 +23,12 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.5 2001/11/14 16:13:19 ma
 #include <UDCF.h>
 #include <string.h>
 
-// FIXME: move this info to a better place
-#define MYSQL_DATABASE "divelog-test"
-#define MYSQL_HOST   "localhost"
-#define MYSQL_USER   "markus"
-#define MYSQL_PASSWD "ArPPCa"
-
-
-sql_create_3 (diveComputer,    			// table name
-              1, 3,             		// compare by field, nr of attributes
-              string, serial_number,
-              int, diver_number,
-              string, name )
-
 DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD )
 {
-    Connection* m_con = new Connection( db, host, user, passwd );
+    m_db=db;
+    m_host=host;
+    m_user=user;
+    m_passwd=passwd;
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     DivelogDAO_cvs_id+=0;
@@ -47,7 +39,7 @@ DivelogDAO::~DivelogDAO()
 //    delete m_con;
 }
 
-void DivelogDAO::importUDCFFile( const char* filename )
+void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOException )
 {
 
     int s = strlen( filename );
@@ -94,15 +86,25 @@ void DivelogDAO::importUDCFFile( const char* filename )
         */
     
         Row row;
-    
-        Result::iterator i;
-        for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
+
+        if ( row )
         {
-            row=*i;
-            qDebug( "mysql: divecomputer serial number =%s", row["serial_number"].c_str() );
-            qDebug( "mysql: divecomputer diver  number =%d", row["diver_number"] );
-            qDebug( "mysql: divecomputer name          =%s", row["name"].c_str() );
+            Result::iterator i;
+            for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
+            {
+                row=*i;                                          // better use index number
+                qDebug( "mysql: divecomputer serial number =%s", row["serial_number"].c_str() );
+//                qDebug( "mysql: divecomputer diver  number =%d", row["diver_number"] );
+                qDebug( "mysql: divecomputer name          =%s", row["name"].c_str() );
+            }
         }
+        else
+        {
+            throw DiveComputerNotFoundException(  udcfData->serialID,
+                                                  udcfData->model,
+                                                  udcfData->personalInfo );
+        }
+
     
         int count=0;
     
@@ -126,29 +128,12 @@ void DivelogDAO::importUDCFFile( const char* filename )
         UDCFFree( udcfData );
     }
     catch (BadQuery &er)
-    {   // handle any connection or
-        // query errors that may come up
-#ifdef USE_STANDARD_EXCEPTION
-        cerr << "Error: " << er.what() << endl;
-#else
+    {
         cerr << "Error: " << er.error << endl;
-#endif
     }
     catch (BadConversion &er)
     { // handle bad conversions
-#ifdef USE_STANDARD_EXCEPTION
-        cerr << "Error: " << er.what() << "\"." << endl
-            << "retrieved data size: " << er.retrieved
-            << " actual data size: " << er.actual_size << endl;
-#else
         cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
-            << er.type_name << "\"." << endl;
-#endif
-#ifdef USE_STANDARD_EXCEPTION
-    }
-    catch (exception &er)
-    {
-        cerr << "Error: " << er.what() << endl;
-#endif
+             << er.type_name << "\"." << endl;
     }
 }

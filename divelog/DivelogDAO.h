@@ -2,7 +2,7 @@
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.3 2001/11/12 22:05:35 markus Exp $                                                             *
+* CVS Id   : $Id: DivelogDAO.h,v 1.4 2001/11/19 18:52:55 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -19,7 +19,7 @@
 #define MYSQL_USER   "markus"
 #define MYSQL_PASSWD "ArPPCa"
 
-class Connection;
+class DivelogDAOException;
 
 class DivelogDAO
 {
@@ -28,11 +28,13 @@ public:
     DivelogDAO( char* db=MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD );
     ~DivelogDAO();
 
-    void importUDCFFile( const char* filename );
+    void importUDCFFile( const char* filename ) throw ( DivelogDAOException );
 
 private:
 
-    Connection* m_con;
-
+    char* m_db;
+    char* m_host;
+    char* m_user;
+    char* m_passwd;
 };
 #endif
