@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.20 2001/10/05 13:09:28 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.21 2001/10/05 16:12:42 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.20 2001/10/05 13:09:28 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.21 2001/10/05 16:12:42 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -32,6 +32,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.20 2001/10/05 13:0
 #include <qpointarray.h>
 #include <qabstractlayout.h>
 #include <qfiledialog.h>
+#include <qlistbox.h>
 
 #include "myscrollbar.h"
 #include "dive104.dat"
@@ -106,7 +107,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_s2 = new QSplitter( QSplitter::Horizontal, m_s1 , "m_s2" );
 
     m_l1 = new QLabel( "", m_s1 );    // DEBUG
-    m_l2 = new QLabel( "", m_s2 );    // DEBUG
+    m_diveListView= new QListView( m_s2, "m_diveListView" );
 
     /*
     || Set up Profile Area
@@ -176,7 +177,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     /*
     || Set up List Area
     */
-    m_l2->setText( "Samples="+QString::number( m_profile->samples() ) );   // DEBUG
+    //m_l2->setText( "Samples="+QString::number( m_profile->samples() ) );   // DEBUG
+    m_diveListView->setBackgroundColor( QColor ( 250, 250, 200 ) );
 
     setCentralWidget( m_s1 );
 
@@ -216,28 +218,20 @@ void MainWidget::fileOpen()
 
         m_udcfGroup = m_udcfData->groupList;
 
-        for ( int i=0; i<m_udcfData->groupIndex; i++)
+        for ( int group=0; group<=m_udcfData->groupIndex; group++)
         {
-            qDebug( "Group[%d].diveIndex=%ld", i, m_udcfGroup[i].diveIndex );
-            for ( int j=0; j<m_udcfGroup[i].diveIndex; j++ )
+            for ( int dive=0; dive<=m_udcfGroup[group].diveIndex; dive++ )
             {
-                qDebug( "Group[%d].diveList[%d] %d.%d.%d", i, j,
-                        m_udcfGroup[i].diveList[j].day,
-                        m_udcfGroup[i].diveList[j].month,
-                        m_udcfGroup[i].diveList[j].year );
-
+                qDebug( "Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d",
+                        group, dive,
+                        m_udcfGroup[group].diveList[dive].day,
+                        m_udcfGroup[group].diveList[dive].month,
+                        m_udcfGroup[group].diveList[dive].year,
+                        m_udcfGroup[group].diveList[dive].hour,
+                        m_udcfGroup[group].diveList[dive].minute );
             }
         }
-/*
-        for ( int i=0; i<m_udcfGroup[0].diveIndex; i++ )
-        {
-            qDebug( "#%d: %d.%d.%d", i,
-                    						m_udcfGroup[0].diveList[i].day,
-                    						m_udcfGroup[0].diveList[i].month,
-                                m_udcfGroup[0].diveList[i].year );
 
-        }
- */
         UDCFFree( m_udcfData );
     }
 }

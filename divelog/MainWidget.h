@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.14 2001/10/04 21:03:17 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.15 2001/10/05 16:12:42 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -28,6 +28,7 @@ class QHBox;
 class MyScrollBar;
 class QSpacerItem;
 class QString;
+class QListView;
 
 class MainWidget : public QMainWindow
 {
@@ -61,8 +62,6 @@ private:
     QSplitter* m_s2;                 // The embedded horizontal splitter
 
     QLabel* m_l1;           // DEBUG Labels
-    QLabel* m_l2;
-    QLabel* m_l3;
 
     QVBox*  			m_profileBox;      // The vertical box for the profile area
     ProfileField* m_profile;         // The profile itself
@@ -78,6 +77,7 @@ private:
 
     QSpacerItem*  m_profileMouseDataSpacer; // a spacer which doesn't work :(
 
+    QListView*     m_diveListView;
 
 /*
 =================================================================
