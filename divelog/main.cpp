@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : main.cpp                                                         *
-* CVS Id 	 : $Id: main.cpp,v 1.7 2001/09/08 09:25:26 markus Exp $             *
+* CVS Id 	 : $Id: main.cpp,v 1.8 2001/11/19 19:37:05 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Main class for divelog program (to be kept small)        *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,9 +12,9 @@
 ******************************************************************************/
 
 #include <qapplication.h>
-#include "mainwidget.h"
+#include "MainWidget.h"
 
-static const char *main_cvs_id="$Id: main.cpp,v 1.7 2001/09/08 09:25:26 markus Exp $";
+static const char *main_cvs_id="$Id: main.cpp,v 1.8 2001/11/19 19:37:05 markus Exp $";
 
 int main( int argc, char* argv[] )
 {

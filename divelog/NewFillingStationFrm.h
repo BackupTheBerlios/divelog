@@ -1,6 +1,6 @@
 #ifndef NEWFILLINGSTATIONFRM_H
 #define NEWFILLINGSTATIONFRM_H
-#include "newfillingstationbasefrm.h"
+#include "NewFillingStationBaseFrm.h"
 
 class NewFillingStationFrm : public NewFillingStationBaseFrm
 { 

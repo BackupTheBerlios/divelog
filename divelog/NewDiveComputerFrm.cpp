@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.3 2001/11/19 18:52:55 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.4 2001/11/19 19:37:04 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,8 +11,8 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.3 2001/11/19 18:52:55 markus Exp $";
-#include "newdivecomputerfrm.h"
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.4 2001/11/19 19:37:04 markus Exp $";
+#include "NewDiveComputerFrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>

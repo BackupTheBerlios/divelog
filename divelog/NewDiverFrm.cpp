@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdiverfrm.cpp                                                  *
-* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.5 2001/11/08 08:35:17 markus Exp $      *
+* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.6 2001/11/19 19:37:05 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Form for entering information about a diver.             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,8 +10,8 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.5 2001/11/08 08:35:17 markus Exp $";
-#include "newdiverfrm.h"
+static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.6 2001/11/19 19:37:05 markus Exp $";
+#include "NewDiverFrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.23 2001/10/04 21:03:18 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.24 2001/11/19 19:37:05 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,13 +13,13 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.23 2001/10/04 21:03:18 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.24 2001/11/19 19:37:05 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qpointarray.h>
 
-#include "profilefield.h"
+#include "ProfileField.h"
 
 // Some constants which set the appearance.
 // FIXME: move to a better place...

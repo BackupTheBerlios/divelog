@@ -1,6 +1,6 @@
 #ifndef NEWDIVETYPEFRM_H
 #define NEWDIVETYPEFRM_H
-#include "newdivetypebasefrm.h"
+#include "NewDiveTypeBaseFrm.h"
 
 class NewDiveTypeFrm : public NewDiveTypeBaseFrm
 { 

@@ -1,6 +1,6 @@
 #ifndef INFOAREAFRM_H
 #define INFOAREAFRM_H
-#include "infoareabasefrm.h"
+#include "InfoAreaBaseFrm.h"
 
 class InfoAreaFrm : public InfoAreaBaseFrm
 { 

@@ -10,38 +10,38 @@ OBJECTS_DIR = .objects
 
 LIBS     = -lUDCF -lsqlplus -lmysqlclient 
 
-HEADERS  = mainwidget.h\
-           profilefield.h\
-           myscrollbar.h\
-           divelogdao.h\
+HEADERS  = MainWidget.h\
+           ProfileField.h\
+           MyScrollbar.h\
+           DivelogDAO.h\
            UDCF.h\
-           newdiverfrm.h\
-           infoareafrm.h\
-           newfillingstationfrm.h\
-           newdivetypefrm.h\
-           newdivecomputerfrm.h\
+           NewDiverFrm.h\
+           InfoAreaFrm.h\
+           NewFillingStationFrm.h\
+           NewDiveTypeFrm.h\
+           NewDiveComputerFrm.h\
            DivelogDAOException.h\
            DiveComputerNotFoundException.h
 
 SOURCES  = main.cpp\
-           mainwidget.cpp\
-           profilefield.cpp\
-           myscrollbar.cpp\
-           divelogdao.cpp\
-           newdiverfrm.cpp\
-           infoareafrm.cpp\
-           newfillingstationfrm.cpp\
-           newdivetypefrm.cpp\
-           newdivecomputerfrm.cpp\
+           MainWidget.cpp\
+           ProfileField.cpp\
+           MyScrollbar.cpp\
+           DivelogDAO.cpp\
+           NewDiverFrm.cpp\
+           InfoAreaFrm.cpp\
+           NewFillingStationFrm.cpp\
+           NewDiveTypeFrm.cpp\
+           NewDiveComputerFrm.cpp\
            DivelogDAOException.cpp\
            DiveComputerNotFoundException.cpp
            
 
-INTERFACES = newdiverbasefrm.ui\
-             infoareabasefrm.ui\
-             newdivecomputerbasefrm.ui\
-             newdivetypebasefrm.ui\
-             newfillingstationbasefrm.ui
+INTERFACES = NewDiverBaseFrm.ui\
+             InfoAreaBaseFrm.ui\
+             NewDiveComputerBaseFrm.ui\
+             NewDiveTypeBaseFrm.ui\
+             NewFillingStationBaseFrm.ui
 
 
 TARGET   = divelog

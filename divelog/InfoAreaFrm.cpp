@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : infoareafrm.cpp                                                                 *
-* CVS Id   : $Id: InfoAreaFrm.cpp,v 1.3 2001/11/08 08:35:17 markus Exp $                                                             *
+* CVS Id   : $Id: InfoAreaFrm.cpp,v 1.4 2001/11/19 19:37:04 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Supply a main info-field for the application             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,8 +10,8 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *infoareafrm_cvs_id="$Id: InfoAreaFrm.cpp,v 1.3 2001/11/08 08:35:17 markus Exp $";
-#include "infoareafrm.h"
+static const char *infoareafrm_cvs_id="$Id: InfoAreaFrm.cpp,v 1.4 2001/11/19 19:37:04 markus Exp $";
+#include "InfoAreaFrm.h"
 
 /* 
  *  Constructs a InfoAreaFrm which is a child of 'parent', with the 

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivetypefrm.cpp                                               *
-* CVS Id   : $Id: NewDiveTypeFrm.cpp,v 1.2 2001/11/08 08:35:18 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveTypeFrm.cpp,v 1.3 2001/11/19 19:37:05 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    type (Deepdive/Drift/Wreck/...)                          *                                                         *
@@ -11,8 +11,8 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivetypefrm_cvs_id="$Id: NewDiveTypeFrm.cpp,v 1.2 2001/11/08 08:35:18 markus Exp $";
-#include "newdivetypefrm.h"
+static const char *newdivetypefrm_cvs_id="$Id: NewDiveTypeFrm.cpp,v 1.3 2001/11/19 19:37:05 markus Exp $";
+#include "NewDiveTypeFrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.33 2001/11/19 18:52:55 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.34 2001/11/19 19:37:04 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -9,26 +9,25 @@
 * Date of Creation : Sun Aug 12 2001                                          *
 * --------------------------------------------------------------------------- *
 * To Do List : improve menu                                                   *
-*              improve splitters                                              *
 *              add Dive List                                                  *
 *              add Multi puropse field                                        *
 *              lots to come !                                                 *
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.33 2001/11/19 18:52:55 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.34 2001/11/19 19:37:04 markus Exp $";
 
 // own headers
-#include "mainwidget.h"
-#include "profilefield.h"
-#include "myscrollbar.h"
+#include "MainWidget.h"
+#include "ProfileField.h"
+#include "MyScrollbar.h"
 #include "dive104.dat"
-#include "newdiverfrm.h"
-#include "newdivetypefrm.h"
-#include "newdivecomputerfrm.h"
-#include "newfillingstationfrm.h"
-#include "infoareafrm.h"
-#include "divelogdao.h"
+#include "NewDiverFrm.h"
+#include "NewDiveTypeFrm.h"
+#include "NewDiveComputerFrm.h"
+#include "NewFillingStationFrm.h"
+#include "InfoAreaFrm.h"
+#include "DivelogDAO.h"
 #include "DiveComputerNotFoundException.h"
 
 // Qt

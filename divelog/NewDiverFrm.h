@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdiver.h                                                       *
-* CVS Id   : $Id: NewDiverFrm.h,v 1.3 2001/11/08 08:35:18 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiverFrm.h,v 1.4 2001/11/19 19:37:05 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for newdiver.cpp                             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 ******************************************************************************/
 #ifndef NEWDIVERFRM_H
 #define NEWDIVERFRM_H
-#include "newdiverbasefrm.h"
+#include "NewDiverBaseFrm.h"
 
 class NewDiverFrm : public NewDiverBaseFrm
 { 

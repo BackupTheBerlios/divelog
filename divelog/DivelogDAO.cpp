@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.6 2001/11/19 18:52:55 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.7 2001/11/19 19:37:04 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -11,8 +11,8 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.6 2001/11/19 18:52:55 markus Exp $";
-#include "divelogdao.h"
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.7 2001/11/19 19:37:04 markus Exp $";
+#include "DivelogDAO.h"
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
 //#include <iostream>   // first see, what we need...

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newfillingstationfrm.cpp                                         *
-* CVS Id   : $Id: NewFillingStationFrm.cpp,v 1.2 2001/11/08 08:35:18 markus Exp $                                                             *
+* CVS Id   : $Id: NewFillingStationFrm.cpp,v 1.3 2001/11/19 19:37:05 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Profide a dialog for entering information about a filling*
 *                    station.                                                 *
@@ -11,8 +11,8 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newfillingstationfrm_cvs_id="$Id: NewFillingStationFrm.cpp,v 1.2 2001/11/08 08:35:18 markus Exp $";
-#include "newfillingstationfrm.h"
+static const char *newfillingstationfrm_cvs_id="$Id: NewFillingStationFrm.cpp,v 1.3 2001/11/19 19:37:05 markus Exp $";
+#include "NewFillingStationFrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>

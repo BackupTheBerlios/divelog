@@ -1,6 +1,6 @@
 #ifndef NEWDIVECOMPUTERFRM_H
 #define NEWDIVECOMPUTERFRM_H
-#include "newdivecomputerbasefrm.h"
+#include "NewDiveComputerBaseFrm.h"
 
 class NewDiveComputerFrm : public NewDiveComputerBaseFrm
 { 
