@@ -1,8 +1,5 @@
 FTE Desktop 2
-F|4|/home/markus/projects/divelog/divelogdao.cpp
-F|5|/home/markus/projects/divelog/divelogdao.h
-F|2|/home/markus/projects/divelog/mainwidget.h
-F|1|/home/markus/projects/divelog/mainwidget.cpp
-F|9|/usr/include/qt/qgdict.h
-F|8|/home/markus/projects/divelog/divelog.pro
-F|6|/home/markus/projects/divelog/mysql/tables
+F|4|/home/markus/projects/divelog/DivelogDAO.h
+F|1|/home/markus/projects/divelog/MainWidget.cpp
+F|2|/home/markus/projects/divelog/MainWidget.h
+F|3|/home/markus/projects/divelog/DivelogDAO.cpp

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.4 2001/11/19 19:37:04 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.5 2001/11/23 14:36:52 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,12 +11,14 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.4 2001/11/19 19:37:04 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.5 2001/11/23 14:36:52 markus Exp $";
 #include "NewDiveComputerFrm.h"
+#include "DivelogDAO.h"
+#include "DiverVO.h"
+
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
-
 
 /* 
  *  Constructs a NewDiveComputerFrm which is a child of 'parent', with the 
@@ -60,6 +62,23 @@ void NewDiveComputerFrm::init()
     m_SerialNumberLbl->setPalette( pal );
 
     // TODO: Get divers from database -> QComboBox m_Owner
+    DivelogDAO db;
+    try
+    {
+        vector<DiverVO> db_DiverList =db.diverList();
+
+        vector<DiverVO>::iterator i;
+        for ( i=db_DiverList.begin(); i!=db_DiverList.end(); i++ )
+        {
+            DiverVO diver( *i );
+            qDebug(" Diver = %s", diver.first_name().c_str()) );
+        }
+    }
+    catch(...)
+    {
+        qDebug("Exception");
+    }
+
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     newdivecomputerfrm_cvs_id+=0;

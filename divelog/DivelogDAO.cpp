@@ -1,20 +1,23 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.7 2001/11/19 19:37:04 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.8 2001/11/23 14:36:52 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Fri Oct 12 2001                                          *
 * --------------------------------------------------------------------------- *
 * To Do List : throw exception on missing table entries. Then you can call    *
-*              the corresponding dialog, insert the entry and retry...        *
+*               the corresponding dialog, insert the entry and retry...       *
+*              libUDCF can't handle "Gruni's EON" due to the ' -> FIX it      *
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.7 2001/11/19 19:37:04 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.8 2001/11/23 14:36:52 markus Exp $";
 #include "DivelogDAO.h"
+#include "DiverVO.h"
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
+
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
 #include <sqlplus.hh>   // the mysql++ classes
@@ -87,7 +90,7 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
     
         Row row;
 
-        if ( row )
+        if ( !db_diveComputers.empty() )
         {
             Result::iterator i;
             for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
@@ -136,4 +139,63 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
         cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
              << er.type_name << "\"." << endl;
     }
+}
+
+vector<DiverVO> DivelogDAO::diverList()
+{
+    vector<DiverVO> t;
+    try
+    {
+        Connection con( use_exceptions );
+        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
+        
+        Query query = con.query();
+        query << "select * from diver";
+    
+        Result db_divers = query.store(); // Database result
+    
+        Row row;
+
+        if ( !db_divers.empty() )
+        {
+            Result::iterator i;
+            for ( i=db_divers.begin(); i!=db_divers.end() ;i++ )
+            {
+                row=*i;
+
+                DiverVO diver( (int)row["number"],
+                               (string)row["first_name"],
+                               (string)row["last_name"],
+                               (string)row["brevet"],
+                               (string)row["street"],
+                               (string)row["house_number"],
+                               (int)row["zip"],
+                               (string)row["place"],
+                               (string)row["phone"],
+                               (string)row["email"] );
+
+                t.push_back( diver );
+
+                // better use index number
+                qDebug( "mysql: diver first name =%s", row["first_name"].c_str() );
+                qDebug( "mysql: diver last  name =%s", row["last_name"].c_str() );
+            }
+        }
+        else
+        {
+            qDebug("getDivers: no divers found!");
+            // throw DiverNotFound(  );
+        }
+
+    }
+    catch (BadQuery &er)
+    {
+        cerr << "Error: " << er.error << endl;
+    }
+    catch (BadConversion &er)
+    { // handle bad conversions
+        cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
+             << er.type_name << "\"." << endl;
+    }
+    return t;
 }

@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.21 2001/11/08 08:35:17 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.22 2001/11/23 14:36:52 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -85,7 +85,6 @@ private:
     NewDiverFrm*					m_newDiverFrm;
     NewFillingStationFrm*	m_newFillingStationFrm;
     NewDiveTypeFrm*				m_newDiveTypeFrm;
-    NewDiveComputerFrm*		m_newDiveComputerFrm;
     InfoAreaFrm*  				m_infoArea;
 };
 

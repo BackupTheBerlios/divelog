@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.35 2001/11/19 19:42:05 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.36 2001/11/23 14:36:52 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.35 2001/11/19 19:42:05 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.36 2001/11/23 14:36:52 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -230,19 +230,19 @@ void MainWidget::dbImport()
         catch ( DiveComputerNotFoundException e )
         {
             cerr << endl << e << endl;
-
+            int result=0;
             NewDiveComputerFrm newDiveComputerFrm( e.serialNumber().c_str() ,
                                                    e.model().c_str() ,
                                                    this,
                                                    "newDiveComputer" );
 
-    				int result=m_newDiveComputerFrm->exec();
+    				result=newDiveComputerFrm.exec();
             qDebug( "NewDiveComputerFrm->result=%d", result );
             if ( result )
             {
-                qDebug( "Dive Computer Serial Number:\t%s", m_newDiveComputerFrm->m_SerialNumber->text().latin1() );
-                qDebug( "Dive Computer Model:\t%s", m_newDiveComputerFrm->m_ComputerName->text().latin1() );
-                qDebug( "Dive Computer Owner:\t%d", m_newDiveComputerFrm->m_Owner->currentItem() );
+                qDebug( "Dive Computer Serial Number:\t%s", newDiveComputerFrm.m_SerialNumber->text().latin1() );
+                qDebug( "Dive Computer Model:\t%s", newDiveComputerFrm.m_ComputerName->text().latin1() );
+                qDebug( "Dive Computer Owner:\t%d", newDiveComputerFrm.m_Owner->currentItem() );
             }
         }
     }
@@ -302,15 +302,14 @@ void MainWidget::dbNewDiveType()
 void MainWidget::dbNewDiveComputer()
 {
     int result=0;
-    m_newDiveComputerFrm= new NewDiveComputerFrm( "Test", 0, 0 );
+    NewDiveComputerFrm newDiveComputerFrm( "Test", 0, 0 );
 
-    result=m_newDiveComputerFrm->exec();
-    qDebug( "NewDiveComputerFrm->result=%d", result );
+    result=newDiveComputerFrm.exec();
+    qDebug( "NewDiveComputerFrm result=%d", result );
     if ( result )
     {
-        qDebug( "Dive Computer:\t%s", m_newDiveComputerFrm->m_SerialNumber->text().latin1() );
+        qDebug( "Dive Computer:\t%s", newDiveComputerFrm.m_SerialNumber->text().latin1() );
     }
-    delete m_newDiveComputerFrm;
 }
 
 void MainWidget::settingsCommunication()
