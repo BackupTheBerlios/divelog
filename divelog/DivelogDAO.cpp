@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.8 2001/11/23 14:36:52 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.9 2001/11/23 15:59:06 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.8 2001/11/23 14:36:52 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.9 2001/11/23 15:59:06 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DivelogDAOException.h"
@@ -150,7 +150,7 @@ vector<DiverVO> DivelogDAO::diverList()
         con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
         
         Query query = con.query();
-        query << "select * from diver";
+        query << "select * from diver order by last_name";
     
         Result db_divers = query.store(); // Database result
     

@@ -1,6 +1,7 @@
 #ifndef NEWDIVECOMPUTERFRM_H
 #define NEWDIVECOMPUTERFRM_H
 #include "NewDiveComputerBaseFrm.h"
+#include <vector>
 
 class NewDiveComputerFrm : public NewDiveComputerBaseFrm
 { 
@@ -22,6 +23,7 @@ private slots:
 private:
     void init();
 
+    vector< int > indexCoder;
 };
 
 #endif // NEWDIVECOMPUTERFRM_H

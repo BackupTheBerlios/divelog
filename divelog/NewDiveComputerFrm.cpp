@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.5 2001/11/23 14:36:52 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.6 2001/11/23 15:59:06 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.5 2001/11/23 14:36:52 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.6 2001/11/23 15:59:06 markus Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
@@ -19,6 +19,7 @@ static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.5 
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
+#include <qcombobox.h>
 
 /* 
  *  Constructs a NewDiveComputerFrm which is a child of 'parent', with the 
@@ -68,10 +69,16 @@ void NewDiveComputerFrm::init()
         vector<DiverVO> db_DiverList =db.diverList();
 
         vector<DiverVO>::iterator i;
+
+        indexCoder.clear();
         for ( i=db_DiverList.begin(); i!=db_DiverList.end(); i++ )
         {
             DiverVO diver( *i );
-            qDebug(" Diver = %s", diver.first_name().c_str()) );
+
+            indexCoder.push_back( diver.number() );
+            m_Owner->insertItem( ( diver.first_name()+" "+diver.last_name() ).c_str() );
+
+            qDebug(" Diver = %s", diver.first_name().c_str() );
         }
     }
     catch(...)
