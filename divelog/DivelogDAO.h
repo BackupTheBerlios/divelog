@@ -2,7 +2,7 @@
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.8 2001/12/01 19:21:35 markus Exp $         *
+* CVS Id   : $Id: DivelogDAO.h,v 1.9 2001/12/06 08:10:10 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -26,6 +26,7 @@
 
 class DivelogDAOException;
 class DiverVO;
+class FillingStationVO;
 
 class DivelogDAO
 {
@@ -36,6 +37,8 @@ public:
 
     void importUDCFFile( const char* filename ) throw ( DivelogDAOException );
     void insertDiver( const DiverVO& diver ) throw ( DivelogDAOException );
+    void insertFillingStation( const FillingStationVO& fs ) throw ( DivelogDAOException );
+
     vector<DiverVO> diverList();
 
 private:

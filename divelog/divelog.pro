@@ -23,6 +23,7 @@ HEADERS  = MainWidget.h\
            DivelogDAOException.h\
            DiveComputerNotFoundException.h\
            DiverVO.h\
+           FillingStationVO.h\
            DiverNotFoundException.h
 
 SOURCES  = main.cpp\
@@ -38,6 +39,7 @@ SOURCES  = main.cpp\
            DivelogDAOException.cpp\
            DiveComputerNotFoundException.cpp\
            DiverVO.cpp\
+           FillingStationVO.cpp\
            DiverNotFoundException.cpp
                 
 

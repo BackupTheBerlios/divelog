@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.38 2001/12/05 06:39:08 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.39 2001/12/06 08:10:10 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.38 2001/12/05 06:39:08 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.39 2001/12/06 08:10:10 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -257,41 +257,31 @@ void MainWidget::dbNewDiver()
     NewDiverFrm newDiverFrm( this, "newDiverFrm", true ); // parent, name, modal
 
     result=newDiverFrm.exec();
-    qDebug( "NewDiverFrm->result=%d", result );
     if ( result )
     {
-        qDebug( "First Name:\t%s", newDiverFrm.m_FirstName->text().latin1() );
-        qDebug( "Last Name:\t%s",  newDiverFrm.m_LastName->text().latin1() );
-        qDebug( "Brevet:\t%s", newDiverFrm.m_Brevet->text().latin1() );
-        qDebug( "Street:\t%s", newDiverFrm.m_Street->text().latin1() );
-        qDebug( "Zip:\t%s", newDiverFrm.m_Zip->text().latin1() );
-        qDebug( "PLace:\t%s", newDiverFrm.m_Place->text().latin1() );
-        qDebug( "Phone:\t%s", newDiverFrm.m_Phone->text().latin1() );
-        qDebug( "EMail:\t%s", newDiverFrm.m_EMail->text().latin1() );
-
         /*
         || Insert the diver into the database
         */
 				DiverVO diver( 0, // Auto increment
-                       newDiverFrm.m_FirstName->text().latin1() ,
-                       newDiverFrm.m_LastName->text().latin1() ,
-                       newDiverFrm.m_Brevet->text().latin1() ,
-                       newDiverFrm.m_Street->text().latin1() ,
-                       newDiverFrm.m_HouseNumber->text().latin1() ,
-                       newDiverFrm.m_Zip->text().toUInt() ,
-                       newDiverFrm.m_Place->text().latin1() ,
-                       newDiverFrm.m_Phone->text().latin1() ,
-                       newDiverFrm.m_EMail->text().latin1() );
+                       newDiverFrm.m_FirstName->text().latin1(),
+                       newDiverFrm.m_LastName->text().latin1(),
+                       newDiverFrm.m_Brevet->text().latin1(),
+                       newDiverFrm.m_Street->text().latin1(),
+                       newDiverFrm.m_HouseNumber->text().latin1(),
+                       newDiverFrm.m_Zip->text().toUInt(),
+                       newDiverFrm.m_Place->text().latin1(),
+                       newDiverFrm.m_Phone->text().latin1(),
+                       newDiverFrm.m_EMail->text().latin1()
+                     );
 
         DivelogDAO db;
         try
         {
             db.insertDiver( diver );
         }
-        catch( DivelogDAOException e )
+        catch( DivelogDAOException e )  // FIXME: this is still useless: No exception is thrown...
         {
             cerr << e << endl;
-            // FIXME: open messagebox, maybe even better: open diver input dialog
         }
     }
 }

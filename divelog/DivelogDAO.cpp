@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.11 2001/12/05 06:39:07 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.12 2001/12/06 08:10:10 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.11 2001/12/05 06:39:07 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.12 2001/12/06 08:10:10 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DivelogDAOException.h"
@@ -250,5 +250,58 @@ void DivelogDAO::insertDiver( const DiverVO& diver ) throw ( DivelogDAOException
         cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
              << er.type_name << "\"." << endl;
     }
+}
+
+// -------------------------------------------------
+// Use : Insert a new fillingstation into the database
+// Parameters   : FillingStationVO : a Value Object
+//                containing the FS's data.
+// Outputs      : None
+// Returns      : None
+// Side-Effects : MySQL-Convention: When the number field
+//                  is 0, the number will be auto-incremented
+// Exceptions   : Throws DivelogDAOException on failure
+//                // FIXME: Does it ? -^-
+// -------------------------------------------------
+void DivelogDAO::insertFillingStation( const FillingStationVO& fillingStation ) throw ( DivelogDAOException )
+{
+    cerr << "Not implemented" << endl;
+    /*
+    if ( fillingStation.first_name() == "" )
+    {
+        throw DivelogDAOException( "FillingStationVO.first_name() must not be empty !" );
+    }
+
+    try
+    {
+        Connection con( use_exceptions );
+        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
+
+        Query query = con.query();
+        query << "insert into fillingStation values( "
+            << fillingStation.number() << ", "
+            << "\"" << fillingStation.first_name() << "\", " ;
+        ( fillingStation.last_name()=="" 	 ? query << "NULL, " : query << "\"" << fillingStation.last_name() 	 << "\", " );
+        ( fillingStation.brevet()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.brevet() 		   << "\", " );
+        ( fillingStation.street()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.street() 		   << "\", " );
+        ( fillingStation.house_number()=="" ? query << "NULL, " : query << "\"" << fillingStation.house_number() << "\", " );
+        ( fillingStation.zip()==0  				 ? query << "NULL, " : query << "\"" << fillingStation.zip()          << "\", " );
+        ( fillingStation.place()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.place() 		   << "\", " );
+        ( fillingStation.phone()=="" 			 ? query << "NULL, " : query << "\"" << fillingStation.phone()        << "\", " );
+        ( fillingStation.email()=="" 			 ? query << "NULL  " : query << "\"" << fillingStation.email()        << "\" " );
+        query << " )";
+
+        query.execute();
+    }
+    catch (BadQuery &er)
+    {
+        cerr << "Error: " << er.error << endl;
+    }
+    catch (BadConversion &er)
+    { // handle bad conversions
+        cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
+             << er.type_name << "\"." << endl;
+             }
+   */
 }
 
