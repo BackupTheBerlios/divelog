@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.10 2001/09/15 16:12:14 markus Exp $         *
+* CVS Id 	 : $Id: MainWidget.h,v 1.11 2001/09/23 12:36:49 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -21,7 +21,7 @@ class QLabel;
 class ProfileField;
 class QVBox;
 class QHBox;
-class QScrollBar;
+class MyScrollBar;
 class QSpacerItem;
 class QString;
 
@@ -33,17 +33,6 @@ public:
 
 protected slots:
 
-    /*
-    || QScrollBar has no slots for setValue, setMaxValue
-    || etc. So we create adapter slots in this class for
-    || the scrollbars who need it.
-    */
-    void adaptSamplesBarToOffsetBar( int );
-    void adaptSamplesBarToProfile( int );
-/*
-    void adaptProfileToOffsetBar( int );
-    void adaptProfileToSamplesBar( int );
-*/
     /*
     ||  File Menu
     */
@@ -73,8 +62,8 @@ private:
 
     QVBox*  			m_profileBox;
     ProfileField* m_profile;
-    QScrollBar*   m_samplesBar;
-    QScrollBar*   m_offsetBar;
+    MyScrollBar*  m_samplesBar;
+    MyScrollBar*  m_offsetBar;
 
     QHBox*				m_profileMouseDataBox;
     QLabel*				m_profileMouseTimeLabel;

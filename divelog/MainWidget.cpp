@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.16 2001/09/15 16:12:14 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.17 2001/09/23 12:36:49 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.16 2001/09/15 16:12:14 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.17 2001/09/23 12:36:49 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -29,7 +29,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.16 2001/09/15 16:1
 #include <qhbox.h>
 #include <qlabel.h>
 #include <qpointarray.h>
-#include <qscrollbar.h>
+#include "myscrollbar.h"
 #include <qabstractlayout.h>
 
 #include "dive104.dat"
@@ -96,24 +96,23 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     || Set up Scrollbars
     */
 
-    m_offsetBar  = new QScrollBar( QScrollBar::Horizontal, m_profileBox, "m_offsetBar" );
-    m_samplesBar = new QScrollBar( QScrollBar::Horizontal, m_profileBox, "m_samplesBar" );
+    m_offsetBar  = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_offsetBar" );
+    m_samplesBar = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_samplesBar" );
 
-    m_samplesBar->setMinValue( 3 );
-    m_samplesBar->setMaxValue( m_profile->samples() );
-    m_samplesBar->setValue( 3 );
+    m_samplesBar->setMinValue( 0 );
+    m_samplesBar->setMaxValue( m_profile->samples()-3 );
+    m_samplesBar->setValue( 0 );
 
     m_offsetBar->setMinValue( 0 );
     m_offsetBar->setMaxValue( 0 );
 
-    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), this, SLOT( adaptSamplesBarToProfile( int ) ) );
-    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), this, SLOT( adaptSamplesBarToOffsetBar( int ) ) );
+    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_profile, SLOT( setHideSamples ( int ) ) );
+    connect( m_profile   , SIGNAL( hideSamplesChanged( int ) ), m_samplesBar, SLOT( setValue( int ) ) );
+
+    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_offsetBar, SLOT( setMaxValue( int ) ) );
 
     connect( m_offsetBar , SIGNAL( valueChanged( int ) ), m_profile, SLOT( setTimeStart( int ) ) );
-
-//    connect( m_profile, SIGNAL( timeStartChanged( int ) ), this, SLOT( adaptProfileToOffsetBar( int ) ) );
-//    connect( m_profile, SIGNAL( showSamplesChanged( int ) ), this, SLOT( adaptProfileToSamplesBar( int ) ) );
-
+    connect( m_profile   , SIGNAL( timeStartChanged( int ) ), m_offsetBar, SLOT( setValue( int ) ) );
 
     m_profileMouseDataBox    = new QHBox( m_profileBox, "m_profileMouseDataBox" );
     m_profileMouseTimeLabel  = new QLabel( MOUSE_TIME_LABEL,  m_profileMouseDataBox );
@@ -153,42 +152,6 @@ Slots
 =================================================================
 */
 
-void MainWidget::adaptSamplesBarToOffsetBar( int v )
-{
-    qDebug( "Entering adaptSamplesBarToOffsetBar( %i )", v);
-    m_offsetBar->setMaxValue( v - m_samplesBar->minValue() );
-
-    if ( m_offsetBar->value() > m_offsetBar->maxValue() )
-    {
-        m_offsetBar->setValue( m_offsetBar->maxValue() );
-    }
-    qDebug( "Leaving adaptSamplesBarToOffsetBar( %i )", v);
-}
-
-void MainWidget::adaptSamplesBarToProfile( int v )
-{
-    qDebug( "Entering adaptSamplesBarToProfile( %i )", v);
-    m_profile->setShowSamples( m_samplesBar->maxValue()-v+m_samplesBar->minValue() );
-    qDebug( "Leaving adaptSamplesBarToProfile( %i )", v);
-}
-/*
-void MainWidget::adaptProfileToOffsetBar( int v )
-// connects ProfileField::timeStartChanged to m_offsetBar->setValue()
-{
-    qDebug( "Entering adaptProfileToOffsetBar( %i )", v);
-    m_offsetBar->setValue( v );
-    qDebug( "Leaving adaptProfileToOffsetBar( %i )", v);
-}
-
-void MainWidget::adaptProfileToSamplesBar( int v )
-// connects ProfileField::showSamplesChanged to m_samplesBar->setValue()
-{
-    qDebug( "Entering adaptProfileToSamplesBar( %i )", v);
-    m_samplesBar->setValue( v );
-    adaptSamplesBarToOffsetBar( v );
-    qDebug( "Leaving adaptProfileToSamplesBar( %i )", v);
-}
-*/
 void MainWidget::fileOpen()
 {
     qWarning( "Not Implemented: MainWidget::fileOpen()");

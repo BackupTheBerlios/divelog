@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.17 2001/09/15 16:12:14 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.18 2001/09/23 12:36:49 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.17 2001/09/15 16:12:14 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.18 2001/09/23 12:36:49 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -153,6 +153,7 @@ void ProfileField::setTimeStart( int start )
 
     m_timeStart=start;
     emit timeStartChanged( start );
+    qDebug( "SIGNAL %s->timeStartChanged( %i )",this->name() ,start );
     repaint( FALSE );
 }
 
@@ -164,7 +165,30 @@ void ProfileField::setShowSamples( int showSamples )
     }
 
     m_showSamples=showSamples;
-    emit timeStartChanged( showSamples );
+    emit showSamplesChanged( showSamples );
+    qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
+    emit hideSamplesChanged( samples()-showSamples );
+    qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
+
+    repaint( FALSE );
+}
+
+void ProfileField::setHideSamples( int hideSamples )
+{
+    int showSamples=samples()-hideSamples;
+
+    if ( showSamples == m_showSamples )
+    {
+        return;
+    }
+
+    qDebug( "%s->setHideSamples( %i )", this->name(), samples()-showSamples );
+
+    m_showSamples=showSamples;
+    emit hideSamplesChanged( hideSamples );
+    qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
+    emit showSamplesChanged( showSamples );
+    qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
     repaint( FALSE );
 }
 
@@ -450,29 +474,14 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
 
         if ( mouseDragSamples>=3 )
         {
-            if ( timeStart() != new_start )
-            {
-                setTimeStart( new_start );
-                emit timeStartChanged( timeStart() );
-            }
-            if ( showSamples() != mouseDragSamples )
-            {
-                setShowSamples( mouseDragSamples );
-                emit showSamplesChanged( showSamples() );
-            }
+            // Zoom in if mouse dragged over more then two samples
+            setShowSamples( mouseDragSamples );
+            setTimeStart( new_start );
         }
         else
-        {
-            if ( timeStart() != 0 )
-            {
-                setTimeStart( 0 );
-                emit timeStartChanged( 0 );
-            }
-            if ( showSamples() != samples() )
-            {
-                setShowSamples( samples() );
-                emit showSamplesChanged( samples() );
-            }
+        {   // Else tread as single click and zoom out full
+            setShowSamples( samples() );
+            setTimeStart( 0 );
         }
         repaint( FALSE );
     }

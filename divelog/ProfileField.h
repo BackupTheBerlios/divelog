@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.13 2001/09/15 16:12:14 markus Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.14 2001/09/23 12:36:49 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -37,6 +37,7 @@ public:
     TimeFormat timeFormat() const { return m_timeFormat; }
     int   timeStart() const { return m_timeStart; }
     int   showSamples() const { return m_showSamples; }
+    int   hideSamples() const;
 
 		/*
 		|| other functions
@@ -56,7 +57,9 @@ public slots:
     void setProfile( QPointArray profile );
     void setTimeFormat( TimeFormat timeFormat );
     void setTimeStart( int timeStart );
+
     void setShowSamples( int showSamples );
+    void setHideSamples( int hideSamples );
 
 
 signals:
@@ -70,7 +73,9 @@ signals:
     void secsPerSampleChanged( int );
     void timeFormatChanged( TimeFormat );
     void timeStartChanged( int );
+
     void showSamplesChanged( int );
+    void hideSamplesChanged( int );
 
     void mouseTimeChanged( const QString& );
     void mouseDepthChanged( const QString& );
