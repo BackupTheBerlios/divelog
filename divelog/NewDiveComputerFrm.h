@@ -16,12 +16,14 @@ public:
 
 protected slots:
     void showHelp();
+    void addDiverDlg();
 
 private slots:
     void accept();
 
 private:
     void init();
+    void initDiverCombo();
 
     vector< int > indexCoder;
 };

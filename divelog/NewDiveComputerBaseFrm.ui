@@ -11,7 +11,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>346</width>
+            <width>342</width>
             <height>230</height>
         </rect>
     </property>
@@ -161,7 +161,7 @@ You have to enter the fields marked in red.</string>
                     <class>QLayoutWidget</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>Layout27</cstring>
+                        <cstring>Layout9</cstring>
                     </property>
                     <vbox>
                         <property stdset="1">
@@ -180,15 +180,75 @@ You have to enter the fields marked in red.</string>
                             </property>
                         </widget>
                         <widget>
-                            <class>QComboBox</class>
+                            <class>QLayoutWidget</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>m_Owner</cstring>
+                                <cstring>Layout8</cstring>
                             </property>
-                            <property stdset="1">
-                                <name>duplicatesEnabled</name>
-                                <bool>false</bool>
-                            </property>
+                            <hbox>
+                                <property stdset="1">
+                                    <name>margin</name>
+                                    <number>0</number>
+                                </property>
+                                <property stdset="1">
+                                    <name>spacing</name>
+                                    <number>6</number>
+                                </property>
+                                <widget>
+                                    <class>QComboBox</class>
+                                    <property stdset="1">
+                                        <name>name</name>
+                                        <cstring>m_Owner</cstring>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>sizePolicy</name>
+                                        <sizepolicy>
+                                            <hsizetype>3</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                        </sizepolicy>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>duplicatesEnabled</name>
+                                        <bool>false</bool>
+                                    </property>
+                                </widget>
+                                <widget>
+                                    <class>QPushButton</class>
+                                    <property stdset="1">
+                                        <name>name</name>
+                                        <cstring>m_NewBtn</cstring>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>sizePolicy</name>
+                                        <sizepolicy>
+                                            <hsizetype>4</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                        </sizepolicy>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>minimumSize</name>
+                                        <size>
+                                            <width>50</width>
+                                            <height>0</height>
+                                        </size>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>maximumSize</name>
+                                        <size>
+                                            <width>50</width>
+                                            <height>32767</height>
+                                        </size>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>text</name>
+                                        <string>&amp;New</string>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>flat</name>
+                                        <bool>false</bool>
+                                    </property>
+                                </widget>
+                            </hbox>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
@@ -292,12 +352,12 @@ You have to enter the fields marked in red.</string>
         <slot>reject()</slot>
     </connection>
     <connection>
-        <sender>m_HelpBtn</sender>
+        <sender>m_NewBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveComputerBaseFrm</receiver>
-        <slot>showHelp()</slot>
+        <slot>addDiverDlg()</slot>
     </connection>
-    <slot access="protected">showHelp()</slot>
+    <slot access="protected">addDiverDlg()</slot>
 </connections>
 <tabstops>
     <tabstop>m_SerialNumber</tabstop>

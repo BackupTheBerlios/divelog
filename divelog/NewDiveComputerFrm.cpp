@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.8 2001/12/01 19:21:35 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.9 2001/12/12 09:31:55 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,11 +11,14 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.8 2001/12/01 19:21:35 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.9 2001/12/12 09:31:55 markus Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DiverNotFoundException.h"
+#include "NewDiverFrm.h"
+
+#include "MainWidget.h"
 
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -63,9 +66,12 @@ void NewDiveComputerFrm::init()
     pal.setColor( QColorGroup::Foreground, red );
     m_SerialNumberLbl->setPalette( pal );
 
+    initDiverCombo();
+
     /*
     || Get divers from database -> QComboBox m_Owner
     */
+    /*
     DivelogDAO db;
     try
     {
@@ -89,11 +95,40 @@ void NewDiveComputerFrm::init()
         // FIXME: open messagebox, maybe even better: open diver input dialog
     }
 
-
+    */
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     newdivecomputerfrm_cvs_id+=0;
 }
 
+void NewDiveComputerFrm::initDiverCombo()
+{
+    /*
+    || Get divers from database -> QComboBox m_Owner
+    */
+    DivelogDAO db;
+    try
+    {
+        vector<DiverVO> db_DiverList =db.diverList();
+
+        vector<DiverVO>::iterator i;
+
+        indexCoder.clear();
+        m_Owner->clear();
+        for ( i=db_DiverList.begin(); i!=db_DiverList.end(); i++ )
+        {
+            DiverVO diver( *i );
+            indexCoder.push_back( diver.number() );
+            m_Owner->insertItem( ( diver.first_name()+" "+diver.last_name() ).c_str() );
+
+            qDebug(" Diver = %s", diver.first_name().c_str() );
+        }
+    }
+    catch( DiverNotFoundException e )
+    {
+        cerr << e << endl;
+        // FIXME: open messagebox, maybe even better: open diver input dialog
+    }
+}
 
 /*  
  *  Destroys the object and frees any allocated resources
@@ -125,10 +160,54 @@ void NewDiveComputerFrm::accept()
 }
 
 /* 
- * protected slot
+ * protected slots
  */
+
 void NewDiveComputerFrm::showHelp()
 {
     qWarning( "NewDiveComputerFrm::showHelp() not yet implemented!" ); 
+}
+
+void NewDiveComputerFrm::addDiverDlg()
+{
+    qWarning( "NewDiveComputerFrm::addDiverDlg() not yet implemented!" );
+    // ((MainWidget)(this->parent())).dbNewDiver(); // This doesn't work (see below)
+
+    /*
+    || This is a cut-and-paste job from MainWidget. Ugly, so there has to be a better way ?
+    */
+    int result=0;
+    NewDiverFrm newDiverFrm( this, "newDiverFrm", true ); // parent, name, modal
+
+    result=newDiverFrm.exec();
+    if ( result )
+    {
+        /*
+        || Insert the diver into the database
+        */
+				DiverVO diver( 0, // Auto increment
+                       newDiverFrm.m_FirstName->text().latin1(),
+                       newDiverFrm.m_LastName->text().latin1(),
+                       newDiverFrm.m_Brevet->text().latin1(),
+                       newDiverFrm.m_Street->text().latin1(),
+                       newDiverFrm.m_HouseNumber->text().latin1(),
+                       newDiverFrm.m_Zip->text().toUInt(),
+                       newDiverFrm.m_Place->text().latin1(),
+                       newDiverFrm.m_Phone->text().latin1(),
+                       newDiverFrm.m_EMail->text().latin1()
+                     );
+
+        DivelogDAO db;
+        try
+        {
+            db.insertDiver( diver );
+        }
+        catch( DivelogDAOException e )
+        {
+            cerr << e << endl;
+        }
+    }
+    initDiverCombo();
+
 }
 

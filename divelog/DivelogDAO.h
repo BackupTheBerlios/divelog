@@ -2,7 +2,7 @@
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.10 2001/12/06 12:45:00 markus Exp $         *
+* CVS Id   : $Id: DivelogDAO.h,v 1.11 2001/12/12 09:31:55 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -40,6 +40,7 @@ public:
     void insertDiver( const DiverVO& diver ) throw ( DivelogDAOException );
     void insertFillingStation( const FillingStationVO& fs ) throw ( DivelogDAOException );
     void insertDiveType( const DiveTypeVO& diveType ) throw ( DivelogDAOException );
+    void insertDiveComputer( const DiveComputerVO& diveComputer ) throw ( DivelogDAOException );
 
     vector<DiverVO> diverList();
 

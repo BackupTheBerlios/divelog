@@ -25,6 +25,7 @@ HEADERS  = MainWidget.h\
            DiverVO.h\
            FillingStationVO.h\
            DiveTypeVO.h\
+           DiveComputerVO.h\
            DiverNotFoundException.h
 
 SOURCES  = main.cpp\
@@ -42,6 +43,7 @@ SOURCES  = main.cpp\
            DiverVO.cpp\
            FillingStationVO.cpp\
            DiveTypeVO.cpp\
+           DiveComputerVO.cpp\
            DiverNotFoundException.cpp
                 
 
