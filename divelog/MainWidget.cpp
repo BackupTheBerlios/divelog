@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.10 2001/09/08 09:25:26 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.11 2001/09/10 16:21:29 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.10 2001/09/08 09:25:26 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.11 2001/09/10 16:21:29 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -27,13 +27,11 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.10 2001/09/08 09:2
 #include <qmessagebox.h>
 #include <qsplitter.h>
 #include <qvbox.h>
-#include <qscrollbar.h>
-
 #include <qlabel.h>
-
 #include <qpointarray.h>
 
 #include "dive104.dat"
+#include "myscrollbar.h"
 
 MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     : QMainWindow( parent, name )
@@ -92,8 +90,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     || Set up Scrollbars
     */
 
-    offsetBar  = new QScrollBar( QScrollBar::Horizontal, profileBox, "offsetBar" );
-    samplesBar = new QScrollBar( QScrollBar::Horizontal, profileBox, "samplesBar" );
+    offsetBar  = new MyScrollBar( MyScrollBar::Horizontal, profileBox, "offsetBar" );
+    samplesBar = new MyScrollBar( MyScrollBar::Horizontal, profileBox, "samplesBar" );
 
     samplesBar->setMinValue( 3 );
     samplesBar->setMaxValue( profile->samples() );

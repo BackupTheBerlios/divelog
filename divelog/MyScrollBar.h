@@ -2,7 +2,7 @@
 #define MYSCROLLBAR_H
 /******************************************************************************
 * Filename : myscrollbar.h                                                    *
-* CVS Id 	 : $Id: MyScrollBar.h,v 1.1 2001/09/08 09:26:03 markus Exp $                                                             *
+* CVS Id 	 : $Id: MyScrollBar.h,v 1.2 2001/09/10 16:21:29 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for myscrollbar.cpp                               *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -28,6 +28,14 @@ public:
                  int value, Orientation,
                  QWidget *parent, const char *name=0 );
 
-}
+public slots:
+
+    void setValue( int );
+    void setMin( int );
+    void setMax( int );
+
+private:
+    void init();
+};
 
 #endif // MYSCROLLBAR_H

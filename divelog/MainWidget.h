@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.5 2001/09/08 09:25:26 markus Exp $             *
+* CVS Id 	 : $Id: MainWidget.h,v 1.6 2001/09/10 16:21:29 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -20,6 +20,7 @@ class QSplitter;
 class QLabel;
 class ProfileField;
 class QVBox;
+class MyScrollBar;
 
 class MainWidget : public QMainWindow
 {
@@ -57,8 +58,8 @@ private:
 
     QVBox*  profileBox;
     ProfileField* profile;
-    QScrollBar*   samplesBar;
-    QScrollBar*   offsetBar;
+    MyScrollBar*   samplesBar;
+    MyScrollBar*   offsetBar;
 };
 
 #endif  // MAINWIDGET_H
