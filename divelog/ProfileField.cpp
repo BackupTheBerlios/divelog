@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.10 2001/09/04 16:56:48 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.11 2001/09/05 15:58:34 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.10 2001/09/04 16:56:48 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.11 2001/09/05 15:58:34 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -136,7 +136,7 @@ void ProfileField::setTimeFormat( TimeFormat timeFormat )
 void ProfileField::setProfile( QPointArray profile )
 {
     m_profile=profile;
-    repaint( false );
+    repaint( FALSE );
 }
 
 void ProfileField::setTimeStart( int start )
@@ -159,7 +159,7 @@ void ProfileField::setShowSamples( int showSamples )
 
     m_showSamples=showSamples;
     emit timeStartChanged( showSamples );
-    repaint( false );
+    repaint( FALSE );
 }
 
 /*
@@ -215,6 +215,7 @@ void ProfileField::drawProfile( QPainter* p )
     ASSERT( m_depth!=0 );
     ASSERT( m_samples!=0 );
     ASSERT( m_showSamples>=3 );
+
     CHECK_PTR( p );
     ASSERT( !m_profile.isEmpty() );
 
@@ -226,7 +227,7 @@ void ProfileField::drawProfile( QPainter* p )
     p->scale( time_scale, depth_scale );
     p->setPen( m_graphPenColor );
     p->setBrush( m_graphBrushColor );
-    p->drawPolygon( m_profile, FALSE, 0, m_showSamples );
+    p->drawPolyline( m_profile, 0, m_showSamples );
     p->restore();
 }
 
@@ -325,7 +326,12 @@ void ProfileField::drawCoosy( QPainter* p )
     // tick distance in "real-world-scale".
     // We round here to get sane labels like "5" in stead of "5.11"
 
-    tick_distance_scaled = qRound( (float)m_numberFm->width( sampleToTime( m_samples ) ) * TICK_DISTANCE_FACTOR / time_scale );
+    // FIXME: BUG ! tick_distance_scaled== m_timeAxisRect->width()/tick_distance_scaled
+    //              or wrong name (tick_unit may be better)...
+    //							and wrong rounding...
+    tick_distance_scaled = qRound( (float)m_numberFm->width( sampleToTime( m_showSamples ) ) * TICK_DISTANCE_FACTOR / time_scale );
+    qDebug( "m_showSamples=%i", m_showSamples );
+    qDebug( "tick_distance_scaled=%d", tick_distance_scaled );
     ASSERT( tick_distance_scaled>0 );
 
     // tick distance in screen-scale
