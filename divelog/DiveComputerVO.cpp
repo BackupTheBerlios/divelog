@@ -1,6 +1,6 @@
 /**********************************************************************
 * Filename : DiveComputerVO.cpp                                       *
-* CVS Id   : $Id*
+* CVS Id   : $Id: DiveComputerVO.cpp,v 1.2 2002/03/25 08:41:44 markus Exp $*
 * ------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about divecomputers 	*
 *                    (Value Object)   																*

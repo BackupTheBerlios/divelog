@@ -27,7 +27,8 @@ HEADERS  = MainWidget.h\
            DiveTypeVO.h\
            DiveComputerVO.h\
            DiverNotFoundException.h\
-           DiveProfileVO.h
+           DiveProfileVO.h\
+           DiveListVO.h
 
 SOURCES  = main.cpp\
            MainWidget.cpp\
@@ -46,7 +47,8 @@ SOURCES  = main.cpp\
            DiveTypeVO.cpp\
            DiveComputerVO.cpp\
            DiverNotFoundException.cpp\
-           DiveProfileVO.cpp
+           DiveProfileVO.cpp\
+           DiveListVO.cpp
 
 INTERFACES = NewDiverBaseFrm.ui\
              InfoAreaBaseFrm.ui\

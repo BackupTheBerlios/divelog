@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.46 2002/02/13 18:47:25 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.47 2002/03/25 08:41:45 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.46 2002/02/13 18:47:25 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.47 2002/03/25 08:41:45 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -34,6 +34,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.46 2002/02/13 18:4
 #include "FillingStationVO.h"
 #include "DiveComputerNotFoundException.h"
 #include "DivelogDAOException.h"
+#include "DiveListVO.h"
 
 // Qt
 #include <qapplication.h>
@@ -47,7 +48,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.46 2002/02/13 18:4
 #include <qpointarray.h>
 #include <qabstractlayout.h>
 #include <qfiledialog.h>
-#include <qlistbox.h>
+#include <qlistview.h>
 #include <qheader.h>
 #include <qcombobox.h>
 
@@ -200,14 +201,33 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_diveListView->addColumn( "Date" );
     m_diveListView->addColumn( "Time" );
 
+    m_diveListView->setAllColumnsShowFocus( TRUE );
+
+    DivelogDAO db;
+    vector< DiveListVO > *allDives;
+    allDives = new vector < DiveListVO > ( db.diveList( 1 ) );
+
+    vector< DiveListVO >::iterator i;
+
+    for ( i=allDives->begin(); i!= allDives->end(); i++ )
+    {
+        DiveListVO tmp= (*i);
+        (void) new QListViewItem( m_diveListView, QString::number( tmp.number() ), tmp.date().c_str(), tmp.time().c_str() );
+    }
+
+/*
+    for ( int i=0; i<allDives->size(); i++ )
+    {
+        DiveListVO tmp=allDives[ i ];
+    }
+*/
+    delete allDives;
+
     m_diveListView->setColumnWidthMode( 0, QListView::Maximum );
     m_diveListView->setColumnWidthMode( 1, QListView::Maximum );
     m_diveListView->setColumnWidthMode( 2, QListView::Maximum );
 
-    m_diveListView->setAllColumnsShowFocus( TRUE );
-
     setCentralWidget( m_s1 );
-
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     mainwidget_cvs_id+=0;
