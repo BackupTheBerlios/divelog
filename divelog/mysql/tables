@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: tables,v 1.8 2002/02/04 12:38:41 markus Exp $ 
+# $Id: tables,v 1.9 2002/02/08 16:41:34 markus Exp $ 
 
 mysql -h zaphod -u markus --password='ArPPCa' divelog-test <<EOF
 drop table diver;
@@ -50,9 +50,12 @@ create table dive (
     location VARCHAR(100),
     surface_intervall DOUBLE NOT NULL,
     altitude_mode DOUBLE NOT NULL,
+    water_temperature DOUBLE NOT NULL,
+    start_pressure DOUBLE NOT NULL,
+    end_pressure DOUBLE NOT NULL,
+    max_depth DOUBLE NOT NULL,
     profile BLOB, 
     log TEXT,
-    water_temperature DOUBLE NOT NULL,
     partner_diver_number INTEGER NOT NULL REFERENCES diver,
     weather VARCHAR(20),
     sight   VARCHAR(20),
@@ -60,7 +63,7 @@ create table dive (
     air_temperature DOUBLE,
     dive_type INTEGER REFERENCES divetype,
     filling_station_number INTEGER UNSIGNED NOT NULL REFERENCES filling_station,
-#   bottle_number INTEGER NOT NULL,    
+    bottle_number INTEGER NOT NULL,    
     UNIQUE ( date, diver_number ),
     KEY ( date, diver_number )
 );

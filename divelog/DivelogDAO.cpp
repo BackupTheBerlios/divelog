@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.19 2002/02/05 20:10:15 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.20 2002/02/08 16:41:34 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.19 2002/02/05 20:10:15 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.20 2002/02/08 16:41:34 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -22,6 +22,8 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.19 2002/02/05 20:10:15 m
 #include "DiveComputerNotFoundException.h"
 #include "DiverNotFoundException.h"
 #include "DiveProfileVO.h"
+
+#include <fstream.h> // DEBUG
 
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
@@ -57,7 +59,7 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
 
     qDebug( "test=%s", test );
 
-    UDCF* udcfData=UDCFReadFile( test );    //
+    UDCF* udcfData=UDCFReadFile( test );
     CHECK_PTR( udcfData );
 
     qDebug( "Version:\t%ld", udcfData->version );
@@ -73,7 +75,6 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
     /*
     || First look up if we know that dive-computer
     */
-
 
     try
     {
@@ -99,7 +100,7 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
 
         if ( db_diveComputers.empty() )
         {
-            UDCFFree( udcfData );
+            // DEBUG UDCFFree( udcfData );
             throw DiveComputerNotFoundException(  udcfData->serialID,
                                                   udcfData->model,
                                                   udcfData->personalInfo );
@@ -128,8 +129,12 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
             for ( int dive=0; dive<=udcfData->groupList[group].diveIndex; dive++ )
             {                                                     // iterate through dives
 
+                DiveProfileVO profile( udcfData->groupList[group].diveList[dive].sampleList,
+                                       udcfData->groupList[group].diveList[dive].sampleIndex );
+
                 query << "insert into dive ( date, sync, diver_number, surface_intervall, "
-                    <<									  "altitude_mode, water_temperature ) values ( "
+                    <<									    "altitude_mode, water_temperature, start_pressure, "
+                    <<                      "end_pressure,max_depth, profile ) values ( "
                     // date
                     << "\""
                     << udcfData->groupList[group].diveList[dive].year  << "-"
@@ -149,25 +154,23 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
                     // altitude_mode
                     << udcfData->groupList[group].diveList[dive].altitude << ", "
                     // water_temperature
-                    << udcfData->groupList[group].diveList[dive].temperature << " )";
-                //                      << endl;
-
-                DiveProfileVO profile( udcfData->groupList[group].diveList[dive].sampleList,
-                                       udcfData->groupList[group].diveList[dive].sampleIndex );
+                    << udcfData->groupList[group].diveList[dive].temperature << ", "
+                    // start_pressure
+                    // FIXME: This is too simple and WILL cause errors, once multiple mixes
+                    //        should be used...                          V
+                    << udcfData->groupList[group].diveList[dive].mixList[0].pressureStart/10.0e4 << ", "
+                    // end_pressure
+                    // FIXME: This is too simple and WILL cause errors, once multiple mixes
+                    //        should be used...                          V
+                    << udcfData->groupList[group].diveList[dive].mixList[0].pressureEnd/10.0e4 << ", "
+                    // max_depth
+                    << profile.maxDepth() << ", "
+                    // profile
+                    << "\"" << profile << "\" )";
 
                 try
                 {
                     query.store();
-
-                    qDebug( "#%04d Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d sampleSize:%i sampleIndex:%i",
-                            count, group, dive,
-                            udcfData->groupList[group].diveList[dive].day,
-                            udcfData->groupList[group].diveList[dive].month,
-                            udcfData->groupList[group].diveList[dive].year,
-                            udcfData->groupList[group].diveList[dive].hour,
-                            udcfData->groupList[group].diveList[dive].minute,
-                            udcfData->groupList[group].diveList[dive].sampleSize,
-                            udcfData->groupList[group].diveList[dive].sampleIndex );
                 }
                 catch (BadQuery &er)
                 {
@@ -357,8 +360,6 @@ void DivelogDAO::insertDiveType( const DiveTypeVO& diveType ) throw ( DivelogDAO
 // -------------------------------------------------
 void DivelogDAO::insertDiveComputer( const DiveComputerVO& diveComputer ) throw ( DivelogDAOException )
 {
-    //cerr << "DivelogDAO::insertDiveComputer not implemented." << endl;
-
     if ( diveComputer.serial_number() == "" )
     {
         throw DivelogDAOException( "DiveComputerVO.serial_number() must not be empty !" );

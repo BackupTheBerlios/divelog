@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.17 2001/10/04 21:03:18 markus Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.18 2002/02/08 16:41:34 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -16,6 +16,8 @@
 #include <qwidget.h>
 #include <qpointarray.h>
 
+class DiveProfileVO;
+
 class ProfileField : public QWidget
 {
     Q_OBJECT
@@ -25,6 +27,7 @@ public:
     */
     ProfileField( QWidget *parent=0, const char* name=0 );
     ProfileField( QWidget *parent, const char* name, QPointArray profile );
+    ProfileField( QWidget *parent, const char* name, const DiveProfileVO& profile );
 
     enum TimeFormat{ Minutes, HourMinutes };
 

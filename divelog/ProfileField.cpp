@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.25 2002/02/05 20:10:15 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.26 2002/02/08 16:41:34 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.25 2002/02/05 20:10:15 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.26 2002/02/08 16:41:34 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -59,6 +59,21 @@ ProfileField::ProfileField( QWidget *parent, const char* name, QPointArray profi
 {
     init();
     setProfile( profile );
+}
+
+ProfileField::ProfileField( QWidget *parent, const char* name, const DiveProfileVO& profile )
+    : QWidget( parent, name )
+// -------------------------------------------------
+// Use : Profile initiaizing constructor
+// Parameters: parent= parent of the widget
+//             name  = name of the widget
+//             profile = profile data to show
+//                       Use an extra class for this sometime!
+// -------------------------------------------------
+{
+    // FIXME : implement it
+    qDebug( "ProfileField::ProfileField( QWidget *parent, const char* name, const DiveProfileVO& profile ) not implemented !" );
+    exit(1);
 }
 
 void ProfileField::init()
