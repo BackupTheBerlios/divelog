@@ -1,11 +1,10 @@
 /******************************************************************************
 * Filename : main.cpp                                                         *
-* CVS Id 	 : $Id: main.cpp,v 1.6 2001/08/26 18:47:57 markus Exp $             *
+* CVS Id 	 : $Id: main.cpp,v 1.7 2001/09/08 09:25:26 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Main class for divelog program (to be kept small)        *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Sun Aug 12 2001                                          *
-* Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
 * To Do List :                                                                *
 * --------------------------------------------------------------------------- *
@@ -15,7 +14,7 @@
 #include <qapplication.h>
 #include "mainwidget.h"
 
-static const char *main_cvs_id="$Id: main.cpp,v 1.6 2001/08/26 18:47:57 markus Exp $";
+static const char *main_cvs_id="$Id: main.cpp,v 1.7 2001/09/08 09:25:26 markus Exp $";
 
 int main( int argc, char* argv[] )
 {

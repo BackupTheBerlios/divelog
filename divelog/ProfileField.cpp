@@ -1,18 +1,16 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.12 2001/09/05 17:31:28 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.13 2001/09/08 09:25:26 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Tue Aug 14 2001                                          *
-* Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
-* To Do List : Zooming                                                        *
-*							 Navigation                                             				*
+* To Do List : Navigation                                             				*
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.12 2001/09/05 17:31:28 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.13 2001/09/08 09:25:26 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -83,7 +81,7 @@ void ProfileField::init()
     setMinimumSize( minimumSize() );
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    mainwidget_cvs_id+=0;
+    profilefield_cvs_id+=0;
 }
 
 /*
@@ -222,7 +220,7 @@ void ProfileField::drawProfile( QPainter* p )
     float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);   // a little helper
     float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1);    // dito
 
-    qDebug( "time_scale=%f", time_scale );
+    qDebug( "time_scale\t=%f", time_scale );
 
     p->save();
     p->translate( m_origin.x(), m_origin.y() );
@@ -330,6 +328,10 @@ void ProfileField::drawCoosy( QPainter* p )
     qDebug( "m_showSamples\t=%i", m_showSamples );
     qDebug( "tick_unit\t=%f", tick_unit );
     ASSERT( tick_unit>0 );
+
+    // Adjust tick_unit. If it is <1 then there are multiple tick marks with the
+    // same value. This looks ugly so we set it to 1 in this case.
+    tick_unit = ( tick_unit<1) ? 1 : tick_unit;
 
     // tick distance in screen-scale
     // We round "on demand" to get exact placement

@@ -1,12 +1,11 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.9 2001/09/04 16:56:48 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.10 2001/09/08 09:25:26 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Sun Aug 12 2001                                          *
-* Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
 * To Do List : improve menu                                                   *
 *              improve splitters                                              *
@@ -17,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.9 2001/09/04 16:56:48 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.10 2001/09/08 09:25:26 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -100,6 +99,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     samplesBar->setMaxValue( profile->samples() );
     samplesBar->setValue( profile->samples() );
     connect( samplesBar, SIGNAL( valueChanged( int ) ), profile, SLOT( setShowSamples( int ) ) );
+    // connect( profile   , SIGNAL( showSamplesChanged( int ) ), samplesBar, setValue( int ) );
 
     offsetBar->setMinValue( 0 );
     offsetBar->setMaxValue( profile->samples() - samplesBar->value() );

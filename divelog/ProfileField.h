@@ -2,12 +2,11 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.9 2001/09/05 17:31:28 markus Exp $       *
+* CVS Id 	 : $Id: ProfileField.h,v 1.10 2001/09/08 09:25:26 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Tue Aug 14 2001                                          *
-* Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
 * To Do List :                                                                *
 * --------------------------------------------------------------------------- *
@@ -122,4 +121,4 @@ private:
     QPointArray m_profile;
 };
 
-#endif
+#endif // PROFILEFIELD_H

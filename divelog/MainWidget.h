@@ -2,12 +2,11 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.4 2001/08/25 15:46:33 markus Exp $             *
+* CVS Id 	 : $Id: MainWidget.h,v 1.5 2001/09/08 09:25:26 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Sun Aug 12 2001                                          *
-* Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
 * To Do List :                                                                *
 * --------------------------------------------------------------------------- *
