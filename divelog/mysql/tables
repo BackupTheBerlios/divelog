@@ -1,27 +1,7 @@
-drop table dive;
-create table dive (
-    number INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date DATETIME NOT NULL,
-    diver_number INTEGER UNSIGNED NOT NULL,
-    place VARCHAR(100) NOT NULL,
-    location VARCHAR(100),
-    surface_intervall DOUBLE NOT NULL,
-    altitude_mode DOUBLE NOT NULL,
-#   profile BLOB, 
-#   log BLOB,
-    water_temperature DOUBLE NOT NULL,
-    partner_diver_number INTEGER NOT NULL,
-    weather VARCHAR(20),
-    sight   VARCHAR(20),
-    weight  FLOAT,
-    air_temperature DOUBLE,
-    dive_type VARCHAR(20),
-    filling_station_number INTEGER UNSIGNED NOT NULL,
-#   bottle_number INTEGER NOT NULL,    
-    UNIQUE ( date, diver_number ),
-    KEY ( date, diver_number )
-);
+#!/bin/bash
+#$Id: tables,v 1.2 2001/10/16 07:17:37 markus Exp $ 
 
+mysql -u markus --password='ArPPCa' divelog-test <<EOF
 drop table diver;
 create table diver (
     number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -34,6 +14,13 @@ create table diver (
     place VARCHAR(20),
     phone VARCHAR(20),
     email VARCHAR(130)
+);
+
+drop table divecomputer;
+create table divecomputer(
+    serial_number VARCHAR(16) PRIMARY KEY,
+    diver_number INTEGER UNSIGNED NOT NULL REFERENCES diver,
+    name VARCHAR(30) 
 );
 
 drop table divetype;
@@ -50,5 +37,29 @@ create table filling_station (
     last_name   VARCHAR(30)
 );
 
+drop table dive;
+create table dive (
+    number INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    date DATETIME NOT NULL,
+    diver_number INTEGER UNSIGNED NOT NULL REFERENCES diver,
+    place VARCHAR(100) NOT NULL,
+    location VARCHAR(100),
+    surface_intervall DOUBLE NOT NULL,
+    altitude_mode DOUBLE NOT NULL,
+#   profile BLOB, 
+#   log BLOB,
+    water_temperature DOUBLE NOT NULL,
+    partner_diver_number INTEGER NOT NULL REFERENCES diver,
+    weather VARCHAR(20),
+    sight   VARCHAR(20),
+    weight  FLOAT,
+    air_temperature DOUBLE,
+    dive_type INTEGER REFERENCES divetype,
+    filling_station_number INTEGER UNSIGNED NOT NULL REFERENCES filling_station,
+#   bottle_number INTEGER NOT NULL,    
+    UNIQUE ( date, diver_number ),
+    KEY ( date, diver_number )
+);
+EOF
     
     
