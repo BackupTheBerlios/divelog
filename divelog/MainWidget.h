@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.9 2001/09/13 18:05:23 markus Exp $         *
+* CVS Id 	 : $Id: MainWidget.h,v 1.10 2001/09/15 16:12:14 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -33,9 +33,17 @@ public:
 
 protected slots:
 
-    void adaptOffsetBar( int );
-    void profileSamplesInterface( int );
-
+    /*
+    || QScrollBar has no slots for setValue, setMaxValue
+    || etc. So we create adapter slots in this class for
+    || the scrollbars who need it.
+    */
+    void adaptSamplesBarToOffsetBar( int );
+    void adaptSamplesBarToProfile( int );
+/*
+    void adaptProfileToOffsetBar( int );
+    void adaptProfileToSamplesBar( int );
+*/
     /*
     ||  File Menu
     */

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.16 2001/09/13 18:05:23 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.17 2001/09/15 16:12:14 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -11,9 +11,9 @@
 *              Better Zooming (not with Scrollbars)                           *
 *              Handle Dive Profile in its own class                           *
 * --------------------------------------------------------------------------- *
-* Notes :                                                                     *
+* Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.16 2001/09/13 18:05:23 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.17 2001/09/15 16:12:14 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -84,6 +84,8 @@ void ProfileField::init()
     setMinimumSize( minimumSize() );
 
     setMouseTracking( TRUE );
+    m_validMousePress=FALSE;
+    m_mousePressSample=0;
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     profilefield_cvs_id+=0;
@@ -420,6 +422,63 @@ void ProfileField::mouseMoveEvent( QMouseEvent* e )
         emit mouseDepthChanged( "" );
     }
 }
+
+void ProfileField::mousePressEvent( QMouseEvent* e )
+{
+    if ( m_graphRect.contains( e->pos() ) )
+    {
+        float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
+
+        m_mousePressSample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
+        m_validMousePress=TRUE;
+    }
+    else
+    {
+        m_validMousePress=FALSE;
+    }
+}
+
+void ProfileField::mouseReleaseEvent( QMouseEvent* e)
+{
+    if ( m_graphRect.contains( e->pos() ) )
+    {
+        float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
+
+        int mouseReleaseSample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
+        int mouseDragSamples=abs( mouseReleaseSample-m_mousePressSample );
+        int new_start=QMIN( m_mousePressSample, mouseReleaseSample );
+
+        if ( mouseDragSamples>=3 )
+        {
+            if ( timeStart() != new_start )
+            {
+                setTimeStart( new_start );
+                emit timeStartChanged( timeStart() );
+            }
+            if ( showSamples() != mouseDragSamples )
+            {
+                setShowSamples( mouseDragSamples );
+                emit showSamplesChanged( showSamples() );
+            }
+        }
+        else
+        {
+            if ( timeStart() != 0 )
+            {
+                setTimeStart( 0 );
+                emit timeStartChanged( 0 );
+            }
+            if ( showSamples() != samples() )
+            {
+                setShowSamples( samples() );
+                emit showSamplesChanged( samples() );
+            }
+        }
+        repaint( FALSE );
+    }
+    m_validMousePress=FALSE;
+}
+
 
 QSize ProfileField::minimumSize() const
 {

@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.12 2001/09/13 18:05:23 markus Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.13 2001/09/15 16:12:14 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -80,6 +80,8 @@ protected:
     void paintEvent( QPaintEvent* );
     void resizeEvent( QResizeEvent* );
     void mouseMoveEvent( QMouseEvent* e );
+    void mousePressEvent( QMouseEvent* e );
+    void mouseReleaseEvent( QMouseEvent* e);
 
 private:
 
@@ -120,6 +122,9 @@ private:
     QFontMetrics *m_legendFm;
 
     QPointArray m_profile;
+
+    bool m_validMousePress;
+    int  m_mousePressSample;
 };
 
 #endif // PROFILEFIELD_H
