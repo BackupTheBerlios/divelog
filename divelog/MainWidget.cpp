@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.4 2001/08/20 14:15:32 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.5 2001/08/20 14:18:02 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -17,7 +17,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.4 2001/08/20 14:15:32 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.5 2001/08/20 14:18:02 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -29,7 +29,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.4 2001/08/20 14:15
 #include <qsplitter.h>
 
 #include <qlabel.h>
-#include <qlayout.h>
+// #include <qlayout.h>
 
 MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     : QMainWindow( parent, name )
