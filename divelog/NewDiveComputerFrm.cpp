@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.10 2001/12/21 12:43:57 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.11 2002/05/07 16:18:38 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.10 2001/12/21 12:43:57 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.11 2002/05/07 16:18:38 markus Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
@@ -127,6 +127,15 @@ void NewDiveComputerFrm::accept()
 
         // FIXME : Dont match \&
         QString fieldName = m_SerialNumberLbl->text().replace( QRegExp( "&" ), "" );
+
+        QMessageBox::information( this, "Empty Field",
+                                        "The field \""+fieldName+"\" must not be empty!" );
+    }
+    else if ( m_Owner->currentText().isEmpty() )
+    {
+
+        // FIXME : Dont match \&
+        QString fieldName = m_OwnerLbl->text().replace( QRegExp( "&" ), "" );
 
         QMessageBox::information( this, "Empty Field",
                                         "The field \""+fieldName+"\" must not be empty!" );

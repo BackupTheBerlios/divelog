@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.25 2002/03/26 10:41:21 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.26 2002/05/07 16:18:38 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -47,6 +47,7 @@ protected slots:
     /*
     ||  DataBase Menu
     */
+    void dbLoadDiveList();
     void dbImport();
     void dbNewDiver();
     void dbNewFillingStation();

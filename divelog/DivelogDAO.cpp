@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.26 2002/04/10 11:52:55 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.27 2002/05/07 16:18:38 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,7 +14,7 @@
 *         anything to do with it. ( This refers especially to QString which   *
 *         would be far more powerfull then basic_string...)                   *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.26 2002/04/10 11:52:55 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.27 2002/05/07 16:18:38 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DiveVO.h"
@@ -38,6 +38,25 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.26 2002/04/10 11:52:55 m
 #include <UDCF.h>
 #include <string>
 #include <iomanip>
+#include <float.h>
+
+
+double checkDoubleNull( ColData c )
+{
+    ( c.is_null() ? DBL_MAX : (double)c );
+}
+
+unsigned int checkUIntNull( ColData c )
+{
+    ( c.is_null() ? UINT_MAX : (unsigned int)c );
+}
+
+string checkStringNull( ColData c )
+{
+    ( c.is_null() ? "" : (string) c );
+}
+
+
 
 DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD )
 {
@@ -914,20 +933,21 @@ vector<DiveVO> DivelogDAO::searchDive( const DiveVO& d, const string& mask="0000
                              ( row[ 3].is_null() ? 0  : (int)   row[ 3] ),  // diver_number
                              ( row[ 4].is_null() ? "" : (string)row[ 4] ),  // place
                              ( row[ 5].is_null() ? "" : (string)row[ 5] ),  // location
-                             ( row[ 6].is_null() ? 0  : (double)row[ 6] ),  // altitude_mode
-                             ( row[ 7].is_null() ? 0  : (double)row[ 7] ),  // water_temperature
-                             ( row[ 8].is_null() ? 0  : (double)row[ 8] ),  // start_pressure
-                             ( row[ 9].is_null() ? 0  : (double)row[ 9] ), // end_pressure
-                             ( row[10].is_null() ? 0  : (double)row[10] ),  // surface_intervall
-                             ( row[11].is_null() ? 0  : (double)row[11] ),  // max_depth
+                             //( row[ 6].is_null() ? DBL_MAX : (double)row[ 6] ),  // altitude_mode
+                             checkDoubleNull( row[6] ),
+                             ( row[ 7].is_null() ? DBL_MAX : (double)row[ 7] ),  // water_temperature
+                             ( row[ 8].is_null() ? DBL_MAX : (double)row[ 8] ),  // start_pressure
+                             ( row[ 9].is_null() ? DBL_MAX : (double)row[ 9] ), // end_pressure
+                             ( row[10].is_null() ? DBL_MAX : (double)row[10] ),  // surface_intervall
+                             ( row[11].is_null() ? DBL_MAX : (double)row[11] ),  // max_depth
                              ( row[12].is_null() ? "" : (string)row[12] ),  // length
                              profile,  // profile
                              ( row[14].is_null() ? "" : (string)row[14] ),  // log
                              ( row[15].is_null() ? 0  : (int)   row[15] ),  // partner_diver_number
                              ( row[16].is_null() ? "" : (string)row[16] ),  // weather
                              ( row[17].is_null() ? "" : (string)row[17] ),  // sight
-                             ( row[18].is_null() ? 0  : (double)row[18] ),  // lead
-                             ( row[19].is_null() ? 0  : (double)row[19] ),   // air_temperature
+                             ( row[18].is_null() ? DBL_MAX : (double)row[18] ),  // lead
+                             ( row[19].is_null() ? DBL_MAX : (double)row[19] ),   // air_temperature
                              ( row[20].is_null() ? 0  : (int)   row[20] ),  // dive_type
                              ( row[21].is_null() ? 0  : (int)   row[21] ),  // filling_station_number
                              ( row[22].is_null() ? 0  : (int)   row[22] ));  // bottle_number
@@ -1005,7 +1025,7 @@ vector<DiveListVO> DivelogDAO::diveList( const int& diver_number )
         }
         else
         {
-            throw DiverNotFoundException();
+            throw DiveNotFoundException();
         }
 
     }

@@ -1,12 +1,10 @@
 FTE Desktop 2
 F|1|/home/markus/projects/divelog/MainWidget.cpp
-F|10|/home/markus/projects/divelog/ProfileField.cpp
-F|11|/usr/include/qt/qsizepolicy.h
-F|6|/home/markus/projects/divelog/DiveListViewItem.cpp
-F|8|/home/markus/projects/divelog/DivelogDAO.cpp
-F|9|/home/markus/projects/divelog/DivelogDAO.h
-F|5|/home/markus/projects/divelog/DiveListViewItem.h
-F|7|/home/markus/projects/divelog/DiveProfileVO.h
+F|6|/home/markus/projects/divelog/DivelogDAO.cpp
+F|7|/home/markus/projects/divelog/ProfileField.cpp
+F|3|/home/markus/projects/divelog/DivelogDAO.h
+F|8|/home/markus/projects/divelog/DiverVO.cpp
+F|5|/home/markus/projects/divelog/InfoAreaBaseFrm.h
 F|4|/home/markus/projects/divelog/DiveVO.h
 F|2|/home/markus/projects/divelog/MainWidget.h
 M|243|0|#0|/home/markus/projects/divelog/DiveVO.cpp

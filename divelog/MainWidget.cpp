@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.51 2002/04/22 18:46:20 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.52 2002/05/07 16:18:38 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.51 2002/04/22 18:46:20 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.52 2002/05/07 16:18:38 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -34,6 +34,8 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.51 2002/04/22 18:4
 #include "DiveComputerVO.h"
 #include "FillingStationVO.h"
 #include "DiveComputerNotFoundException.h"
+#include "DiverNotFoundException.h"
+#include "DiveNotFoundException.h"
 #include "DivelogDAOException.h"
 #include "DiveListVO.h"
 #include "DiveListViewItem.h"
@@ -56,6 +58,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.51 2002/04/22 18:4
 
 // others
 #include <string>
+#include <float.h>
 
 #define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
 #define MOUSE_DEPTH_LABEL "Depth: "     // Label for depth at mouse cursor.
@@ -77,8 +80,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     || reading of real data is working.
     */
 
-    QPointArray testdata;
-    testdata.setPoints( 64, points );
+    //QPointArray testdata;
+    //testdata.setPoints( 64, points );
 
     //---------------------------------------------------
 
@@ -91,6 +94,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
                                                 
     // now add items to the menu
     db_mn->insertItem( "&Import",    this, SLOT( dbImport() ) );
+    db_mn->insertItem( "(Re)Load Divelist", this, SLOT( dbLoadDiveList() ) );
     db_mn->insertItem( "New &Diver", this, SLOT( dbNewDiver() ) );
     db_mn->insertItem( "New &Filling Station", this, SLOT( dbNewFillingStation() ) );
     db_mn->insertItem( "New Dive &Type", this, SLOT( dbNewDiveType() ) );
@@ -128,7 +132,6 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_s2 = new QSplitter( QSplitter::Horizontal, m_s1 , "m_s2" );
 
     m_infoArea = new InfoAreaFrm( m_s1, "m_infoArea" );
-    m_s1->setResizeMode( m_infoArea, QSplitter::KeepSize );
     m_diveListView= new QListView( m_s2, "m_diveListView" );
 
     /*
@@ -209,25 +212,9 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_diveListView->setSorting( 1 ); // Initially sort by date
     m_diveListView->setColumnAlignment( 0 , QListView::AlignRight );
 
-    DivelogDAO db;                  // access object to the database
-    vector< DiveListVO > *allDivesTmp; // temporary container for the list entries
+    dbLoadDiveList();
 
-    allDivesTmp = new vector < DiveListVO > ( db.diveList( 1 ) ); // FIXME: get diver number from rc file
-
-    /*
-    || Strange. Didn't manage to make this an "int i" loop
-    || Had to do it with an iterator...
-    */
-    // Now iterate over all list items and insert them into
-    // the list widget
-    vector< DiveListVO >::iterator i;
-    for ( i=allDivesTmp->begin(); i!= allDivesTmp->end(); i++ )
-    {
-        (void) new DiveListViewItem( *i, m_diveListView );
-    }
-    delete allDivesTmp;
-
-    m_s2->setResizeMode( m_diveListView, QSplitter::KeepSize );
+    m_s1->setResizeMode( m_infoArea, QSplitter::KeepSize );
 
     connect( m_profile, SIGNAL( mouseDepthChanged( const QString& ) ), m_profileMouseDepth, SLOT( setText( const QString & ) ) );
     connect( m_diveListView, SIGNAL( clicked ( QListViewItem*  ) ), this, SLOT( diveSelected(  QListViewItem*  ) ) );
@@ -249,6 +236,77 @@ Slots
 || Menu-slots : implement the menu functions
 */
 
+void MainWidget::dbLoadDiveList()
+{
+    DivelogDAO db;                  // access object to the database
+    vector< DiveListVO > *allDivesTmp; // temporary container for the list entries
+
+
+    bool load_list=true;
+    bool list_failed=true;
+    while ( list_failed && load_list )
+    {
+        try
+        {
+            allDivesTmp = new vector < DiveListVO > ( db.diveList( 1 ) ); // FIXME: get diver number from rc file
+            list_failed=false;
+        }
+        catch( DiverNotFoundException e)
+        {
+            cerr << e << endl ;
+            switch( QMessageBox::information( this, "Divelog",
+                                              "The diver with number 1 (you?) could not be found"
+                                              "in the database. Do you want to add him/her now?",
+                                              "&Add", "&Don't Add",
+                                              0,      // Enter == button 0
+                                              1       // Escape== button 1
+                                            )
+                  )
+            { // Escape == button 1
+            case 0: // Add the diver
+                dbNewDiver();
+                break;
+            case 1: // Don't add the diver
+                load_list=false;
+                allDivesTmp = new vector< DiveListVO >;
+                break;
+            default:
+                cerr << "Shouldn't happen !";
+                break;
+            }
+        }
+        catch( DiveNotFoundException e )
+        {
+            cerr << e << endl ;
+            QMessageBox::information( this, "Divelog",
+                                      "There are none of your dives in the Database.",
+                                      "&Ok");
+            allDivesTmp = new vector< DiveListVO >;
+            list_failed=false;
+        }
+    }
+
+    CHECK_PTR( allDivesTmp );
+    /*
+    || Strange. Didn't manage to make this an "int i" loop
+    || Had to do it with an iterator...
+    */
+    // First clean the list.
+    m_diveListView->clear();
+
+    // Now iterate over all list items and insert them into
+    // the list widget
+    vector< DiveListVO >::iterator i;
+    for ( i=allDivesTmp->begin(); i!= allDivesTmp->end(); i++ )
+    {
+        (void) new DiveListViewItem( *i, m_diveListView );
+    }
+    delete allDivesTmp;
+    m_diveListView->updateGeometry();
+    m_s2->setResizeMode( m_diveListView, QSplitter::KeepSize );
+
+}
+
 void MainWidget::dbImport()
 // -------------------------------------------------
 // Use : Menu slot. Imports a UDCF File into the
@@ -261,14 +319,16 @@ void MainWidget::dbImport()
     {
         qDebug( "Filename: %s", s.latin1() );              // DEBUG
         DivelogDAO db;
-        bool success=false;
-//        while ( ! success ) do  // FIXME : this can lead to an endless loop...
-                                //         give an option to leave without import !
-//        {
+        DiveComputerVO* diveComputer;
+
+        bool do_import=true;
+        bool import_failed=true;
+        while ( import_failed && do_import )
+        {
             try
             {
                 db.importUDCFFile( s.latin1() );        // Insert the file into the database
-                success= true;
+                import_failed= false;
             }
             /*
             || If the database doesn't know the UDCF files divecomputer, it cannot
@@ -277,11 +337,40 @@ void MainWidget::dbImport()
             catch ( DiveComputerNotFoundException e )
             {
                 cerr << endl << e << endl;    
+                switch( QMessageBox::information( this, "Divelog",
+                                                  "The Divecomputer which recorded "+ s +""
+                                                  "is not in the database. You have to add it"
+                                                  "to load this file.\n\nDo you want to add it?",
+                                                  "&Add", "&Don't Add",
+                                                  0,      // Enter == button 0
+                                                  1       // Escape== button 1
+                                                )
+                      )
+                { // Escape == button 1
+                case 0: // Add the diver
+                    diveComputer = new DiveComputerVO( e.serialNumber(), 0, e.model() );
+                    dbNewDiveComputer( *diveComputer ); // FIXME: Check success !!!
+                    delete diveComputer;
+                    break;
+                case 1: // Don't add the diver
+                    do_import=false;
+                    break;
+                default:
+                    cerr << "Shouldn't happen !";
+                    break;
+                }
 
-                DiveComputerVO diveComputer( e.serialNumber(), 0, e.model() );
-                dbNewDiveComputer( diveComputer );
             }
-//        }
+            catch(...)
+            {
+                cerr << "Exception in MainWidget::dbImport" << endl;
+                do_import=false;
+            }
+        }
+        if ( !import_failed )
+        {
+            dbLoadDiveList();
+        }
     }
 }
 
@@ -440,7 +529,7 @@ void MainWidget::diveSelected( QListViewItem* item )
 
     DivelogDAO db;
     try
-    {                        // V Search only by number
+    {                                 // V Search only by number
         result = db.searchDive( search, "10000000000000000000000" );
     }
     catch( DivelogDAOException e )
@@ -455,6 +544,11 @@ void MainWidget::diveSelected( QListViewItem* item )
     else
     {
         DiveVO dive = result.front();
+
+        /*
+        || Set up profile field
+        */
+
         DiveProfileVO diveProfile = dive.profile();
 
         m_profile->setDepth( diveProfile.maxDepth() );
@@ -464,6 +558,26 @@ void MainWidget::diveSelected( QListViewItem* item )
         m_profile->setTimeStart( 0, false );
 
         m_profile->setProfile( diveProfile.profile() );
+
+        /*
+        || Set up info area
+        */
+        m_infoArea->m_Number->setNum( dive.number() );
+        m_infoArea->m_Date->setText( dive.date().c_str() );
+        m_infoArea->m_Time->setText( dive.time().c_str() );
+
+        m_infoArea->m_Place->insertItem( dive.place().c_str() );
+        m_infoArea->m_Location->insertItem( dive.location().c_str() );
+        m_infoArea->m_DiveType->insertItem( QString::number( dive.dive_type() ) ); //FIXME : lookup dive type !
+        m_infoArea->m_Buddy->insertItem( QString::number( dive.partner_diver_number() ) ); //FIXME : lookup diver name !
+        m_infoArea->m_WaterTemperature->setText( ( dive.water_temperature() == DBL_MAX ? QString("") : QString::number( dive.water_temperature() ) ) );
+        m_infoArea->m_AirTemperature->setText( ( dive.air_temperature() == DBL_MAX ? QString("") : QString::number( dive.air_temperature() ) ) );
+        m_infoArea->m_MaxDepth->setText( ( dive.max_depth() == DBL_MAX ? QString("") : QString::number( dive.max_depth() ) )  );
+        m_infoArea->m_Duration->setText( dive.length().c_str() ); //FIXME : length() vs Duration is inconsistent
+
+
+
+
     }
 }
 

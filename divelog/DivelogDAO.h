@@ -2,7 +2,7 @@
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.15 2002/04/03 11:43:33 markus Exp $         *
+* CVS Id   : $Id: DivelogDAO.h,v 1.16 2002/05/07 16:18:38 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -31,7 +31,6 @@ class DiveListVO;
 class FillingStationVO;
 class DiveTypeVO;
 class DiveComputerVO;
-
 class DivelogDAO
 {
 
