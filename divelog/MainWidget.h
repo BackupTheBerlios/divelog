@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.24 2001/12/21 12:43:57 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.25 2002/03/26 10:41:21 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -34,6 +34,7 @@ class NewDiveTypeFrm;
 class NewDiveComputerFrm;
 class InfoAreaFrm;
 class DiveComputerVO;
+class QListViewItem;
 
 class MainWidget : public QMainWindow
 {
@@ -62,6 +63,12 @@ protected slots:
     || Help Menu
     */
     void about();
+
+    /*
+    || Entry in the ListView
+    */
+
+    void diveSelected( QListViewItem * item );
 
 private:
     QMenuBar*  m_main_mn;            // The main menu

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.48 2002/03/25 15:26:21 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.49 2002/03/26 10:41:21 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.48 2002/03/25 15:26:21 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.49 2002/03/26 10:41:21 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -207,9 +207,9 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 
 
     DivelogDAO db;                  // access object to the database
-    vector< DiveListVO > *allDives; // temporary container for the list entries
+    vector< DiveListVO > *allDivesTmp; // temporary container for the list entries
 
-    allDives = new vector < DiveListVO > ( db.diveList( 1 ) ); // FIXME: get diver number from rc file
+    allDivesTmp = new vector < DiveListVO > ( db.diveList( 1 ) ); // FIXME: get diver number from rc file
 
     /*
     || Strange. Didn't manage to make this an "int i" loop
@@ -218,18 +218,19 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     // Now iterate over all list items and insert them into
     // the list widget
     vector< DiveListVO >::iterator i;
-    for ( i=allDives->begin(); i!= allDives->end(); i++ )
+    for ( i=allDivesTmp->begin(); i!= allDivesTmp->end(); i++ )
     {
-        DiveListVO tmp= (*i);
-        //(void) new QListViewItem( m_diveListView, QString::number( tmp.number() ), tmp.date().c_str(), tmp.time().c_str() );
-        (void) new DiveListViewItem( tmp, m_diveListView );
+        (void) new DiveListViewItem( *i, m_diveListView );
     }
-    delete allDives;
+    delete allDivesTmp;
 
     m_diveListView->setColumnWidthMode( 0, QListView::Maximum );
     m_diveListView->setColumnWidthMode( 1, QListView::Maximum );
     m_diveListView->setColumnWidthMode( 2, QListView::Maximum );
 
+    connect( m_profile, SIGNAL( mouseDepthChanged( const QString& ) ), m_profileMouseDepth, SLOT( setText( const QString & ) ) );
+    connect( m_diveListView, SIGNAL( clicked ( QListViewItem*  ) ), this, SLOT( diveSelected(  QListViewItem*  ) ) );
+                          
     setCentralWidget( m_s1 );
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
@@ -426,6 +427,13 @@ void MainWidget::settingsCommunication()
 {
     qWarning( "Not Implemented: MainWidget::settingsCommunication()");
 }
+
+void MainWidget::diveSelected( QListViewItem* item )
+{
+    qWarning( "Not Implemented: MainWidget::diveSelected()");
+    cerr << item->text(1);
+}
+
 
 void MainWidget::about()
 {

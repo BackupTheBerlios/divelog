@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.23 2002/03/25 15:26:21 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.24 2002/03/26 10:41:21 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,7 +14,7 @@
 *         anything to do with it. ( This refers especially to QString which   *
 *         would be far more powerfull then basic_string...)                   *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.23 2002/03/25 15:26:21 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.24 2002/03/26 10:41:21 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -612,7 +612,6 @@ vector<DiveListVO> DivelogDAO::diveList( const int& diver_number )
         Query query = con.query();
         query << "select number, date, diver_number, place, location from dive where diver_number="
               << diver_number
-              << " order by date"
               << endl;
                                  
         Result db_dives = query.store(); // Database result

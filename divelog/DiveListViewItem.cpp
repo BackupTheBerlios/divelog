@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DiveListViewItem.cpp                                             *
-* CVS Id 	 : $Id: DiveListViewItem.cpp,v 1.1 2002/03/25 15:26:21 markus Exp $*
+* CVS Id 	 : $Id: DiveListViewItem.cpp,v 1.2 2002/03/26 10:41:21 markus Exp $*
 * --------------------------------------------------------------------------- *
 * Files subject    : Special List View Item for dives                         *
 *                    - Sorting of number by number, not by string             *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *DiveListViewItem_cvs_id="$Id: DiveListViewItem.cpp,v 1.1 2002/03/25 15:26:21 markus Exp $";
+static const char *DiveListViewItem_cvs_id="$Id: DiveListViewItem.cpp,v 1.2 2002/03/26 10:41:21 markus Exp $";
 
 #include "DiveListViewItem.h"
 #include "DiveListVO.h"
@@ -44,5 +44,4 @@ void DiveListViewItem::init()
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     DiveListViewItem_cvs_id+=0;
 }
-
 

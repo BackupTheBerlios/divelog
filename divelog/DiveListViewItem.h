@@ -2,7 +2,7 @@
 #define DIVELISTVIEWITEM_H
 /******************************************************************************
 * Filename : DiveListViewItem.h                                               *
-* CVS Id 	 : $Id: DiveListViewItem.h,v 1.1 2002/03/25 15:26:21 markus Exp $   *
+* CVS Id 	 : $Id: DiveListViewItem.h,v 1.2 2002/03/26 10:41:21 markus Exp $   *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for DiveListViewItem.cpp                          *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -29,6 +29,14 @@ public:
     QString key ( int column, bool ascending ) const;
 
     void init();
+
+signals:
+
+    /*
+    || Signals
+    */
+
+    void clicked( DiveListViewItem * item );
 
 };
 
