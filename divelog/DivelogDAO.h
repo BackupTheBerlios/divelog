@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.17 2002/05/15 09:27:51 grunwalm Exp $         *
+* CVS Id   : $Id: DivelogDAO.h,v 1.18 2002/05/15 17:04:11 grunwalm Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -36,8 +36,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 // FIXME: move this info to a better place
 #define MYSQL_DATABASE "divelog-test"
-//#define MYSQL_HOST   "localhost"
-#define MYSQL_HOST   "zaphod"
+#define MYSQL_HOST   "localhost"
+//#define MYSQL_HOST   "zaphod"
 #define MYSQL_USER   "markus"
 #define MYSQL_PASSWD "ArPPCa"
 
