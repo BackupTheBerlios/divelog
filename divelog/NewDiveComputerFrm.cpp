@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.6 2001/11/23 15:59:06 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.7 2001/11/27 08:16:00 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.6 2001/11/23 15:59:06 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.7 2001/11/27 08:16:00 markus Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
@@ -74,7 +74,6 @@ void NewDiveComputerFrm::init()
         for ( i=db_DiverList.begin(); i!=db_DiverList.end(); i++ )
         {
             DiverVO diver( *i );
-
             indexCoder.push_back( diver.number() );
             m_Owner->insertItem( ( diver.first_name()+" "+diver.last_name() ).c_str() );
 
