@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.7 2001/08/22 14:52:06 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.8 2001/08/25 15:46:33 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.7 2001/08/22 14:52:06 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.8 2001/08/25 15:46:33 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -39,6 +39,13 @@ ProfileField::ProfileField( QWidget *parent=0, const char* name=0 )
     init();
 }
 
+ProfileField::ProfileField( QWidget *parent, const char* name, QPointArray profile )
+    : QWidget( parent, name )
+{
+    init();
+    setProfile( profile );
+}
+
 void ProfileField::init()
 {
     // Some sane(?) settings
@@ -46,28 +53,34 @@ void ProfileField::init()
     m_samples=64;
     m_secsPerSample=60;
 
+    m_timeStart=0;
+    m_showSamples=m_samples;
+
+    emit timeStartChanged( m_timeStart );
+    emit showSamplesChanged( m_showSamples );
+
     m_numberFont = QFont( "Courier", 10, QFont::Light );
     m_numberFont.setFixedPitch( true );
-    m_legendFont = QFont( "Helvetica", 12, QFont::Light );
-
     m_numberFm = new QFontMetrics( m_numberFont );
+
+    m_legendFont = QFont( "Helvetica", 12, QFont::Light );
     m_legendFm = new QFontMetrics( m_legendFont );
 
-    m_timeFormat = MinSec;
+    m_timeFormat = Minutes;
 
     CHECK_PTR( m_numberFm );
     CHECK_PTR( m_legendFm );
 
-    m_backgroundColor=QColor( 250, 250, 200 );
-    m_gridPenColor=lightGray;
-    m_axesPenColor=black;
-    m_graphPenColor=black;
-    m_graphBrushColor=blue;
-    m_legendColor=black;
-    m_numberColor=blue;;
-
+    m_backgroundColor = QColor( 250, 250, 200 );
+    m_gridPenColor		= lightGray;
+    m_axesPenColor		= black;
+    m_graphPenColor		= black;
+    m_graphBrushColor	= blue;
+    m_legendColor			= black;
+    m_numberColor			= black;
 
     setPalette( QPalette( m_backgroundColor ) ); // Background color
+    setMinimumSize( minimumSize() );
 
     // Just to get rid of the warning:
     mainwidget_cvs_id+=0;
@@ -126,6 +139,28 @@ void ProfileField::setProfile( QPointArray profile )
     repaint( false );
 }
 
+void ProfileField::setTimeStart( int start )
+{
+    if ( start == m_timeStart )
+    {
+        return;
+    }
+
+    m_timeStart=start;
+    emit timeStartChanged( start );
+}
+
+void ProfileField::setShowSamples( int showSamples )
+{
+    if ( showSamples == m_showSamples )
+    {
+        return;
+    }
+
+    m_showSamples=showSamples;
+    emit timeStartChanged( showSamples );
+}
+
 /*
 || other functions
 */
@@ -138,34 +173,36 @@ QString ProfileField::sampleToTime( int sample )
 {
     ASSERT( m_secsPerSample!=0 );
 
+    int secs = sample * m_secsPerSample;
+
     QString timeString;
     QString hour,min,sec;
 
-    int iHour;
-    int secs = sample * m_secsPerSample;
+    int iMinutes = secs/60;
+    if ( secs%60 > 30 )
+    {
+        iMinutes++;
+    }
+
+    int iHour = iMinutes/60;
 
     switch ( m_timeFormat )
     {
-    case MinSec:
-        min=QString::number( secs/60 );
-        sec=QString::number( secs%60 );
-        timeString=min.rightJustify( 2, '0' )+":"+sec.rightJustify( 2, '0');
+    case Minutes:
+        min=QString::number( iMinutes );
+        timeString=min.rightJustify( 2, '0' );
         break;
-    case HourMinSec:
-        iHour=secs/(3600);
+    case HourMinutes:
         hour=QString::number( iHour );
-        secs-=iHour*3600;
-        min=QString::number( secs/60 );
-        sec=QString::number( secs%60 );
-        timeString=hour.rightJustify( 2, '0' )+":"+min.rightJustify( 2, '0' )+":"+sec.rightJustify( 2, '0' );
+        min=QString::number(  iMinutes-iHour*60 );
+        timeString=hour.rightJustify( 2, '0' )+":"+min.rightJustify( 2, '0' );
         break;
     default:
         // You shouldn't be here. Go away ;)
-        qWarning( "Warning - unhandled time format in sampleToString(): %d", m_timeFormat );
-        qWarning( "          Substituting mm:ss" );
-        min=QString::number( secs/60 );
-        sec=QString::number( secs%60 );
-        timeString=min.rightJustify( 2, '0' )+":"+sec.rightJustify( 2, '0' );
+        qWarning( "Warning - unhandled time format in sampleToTime(): %d", m_timeFormat );
+        qWarning( "          Substituting Minutes" );
+        min=QString::number( iMinutes );
+        timeString=min.rightJustify( 2, '0' );
     }
 
     return timeString;
@@ -252,23 +289,29 @@ void ProfileField::drawCoosy( QPainter* p )
 
     for ( int i=0; qRound( i*tick_distance_pixel ) < m_depthAxisRect.height(); i++ )
     {
+        // Depth
         QString number = QString::number( i*tick_distance_scaled );
         p->setPen( m_numberColor );
         p->drawText( m_origin.x() - TICK_SIZE - m_numberFm->width( number ),
                      m_origin.y() + qRound( i*tick_distance_pixel ) +m_numberFm->height()/2 -1,
                      number );
 
+        // Ticks
         p->setPen( m_axesPenColor );
         p->drawLine( m_origin.x() -TICK_SIZE,
                      m_origin.y() + qRound( i*tick_distance_pixel ),
                      m_origin.x() + 0,
                      m_origin.y() + qRound( i*tick_distance_pixel ) );
 
-        p->setPen( m_gridPenColor );
-        p->drawLine( m_origin.x() + 0,
-                     m_origin.y() + qRound( i*tick_distance_pixel ),
-                     m_origin.x() + m_timeAxisRect.width(),
-                     m_origin.y() + qRound( i*tick_distance_pixel ) );
+        // Grid
+        if ( i!=0 )  // don't draw over the axes
+        {
+            p->setPen( m_gridPenColor );
+            p->drawLine( m_origin.x() + 1,
+                         m_origin.y() + qRound( i*tick_distance_pixel ),
+                         m_origin.x() + m_timeAxisRect.width(),
+                         m_origin.y() + qRound( i*tick_distance_pixel ) );
+        }
     }
 
     /*
@@ -287,15 +330,29 @@ void ProfileField::drawCoosy( QPainter* p )
 
     for ( int i=0; qRound( i*tick_distance_pixel ) < m_timeAxisRect.width(); i++ )
     {
+        // Time
         QString number= sampleToTime( i*tick_distance_scaled );
-
+        p->setPen( m_numberColor );
         p->drawText( m_origin.x() + qRound( i*tick_distance_pixel ) -m_numberFm->width( number )/2 -1,
                      m_origin.y() - TICK_SIZE,
                      number );
+
+        // Ticks
+        p->setPen( m_axesPenColor );
         p->drawLine( m_origin.x() + qRound( i*tick_distance_pixel ),
                      m_origin.y() - TICK_SIZE,
                      m_origin.x() + qRound( i*tick_distance_pixel ),
                      m_origin.y() + 0 );
+
+        // Grid
+        if ( i!=0 )  // don't draw over the axes
+        {
+            p->setPen( m_gridPenColor );
+            p->drawLine( m_origin.x() + qRound( i*tick_distance_pixel ),
+                         m_origin.y() + 1,
+                         m_origin.x() + qRound( i*tick_distance_pixel ),
+                         m_origin.y() + m_depthAxisRect.height() );
+        }
     }
 }
 
@@ -327,3 +384,14 @@ void ProfileField::resizeEvent( QResizeEvent* )
     m_depthAxisRect = QRect( 0, m_origin.y(), m_origin.x()+TICK_SIZE/2+1, height()-m_origin.y()-BOTTOM_MARGIN );
 }
 
+QSize ProfileField::minimumSize() const
+{
+    QSize size( 6*m_legendFm->width( TIME_TEXT ),
+                3*m_legendFm->width( DEPTH_TEXT ) );
+    return size;
+}
+
+QSize ProfileField::sizeHint() const
+{
+    return minimumSize();
+}

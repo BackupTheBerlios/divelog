@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.7 2001/08/22 14:52:06 markus Exp $       *
+* CVS Id 	 : $Id: ProfileField.h,v 1.8 2001/08/25 15:46:33 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -25,8 +25,9 @@ public:
     || Constructors
     */
     ProfileField( QWidget *parent=0, const char* name=0 );
+    ProfileField( QWidget *parent, const char* name, QPointArray profile );
 
-    enum  TimeFormat{ ms, MinSec=ms, hms, HourMinSec=hms };
+    enum TimeFormat{ Minutes, HourMinutes };
 
     /*
     || Setting methots
@@ -39,11 +40,15 @@ public:
     int   samples() const { return m_samples; }
     int   secsPerSample() const { return m_secsPerSample; }
     TimeFormat timeFormat() const { return m_timeFormat; }
+    int   timeStart() const { return m_timeStart; }
+    int   showSamples() const { return m_showSamples; }
 
 		/*
 		|| other functions
 		*/
     QSizePolicy sizePolicy() const;
+    QSize minimumSize() const;
+    QSize sizeHint() const;
 
 public slots:
 
@@ -55,6 +60,9 @@ public slots:
     void setSecsPerSample( int secsPerSample );
     void setProfile( QPointArray profile );
     void setTimeFormat( TimeFormat timeFormat );
+    void setTimeStart( int timeStart );
+    void setShowSamples( int showSamples );
+
 
 signals:
 
@@ -66,6 +74,8 @@ signals:
     void samplesChanged( int );
     void secsPerSampleChanged( int );
     void timeFormatChanged( TimeFormat );
+    void timeStartChanged( int );
+    void showSamplesChanged( int );
 
 protected:
 
@@ -85,6 +95,9 @@ private:
     int   m_samples;       // Number of samples the computer made for this dive
     int   m_secsPerSample; // Number of seconds between two samples
 
+    int   m_timeStart;
+    int   m_showSamples;
+
     TimeFormat m_timeFormat;
 
     QPoint m_origin;
@@ -102,7 +115,6 @@ private:
     QColor m_graphBrushColor;
     QColor m_legendColor;
     QColor m_numberColor;
-
 
     QFontMetrics *m_numberFm;
     QFontMetrics *m_legendFm;
