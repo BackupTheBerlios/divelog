@@ -1,0 +1,54 @@
+drop table dive;
+create table dive (
+    number INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    date DATETIME NOT NULL,
+    diver_number INTEGER UNSIGNED NOT NULL,
+    place VARCHAR(100) NOT NULL,
+    location VARCHAR(100),
+    surface_intervall DOUBLE NOT NULL,
+    altitude_mode DOUBLE NOT NULL,
+#   profile BLOB, 
+#   log BLOB,
+    water_temperature DOUBLE NOT NULL,
+    partner_diver_number INTEGER NOT NULL,
+    weather VARCHAR(20),
+    sight   VARCHAR(20),
+    weight  FLOAT,
+    air_temperature DOUBLE,
+    dive_type VARCHAR(20),
+    filling_station_number INTEGER UNSIGNED NOT NULL,
+#   bottle_number INTEGER NOT NULL,    
+    UNIQUE ( date, diver_number ),
+    KEY ( date, diver_number )
+);
+
+drop table diver;
+create table diver (
+    number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(20),
+    last_name VARCHAR(30),
+    brevet VARCHAR(10),
+    street VARCHAR(40),
+    house_number VARCHAR(6),
+    zip INTEGER NOT NULL,
+    place VARCHAR(20),
+    phone VARCHAR(20),
+    email VARCHAR(130)
+);
+
+drop table divetype;
+create table divetype (
+    number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(20)
+);
+
+drop table filling_station;
+create table filling_station (
+    number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    stationname VARCHAR(20),
+    first_name  VARCHAR(20),
+    last_name   VARCHAR(30)
+);
+
+    
+    
