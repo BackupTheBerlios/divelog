@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.9 2001/12/12 09:31:55 markus Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.10 2001/12/21 12:43:57 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -11,7 +11,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.9 2001/12/12 09:31:55 markus Exp $";
+static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.10 2001/12/21 12:43:57 markus Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
@@ -68,34 +68,6 @@ void NewDiveComputerFrm::init()
 
     initDiverCombo();
 
-    /*
-    || Get divers from database -> QComboBox m_Owner
-    */
-    /*
-    DivelogDAO db;
-    try
-    {
-        vector<DiverVO> db_DiverList =db.diverList();
-
-        vector<DiverVO>::iterator i;
-
-        indexCoder.clear();
-        for ( i=db_DiverList.begin(); i!=db_DiverList.end(); i++ )
-        {
-            DiverVO diver( *i );
-            indexCoder.push_back( diver.number() );
-            m_Owner->insertItem( ( diver.first_name()+" "+diver.last_name() ).c_str() );
-
-            qDebug(" Diver = %s", diver.first_name().c_str() );
-        }
-    }
-    catch( DiverNotFoundException e )
-    {
-        cerr << e << endl;
-        // FIXME: open messagebox, maybe even better: open diver input dialog
-    }
-
-    */
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     newdivecomputerfrm_cvs_id+=0;
 }
@@ -108,7 +80,8 @@ void NewDiveComputerFrm::initDiverCombo()
     DivelogDAO db;
     try
     {
-        vector<DiverVO> db_DiverList =db.diverList();
+        DiverVO dummy;
+        vector<DiverVO> db_DiverList =db.searchDiver( dummy, "0000000000" );  // dump the whole table
 
         vector<DiverVO>::iterator i;
 
@@ -128,6 +101,11 @@ void NewDiveComputerFrm::initDiverCombo()
         cerr << e << endl;
         // FIXME: open messagebox, maybe even better: open diver input dialog
     }
+}
+
+unsigned int NewDiveComputerFrm::diver_number() const
+{
+    return indexCoder[ m_Owner->currentItem() ];
 }
 
 /*  
@@ -170,7 +148,6 @@ void NewDiveComputerFrm::showHelp()
 
 void NewDiveComputerFrm::addDiverDlg()
 {
-    qWarning( "NewDiveComputerFrm::addDiverDlg() not yet implemented!" );
     // ((MainWidget)(this->parent())).dbNewDiver(); // This doesn't work (see below)
 
     /*
@@ -208,6 +185,5 @@ void NewDiveComputerFrm::addDiverDlg()
         }
     }
     initDiverCombo();
-
 }
 

@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.23 2001/12/05 06:39:08 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.24 2001/12/21 12:43:57 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -33,6 +33,7 @@ class NewFillingStationFrm;
 class NewDiveTypeFrm;
 class NewDiveComputerFrm;
 class InfoAreaFrm;
+class DiveComputerVO;
 
 class MainWidget : public QMainWindow
 {
@@ -50,6 +51,7 @@ protected slots:
     void dbNewFillingStation();
     void dbNewDiveType();
     void dbNewDiveComputer();
+    void dbNewDiveComputer( const DiveComputerVO& diveComputer );
 
     /*
     || Settings Menu

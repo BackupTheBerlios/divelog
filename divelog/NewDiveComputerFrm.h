@@ -14,6 +14,8 @@ public:
                         QWidget* parent = 0, const char* name = 0);
     ~NewDiveComputerFrm();
 
+    unsigned int diver_number() const;
+
 protected slots:
     void showHelp();
     void addDiverDlg();

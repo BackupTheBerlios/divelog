@@ -1,20 +1,21 @@
 /************************************************************************************
 * Filename : DiverNotFoundException.cpp																              *
-* CVS Id   : $Id: DiverNotFoundException.cpp,v 1.1 2001/12/01 19:24:19 markus Exp $ *
+* CVS Id   : $Id: DiverNotFoundException.cpp,v 1.2 2001/12/21 12:43:56 markus Exp $ *
 * --------------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Divecr couldn't            *
 *                    be identified.                                                 *
 * Owner            : Markus Grunwald                                                *
 * Date of Creation : Thu Nov 15 2001                                                *
 * --------------------------------------------------------------------------------- *
-* To Do List :                                                                      *
+* To Do List :  Just incapsulate (inherit?) a DiverVO ...                           *
 * --------------------------------------------------------------------------------- *
 * Notes :                                                                           *
 *************************************************************************************/
-static char *DiverNotFoundException_cvs_id="$Id: DiverNotFoundException.cpp,v 1.1 2001/12/01 19:24:19 markus Exp $";
+static char *DiverNotFoundException_cvs_id="$Id: DiverNotFoundException.cpp,v 1.2 2001/12/21 12:43:56 markus Exp $";
 
 #include "DiverNotFoundException.h"
 #include "DivelogDAOException.h"
+#include "DiverVO.h"
 #include <iostream>
                                                
 DiverNotFoundException::DiverNotFoundException( const unsigned int& number=0,
@@ -39,6 +40,21 @@ DiverNotFoundException::DiverNotFoundException( const unsigned int& number=0,
     m_place        = place;
     m_phone        = phone;
     m_email        = email;
+}
+
+DiverNotFoundException::DiverNotFoundException( const DiverVO& diver )
+: DivelogDAOException()
+{
+    m_number       = diver.number();
+    m_first_name   = diver.first_name();
+    m_last_name    = diver.last_name();
+    m_brevet       = diver.brevet();
+    m_street       = diver.street();
+    m_house_number = diver.house_number();
+    m_zip          = diver.zip();
+    m_place        = diver.place();
+    m_phone        = diver.phone();
+    m_email        = diver.email();
 }
 
 unsigned int DiverNotFoundException::number() const

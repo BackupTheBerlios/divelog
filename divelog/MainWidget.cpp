@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.41 2001/12/06 12:45:00 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.42 2001/12/21 12:43:56 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.41 2001/12/06 12:45:00 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.42 2001/12/21 12:43:56 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -30,6 +30,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.41 2001/12/06 12:4
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DiveTypeVO.h"
+#include "DiveComputerVO.h"
 #include "FillingStationVO.h"
 #include "DiveComputerNotFoundException.h"
 #include "DivelogDAOException.h"
@@ -235,6 +236,10 @@ void MainWidget::dbImport()
         catch ( DiveComputerNotFoundException e )
         {
             cerr << endl << e << endl;
+
+            DiveComputerVO diveComputer( e.serialNumber(), 0, e.model() );
+            dbNewDiveComputer( diveComputer );
+/*
             int result=0;
             NewDiveComputerFrm newDiveComputerFrm( e.serialNumber().c_str() ,
                                                    e.model().c_str() ,
@@ -249,6 +254,7 @@ void MainWidget::dbImport()
                 qDebug( "Dive Computer Model:\t%s", newDiveComputerFrm.m_ComputerName->text().latin1() );
                 qDebug( "Dive Computer Owner:\t%d", newDiveComputerFrm.m_Owner->currentItem() );
             }
+*/
         }
     }
 }
@@ -347,16 +353,42 @@ void MainWidget::dbNewDiveType()
 
 void MainWidget::dbNewDiveComputer()
 {
+    DiveComputerVO empty;
+    dbNewDiveComputer( empty );
+}
+
+void MainWidget::dbNewDiveComputer( const DiveComputerVO& diveComputer )
+{
     int result=0;
-    NewDiveComputerFrm newDiveComputerFrm( "Test", 0, 0 );
+
+    NewDiveComputerFrm newDiveComputerFrm( diveComputer.serial_number().c_str(),
+                                           diveComputer.name().c_str(),
+                                           this,
+                                           "newDiveComputer" );
+
 
     result=newDiveComputerFrm.exec();
-    qDebug( "NewDiveComputerFrm result=%d", result );
+    qDebug( "NewDiveComputerFrm->result=%d", result );
     if ( result )
     {
-        qDebug( "Dive Computer:\t%s", newDiveComputerFrm.m_SerialNumber->text().latin1() );
-        qDebug( "Owner:\t%d %s", newDiveComputerFrm.m_Owner->currentItem(), newDiveComputerFrm.m_Owner->currentText().latin1() );
+        qDebug( "Serial Number:\t%s", 						newDiveComputerFrm.m_SerialNumber->text().latin1() );
+        qDebug( "Owner Number (combo-box):\t%d",  newDiveComputerFrm.m_Owner->currentItem() );
+        qDebug( "Owner Number (decoded):\t%d",    newDiveComputerFrm.diver_number() );
+        qDebug( "Computer Name:\t%s",    					newDiveComputerFrm.m_ComputerName->text().latin1() );
 
+        DiveComputerVO diveComputer( newDiveComputerFrm.m_SerialNumber->text().latin1(),
+                                     newDiveComputerFrm.diver_number(),
+                                     newDiveComputerFrm.m_ComputerName->text().latin1()
+                                   );
+        DivelogDAO db;
+        try
+        {
+            db.insertDiveComputer( diveComputer );
+        }
+        catch( DivelogDAOException e )  
+        {
+            cerr << e << endl;
+        }
     }
 }
 

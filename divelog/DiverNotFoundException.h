@@ -1,13 +1,13 @@
 /**********************************************************************************
 * Filename : DiverNotFoundException.h																					    *
-* CVS Id   : $Id: DiverNotFoundException.h,v 1.1 2001/12/01 19:24:20 markus Exp $ *
+* CVS Id   : $Id: DiverNotFoundException.h,v 1.2 2001/12/21 12:43:56 markus Exp $ *
 * ------------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Divecomputer couldn't    *
 *                    be identified.                                               *
 * Owner            : Markus Grunwald                                              *
 * Date of Creation : Thu Nov 15 2001                                              *
 * ------------------------------------------------------------------------------- *
-* To Do List :                                                                    *
+* To Do List : Just incapsulate (inherit?) a DiverVO ...                          *
 * ------------------------------------------------------------------------------- *
 * Notes :                                                                         *
 **********************************************************************************/
@@ -18,6 +18,7 @@
 #include <string>
 
 class ostream;
+class DiverVO;
 
 class DiverNotFoundException : public DivelogDAOException
 {
@@ -33,6 +34,8 @@ public:
                             const string& place="",
                             const string& phone="",
                             const string& email="" );
+
+    DiverNotFoundException( const DiverVO& diver );
 
     friend ostream& operator << (ostream& os, const DiverNotFoundException e);
 
