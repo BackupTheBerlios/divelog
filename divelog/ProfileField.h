@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.8 2001/08/25 15:46:33 markus Exp $       *
+* CVS Id 	 : $Id: ProfileField.h,v 1.9 2001/09/05 17:31:28 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -102,11 +102,11 @@ private:
 
     QPoint m_origin;
 
-    QRect m_timeAxisRect;
-    QRect m_depthAxisRect;
+    QRect  m_timeAxisRect;
+    QRect  m_depthAxisRect;
 
-    QFont m_numberFont;
-    QFont m_legendFont;
+    QFont  m_numberFont;
+    QFont  m_legendFont;
 
     QColor m_backgroundColor;
     QColor m_gridPenColor;

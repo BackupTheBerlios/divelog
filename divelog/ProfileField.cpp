@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.11 2001/09/05 15:58:34 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.12 2001/09/05 17:31:28 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.11 2001/09/05 15:58:34 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.12 2001/09/05 17:31:28 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -219,8 +219,10 @@ void ProfileField::drawProfile( QPainter* p )
     CHECK_PTR( p );
     ASSERT( !m_profile.isEmpty() );
 
-    float depth_scale=m_depthAxisRect.height()/(10*m_depth);   // a little helper
-    float time_scale=m_timeAxisRect.width()/m_showSamples;    // dito
+    float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);   // a little helper
+    float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1);    // dito
+
+    qDebug( "time_scale=%f", time_scale );
 
     p->save();
     p->translate( m_origin.x(), m_origin.y() );
@@ -239,7 +241,6 @@ void ProfileField::drawCoosy( QPainter* p )
     ASSERT( m_showSamples>=3 );
 
     float depth_scale=m_depthAxisRect.height()/m_depth;   // a little helper
-    float time_scale=m_timeAxisRect.width()/m_showSamples;    // dito
 
     /*
     || Draw the Legend
@@ -283,19 +284,19 @@ void ProfileField::drawCoosy( QPainter* p )
 
     // tick distance in "real-world-scale".
     // We round here to get sane labels like "5" in stead of "5.11"
-    int   tick_distance_scaled = qRound( (float)m_numberFm->height() * TICK_DISTANCE_FACTOR / depth_scale );
-    ASSERT( tick_distance_scaled>0 );
+    float   tick_unit = qRound( (float)m_numberFm->height() * TICK_DISTANCE_FACTOR / depth_scale );
+    ASSERT( tick_unit>0 );
 
     // tick distance in screen-scale
     // We round "on demand" to get exact placement
-    float tick_distance_pixel = tick_distance_scaled*depth_scale;
+    float tick_distance_pixel = tick_unit*depth_scale;
 
     p->setFont( m_numberFont );
 
     for ( int i=0; qRound( i*tick_distance_pixel ) < m_depthAxisRect.height(); i++ )
     {
         // Depth
-        QString number = QString::number( i*tick_distance_scaled );
+        QString number = QString::number( i*tick_unit );
         p->setPen( m_numberColor );
         p->drawText( m_origin.x() - TICK_SIZE - m_numberFm->width( number ),
                      m_origin.y() + qRound( i*tick_distance_pixel ) +m_numberFm->height()/2 -1,
@@ -322,26 +323,22 @@ void ProfileField::drawCoosy( QPainter* p )
     /*
     || Draw Time-Labels ( quite as above... )
     */
+    float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);    // dito
 
-    // tick distance in "real-world-scale".
-    // We round here to get sane labels like "5" in stead of "5.11"
-
-    // FIXME: BUG ! tick_distance_scaled== m_timeAxisRect->width()/tick_distance_scaled
-    //              or wrong name (tick_unit may be better)...
-    //							and wrong rounding...
-    tick_distance_scaled = qRound( (float)m_numberFm->width( sampleToTime( m_showSamples ) ) * TICK_DISTANCE_FACTOR / time_scale );
-    qDebug( "m_showSamples=%i", m_showSamples );
-    qDebug( "tick_distance_scaled=%d", tick_distance_scaled );
-    ASSERT( tick_distance_scaled>0 );
+    // one tick is each tick_unit
+    tick_unit = (float)m_numberFm->width( sampleToTime( m_showSamples ) ) * TICK_DISTANCE_FACTOR / time_scale;
+    qDebug( "m_showSamples\t=%i", m_showSamples );
+    qDebug( "tick_unit\t=%f", tick_unit );
+    ASSERT( tick_unit>0 );
 
     // tick distance in screen-scale
     // We round "on demand" to get exact placement
-    tick_distance_pixel = tick_distance_scaled*time_scale;
+    tick_distance_pixel = tick_unit*time_scale;
 
     for ( int i=0; qRound( i*tick_distance_pixel ) < m_timeAxisRect.width(); i++ )
     {
         // Time
-        QString number= sampleToTime( i*tick_distance_scaled );
+        QString number= sampleToTime( qRound( i*tick_unit ) );
         p->setPen( m_numberColor );
         p->drawText( m_origin.x() + qRound( i*tick_distance_pixel ) -m_numberFm->width( number )/2 -1,
                      m_origin.y() - TICK_SIZE,
