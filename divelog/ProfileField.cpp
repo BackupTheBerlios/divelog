@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.24 2001/11/19 19:37:05 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.25 2002/02/05 20:10:15 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.24 2001/11/19 19:37:05 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.25 2002/02/05 20:10:15 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -371,26 +371,28 @@ void ProfileField::drawProfile( QPainter* p )
     ASSERT( m_showSamples>=3 );
 
     CHECK_PTR( p );
-    ASSERT( !m_profile.isEmpty() );
 
-    float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);    // a little helper
-    float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1); // dito
+    if ( !m_profile.isEmpty() )
+    {
+        float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);    // a little helper
+        float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1); // dito
 
-    p->save();
+        p->save();
 
-    // move the first sample to upper left corner of the coosy
-    p->translate( m_origin.x()-timeStart()*time_scale, m_origin.y() );
+        // move the first sample to upper left corner of the coosy
+        p->translate( m_origin.x()-timeStart()*time_scale, m_origin.y() );
 
-    // scale the coosy to match the profile
-    p->scale( time_scale, depth_scale );
+        // scale the coosy to match the profile
+        p->scale( time_scale, depth_scale );
 
-    p->setPen( m_graphPenColor );
-    p->setBrush( m_graphBrushColor );
+        p->setPen( m_graphPenColor );
+        p->setBrush( m_graphBrushColor );
 
-    // now draw the profile (at last!)
-    p->drawPolyline( m_profile, timeStart(), m_showSamples );
+        // now draw the profile (at last!)
+        p->drawPolyline( m_profile, timeStart(), m_showSamples );
 
-    p->restore();
+        p->restore();
+    }
 }
 
 
@@ -537,7 +539,7 @@ void ProfileField::paintEvent( QPaintEvent* )
 //       QPaintEvent is ignored
 // Parameters  : QPaintEvent - ignored
 // -------------------------------------------------
-{                                     
+{
     QRect    canvasSize=rect();
     QPixmap  pix( size() );          		    // Pixmap for double-buffering
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
@@ -601,37 +603,40 @@ void ProfileField::mouseMoveEvent( QMouseEvent* e )
 // -------------------------------------------------
 {
 
-    if ( m_graphRect.contains( e->pos() ) )
-    {                                       // the mouse is in the graph area
-        QString depth;
+    if ( !m_profile.isEmpty() )
+    {
+        if ( m_graphRect.contains( e->pos() ) )
+        {                                       // the mouse is in the graph area
+            QString depth;
 
-        float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
-        int sample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
+            float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
+            int sample=qRound( (e->x()-m_origin.x() )/time_scale )+timeStart();
 
-        // convert depth to string
-        depth=QString::number( m_profile.point( sample ).y()/10.0, 'f', 1 );
+            // convert depth to string
+            depth=QString::number( m_profile.point( sample ).y()/10.0, 'f', 1 );
 
-        if ( m_validMousePress )
-        {
-            // show the selection rectangle
-            // while mouse is pressed
-            if ( abs( sample-m_mousePressSample ) >=3 )
+            if ( m_validMousePress )
             {
-                // show only if the mouse has moved for at least
-                // three samples (otherwise, we treat it as click)
-                m_mouseSelectionRect.setRight( e->x() );
-                repaint( FALSE );
+                // show the selection rectangle
+                // while mouse is pressed
+                if ( abs( sample-m_mousePressSample ) >=3 )
+                {
+                    // show only if the mouse has moved for at least
+                    // three samples (otherwise, we treat it as click)
+                    m_mouseSelectionRect.setRight( e->x() );
+                    repaint( FALSE );
 
+                }
             }
-        }
 
-        emit mouseTimeChanged( sampleToTime( sample )  );
-        emit mouseDepthChanged( depth.rightJustify( 4 ) );
-    }
-    else
-    {   // clear the fields when the mouse is outside the graph area
-        emit mouseTimeChanged( "" );
-        emit mouseDepthChanged( "" );
+            emit mouseTimeChanged( sampleToTime( sample )  );
+            emit mouseDepthChanged( depth.rightJustify( 4 ) );
+        }
+        else
+        {   // clear the fields when the mouse is outside the graph area
+            emit mouseTimeChanged( "" );
+            emit mouseDepthChanged( "" );
+        }
     }
 }
 

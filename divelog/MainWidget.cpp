@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.44 2002/02/04 10:07:44 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.45 2002/02/05 20:10:15 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.44 2002/02/04 10:07:44 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.45 2002/02/05 20:10:15 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -133,7 +133,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     */
 
     m_profileBox = new QVBox( m_s2 ,"m_profileBox" );
-    m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
+    //m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
+    m_profile = new ProfileField( m_profileBox, "m_profile" );
 
     /*
     || Set up Scrollbars

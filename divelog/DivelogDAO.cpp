@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.18 2002/02/04 12:38:41 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.19 2002/02/05 20:10:15 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.18 2002/02/04 12:38:41 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.19 2002/02/05 20:10:15 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -21,6 +21,7 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.18 2002/02/04 12:38:41 m
 #include "DivelogDAOException.h"
 #include "DiveComputerNotFoundException.h"
 #include "DiverNotFoundException.h"
+#include "DiveProfileVO.h"
 
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
@@ -150,6 +151,9 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
                     // water_temperature
                     << udcfData->groupList[group].diveList[dive].temperature << " )";
                 //                      << endl;
+
+                DiveProfileVO profile( udcfData->groupList[group].diveList[dive].sampleList,
+                                       udcfData->groupList[group].diveList[dive].sampleIndex );
 
                 try
                 {
