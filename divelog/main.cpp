@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : main.cpp                                                         *
-* CVS Id 	 : $Id: main.cpp,v 1.5 2001/08/20 14:15:32 markus Exp $             *
+* CVS Id 	 : $Id: main.cpp,v 1.6 2001/08/26 18:47:57 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Main class for divelog program (to be kept small)        *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -15,7 +15,7 @@
 #include <qapplication.h>
 #include "mainwidget.h"
 
-static const char *main_cvs_id="$Id: main.cpp,v 1.5 2001/08/20 14:15:32 markus Exp $";
+static const char *main_cvs_id="$Id: main.cpp,v 1.6 2001/08/26 18:47:57 markus Exp $";
 
 int main( int argc, char* argv[] )
 {
@@ -28,7 +28,7 @@ int main( int argc, char* argv[] )
     a.setMainWidget( &mw );
     mw.show();
 
-    // just to get rid of the warning:
+    // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     main_cvs_id+=0;
 
     return a.exec();

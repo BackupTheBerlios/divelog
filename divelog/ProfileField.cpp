@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.8 2001/08/25 15:46:33 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.9 2001/08/26 18:47:57 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.8 2001/08/25 15:46:33 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.9 2001/08/26 18:47:57 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -82,7 +82,7 @@ void ProfileField::init()
     setPalette( QPalette( m_backgroundColor ) ); // Background color
     setMinimumSize( minimumSize() );
 
-    // Just to get rid of the warning:
+    // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     mainwidget_cvs_id+=0;
 }
 

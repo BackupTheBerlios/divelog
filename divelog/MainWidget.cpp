@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.7 2001/08/25 15:46:33 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.8 2001/08/26 18:47:57 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -17,7 +17,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.7 2001/08/25 15:46:33 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.8 2001/08/26 18:47:57 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -104,8 +104,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 
     setCentralWidget( s1 );
 
-    // just to get rid of the warning:
-    // mainwidget_cvs_id+=0;
+    // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
+     mainwidget_cvs_id+=0;
 }
 
 /*
