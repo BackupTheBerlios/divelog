@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.2 2001/11/09 14:13:26 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.3 2001/11/12 22:05:35 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -11,9 +11,9 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.2 2001/11/09 14:13:26 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.3 2001/11/12 22:05:35 markus Exp $";
 
-#include "divelogdao.h"
+//#include "divelogdao.h"
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
 #include <vector>
@@ -22,17 +22,38 @@ static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.2 2001/11/09 14:13:26 ma
 #include <qglobal.h>
 #include <UDCF.h>
 
+// FIXME: move this info to a better place
+#define MYSQL_DATABASE "divelog-test"
+#define MYSQL_HOST   "localhost"
+#define MYSQL_USER   "markus"
+#define MYSQL_PASSWD "ArPPCa"
+
+
 sql_create_3 (diveComputer,    			// table name
               1, 3,             		// compare by field, nr of attributes
               string, serial_number,
               int, diver_number,
               string, name )
 
+class DivelogDAO
+{
+
+public:
+    DivelogDAO( char* db=MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD );
+    ~DivelogDAO();
+
+    void importUDCFFile( char* filename );
+
+private:
+
+    Connection* m_con;
+
+};
 
 
 DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD )
 {
-    m_con = new Connection( db, host, user, passwd );
+    Connection* m_con = new Connection( db, host, user, passwd );
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     DivelogDAO_cvs_id+=0;
@@ -40,10 +61,10 @@ DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* u
 
 DivelogDAO::~DivelogDAO()
 {
-    delete m_con;
+//    delete m_con;
 }
 
-void DivelogDAO::importUDCFFile( char* filename )
+void DivelogDAO::importUDCFFile( const char* filename )
 {
         UDCF* udcfData=UDCFReadFile( filename );
         CHECK_PTR( udcfData );
@@ -70,11 +91,12 @@ void DivelogDAO::importUDCFFile( char* filename )
         query.storein( db_diveComputers );
 
         vector < diveComputer >::iterator i;
+
         for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
         {
-            qDebug( "mysql: divecomputer serial number =%s", i->serial_number.latin1() );
-            qDebug( "mysql: divecomputer diver  number =%s", i->diver_number.latin1() );
-            qDebug( "mysql: divecomputer name          =%s", i->name.latin1() );
+            qDebug( "mysql: divecomputer serial number =%s", i->serial_number.c_str() );
+            qDebug( "mysql: divecomputer diver  number =%d", i->diver_number );
+            qDebug( "mysql: divecomputer name          =%s", i->name.c_str() );
         }
 
         int count=0;

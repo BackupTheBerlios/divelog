@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.30 2001/11/09 14:13:26 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.31 2001/11/12 22:05:35 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.30 2001/11/09 14:13:26 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.31 2001/11/12 22:05:35 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
@@ -222,7 +222,7 @@ void MainWidget::dbImport()
     {
         qDebug( "Filename: %s", s.latin1() );
         DivelogDAO db;
-        db.importUDCFFile( s.latin1()  )
+        db.importUDCFFile( s.latin1() )
     }
 }
 

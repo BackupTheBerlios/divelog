@@ -1,8 +1,8 @@
-#ifndef CHANGE_ME
-#define CHANGE_ME
+#ifndef DIVELOGDAO_H
+#define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.2 2001/11/09 14:13:26 markus Exp $                                                             *
+* CVS Id   : $Id: DivelogDAO.h,v 1.3 2001/11/12 22:05:35 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -23,22 +23,16 @@ class Connection;
 
 class DivelogDAO
 {
+
 public:
     DivelogDAO( char* db=MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD );
     ~DivelogDAO();
 
-    void importUDCFFile( char* filename );
+    void importUDCFFile( const char* filename );
+
 private:
-     Connection* m_con;
-/*
-=================================================================
-    UDCF Data
-=================================================================
 
+    Connection* m_con;
 
-    UDCF* 				m_udcfData;
-    UDCFGroup*    m_udcfGroup;
-    UDCFDive*     m_udcfDive;
-*/
 };
 #endif
