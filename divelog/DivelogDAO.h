@@ -2,7 +2,7 @@
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.12 2001/12/21 12:43:56 markus Exp $         *
+* CVS Id   : $Id: DivelogDAO.h,v 1.13 2002/02/04 12:38:41 markus Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -15,8 +15,8 @@
 
 // FIXME: move this info to a better place
 #define MYSQL_DATABASE "divelog-test"
-#define MYSQL_HOST   "localhost"
-//#define MYSQL_HOST   "zaphod"
+//#define MYSQL_HOST   "localhost"
+#define MYSQL_HOST   "zaphod"
 #define MYSQL_USER   "markus"
 #define MYSQL_PASSWD "ArPPCa"
 

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.17 2002/02/04 10:24:28 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.18 2002/02/04 12:38:41 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.17 2002/02/04 10:24:28 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.18 2002/02/04 12:38:41 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -56,7 +56,7 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
 
     qDebug( "test=%s", test );
 
-    UDCF* udcfData=UDCFReadFile( test );
+    UDCF* udcfData=UDCFReadFile( test );    //
     CHECK_PTR( udcfData );
 
     qDebug( "Version:\t%ld", udcfData->version );
@@ -73,16 +73,19 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
     || First look up if we know that dive-computer
     */
 
+
     try
     {
         Connection con( use_exceptions );
         if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
         {
             // FIXME: Better errormessage
+            UDCFFree( udcfData );
             throw DivelogDAOException( "Could not connect to MySQL Server." );
         }
-        
+
         Query query = con.query();
+        Row row;
         query << "select * from divecomputer where serial_number=\"" << udcfData->serialID <<"\"";
     
         Result db_diveComputers = query.store(); // Database result
@@ -92,52 +95,89 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
                  strange errors...
         */
     
-        Row row;
 
-        if ( !db_diveComputers.empty() )
+        if ( db_diveComputers.empty() )
         {
-            Result::iterator i;
-            for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
-            {
-                row=*i;                                          // better use index number
-                qDebug( "mysql: divecomputer serial number =%s", row["serial_number"].c_str() );
-//                qDebug( "mysql: divecomputer diver  number =%d", row["diver_number"] );
-                qDebug( "mysql: divecomputer name          =%s", row["name"].c_str() );
-            }
-        }
-        else
-        {
+            UDCFFree( udcfData );
             throw DiveComputerNotFoundException(  udcfData->serialID,
                                                   udcfData->model,
                                                   udcfData->personalInfo );
         }
+        else
+        {
+            Result::iterator i;
+            for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
+            {                           // FIXME: What to do on multiple entries ?
+                row=*i;                                          // better use index number
+                qDebug( "mysql: divecomputer serial number =%s", row["serial_number"].c_str() );
+                //qDebug( "mysql: divecomputer diver  number =%d", row["diver_number"] );
+                qDebug( "mysql: divecomputer name          =%s", row["name"].c_str() );
+            }
+        }
 
         /*
         || Now we know the Divecomputer
+        || so we iterate through all dives and insert them into the database
         */
 
-        4
-
         int count=0;
-    
-        for ( int group=0; group<=udcfData->groupIndex; group++)
+
+        for ( int group=0; group<=udcfData->groupIndex; group++)  // iterate through groups
         {
             for ( int dive=0; dive<=udcfData->groupList[group].diveIndex; dive++ )
-            {
-    
-                qDebug( "#%04d Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d",
-                        count, group, dive,
-                        udcfData->groupList[group].diveList[dive].day,
-                        udcfData->groupList[group].diveList[dive].month,
-                        udcfData->groupList[group].diveList[dive].year,
-                        udcfData->groupList[group].diveList[dive].hour,
-                        udcfData->groupList[group].diveList[dive].minute );
-    
+            {                                                     // iterate through dives
+
+                query << "insert into dive ( date, sync, diver_number, surface_intervall, "
+                    <<									  "altitude_mode, water_temperature ) values ( "
+                    // date
+                    << "\""
+                    << udcfData->groupList[group].diveList[dive].year  << "-"
+                    << udcfData->groupList[group].diveList[dive].month << "-"
+                    << udcfData->groupList[group].diveList[dive].day   << " "
+                    << udcfData->groupList[group].diveList[dive].hour   << ":"
+                    << udcfData->groupList[group].diveList[dive].minute  << ":00\", "
+                    // sync = has this dive to be synchronised with manual added data ?
+                    //        1 = synchron, no need to synchronize
+                    //        0 = not synchron, need to synchronize
+                    // FIXME: unhandled yet, so handle it !
+                    << 1 << ", "
+                    // diver_number
+                    << row["diver_number"] << ", "    // FIXME: What to do on multple entries (s.o.) ?
+                    // surface_intervall
+                    << udcfData->groupList[group].diveList[dive].surfaceInterval << ", "
+                    // altitude_mode
+                    << udcfData->groupList[group].diveList[dive].altitude << ", "
+                    // water_temperature
+                    << udcfData->groupList[group].diveList[dive].temperature << " )";
+                //                      << endl;
+
+                try
+                {
+                    query.store();
+
+                    qDebug( "#%04d Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d sampleSize:%i sampleIndex:%i",
+                            count, group, dive,
+                            udcfData->groupList[group].diveList[dive].day,
+                            udcfData->groupList[group].diveList[dive].month,
+                            udcfData->groupList[group].diveList[dive].year,
+                            udcfData->groupList[group].diveList[dive].hour,
+                            udcfData->groupList[group].diveList[dive].minute,
+                            udcfData->groupList[group].diveList[dive].sampleSize,
+                            udcfData->groupList[group].diveList[dive].sampleIndex );
+                }
+                catch (BadQuery &er)
+                {
+                    cerr << "Error: " << er.error << endl;
+                }
+                catch (BadConversion &er)
+                { // handle bad conversions
+                    cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
+                        << er.type_name << "\"." << endl;
+                }
+
                 count++;
-    
             }
         }
-        UDCFFree( udcfData );
     }
     catch (BadQuery &er)
     {
@@ -146,8 +186,9 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
     catch (BadConversion &er)
     { // handle bad conversions
         cerr << "Error: Tried to convert \"" << er.data << "\" to a \""
-             << er.type_name << "\"." << endl;
+            << er.type_name << "\"." << endl;
     }
+    UDCFFree( udcfData );
 }
 
 // -------------------------------------------------
