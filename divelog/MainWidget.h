@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.19 2001/10/26 11:57:30 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.20 2001/10/31 16:07:18 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -61,8 +61,6 @@ private:
     QMenuBar*  m_main_mn;            // The main menu
     QSplitter* m_s1;                 // The vertical splitter
     QSplitter* m_s2;                 // The embedded horizontal splitter
-
-    QLabel* m_l1;           // DEBUG Labels
 
     QVBox*  			m_profileBox;      // The vertical box for the profile area
     ProfileField* m_profile;         // The profile itself

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdiverfrm.cpp                                                  *
-* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.2 2001/10/24 05:53:19 markus Exp $      *
+* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.3 2001/10/31 16:07:18 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Form for entering information about a diver.             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,10 +10,13 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.2 2001/10/24 05:53:19 markus Exp $";
+static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.3 2001/10/31 16:07:18 markus Exp $";
 #include "newdiverfrm.h"
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qmessagebox.h>
 
-/* 
+/*
  *  Constructs a NewDiverFrm which is a child of 'parent', with the 
  *  name 'name' and widget flags set to 'f' 
  *
@@ -23,8 +26,47 @@ static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.2 2001/10/24 05:
 NewDiverFrm::NewDiverFrm( QWidget* parent,  const char* name, bool modal, WFlags fl )
     : NewDiverBaseFrm( parent, name, modal, fl )
 {
+    init();
+}
+
+// -------------------------------------------------
+// Use :
+// Parameters  :
+// Outputs     :
+// Returns     :
+// Side-Effects:
+// -------------------------------------------------
+NewDiverFrm::NewDiverFrm( const QString& firstName, QWidget* parent = 0, const char* name = 0)
+		: NewDiverBaseFrm( parent, name, TRUE )
+{
+    init();
+    m_FirstName->setText( firstName );
+}
+
+void NewDiverFrm::init()
+{
+    /*
+    || Change keyvalue-labels to red
+    */
+
+    QPalette pal = m_firstNameLbl->palette();
+    pal.setColor( QColorGroup::Foreground, red );
+    m_firstNameLbl->setPalette( pal );
+
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     newdiverfrm_cvs_id+=0;
+}
+
+void NewDiverFrm::accept()
+{
+    if ( m_FirstName->text().isEmpty() )
+    {
+        QMessageBox::information( this, "Empty Field", "The field \"First Name\" must not be empty!" );
+    }
+    else
+    {
+        NewDiverBaseFrm::accept();
+    }
 }
 
 /*  

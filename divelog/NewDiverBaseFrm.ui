@@ -14,7 +14,7 @@ Database</comment>
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>298</width>
+            <width>294</width>
             <height>371</height>
         </rect>
     </property>
@@ -49,7 +49,7 @@ Database</comment>
             <class>QLabel</class>
             <property stdset="1">
                 <name>name</name>
-                <cstring>TextLabel2</cstring>
+                <cstring>m_TextLabel2</cstring>
             </property>
             <property stdset="1">
                 <name>frameShape</name>
@@ -116,7 +116,7 @@ Database</comment>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel3</cstring>
+                                <cstring>m_firstNameLbl</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -128,14 +128,14 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>FirstName</cstring>
+                                <cstring>m_FirstName</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel4</cstring>
+                                <cstring>m_LastNameLbl</cstring>
                             </property>
                             <property stdset="1">
                                 <name>frameShape</name>
@@ -155,7 +155,7 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>LastName</cstring>
+                                <cstring>m_LastName</cstring>
                             </property>
                             <property>
                                 <name>hAlign</name>
@@ -168,7 +168,7 @@ Database</comment>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel5</cstring>
+                                <cstring>m_TextLabel5</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -180,14 +180,14 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>Brevet</cstring>
+                                <cstring>m_Brevet</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel6</cstring>
+                                <cstring>m_TextLabel6</cstring>
                             </property>
                             <property stdset="1">
                                 <name>frameShape</name>
@@ -207,7 +207,7 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>Street</cstring>
+                                <cstring>m_Street</cstring>
                             </property>
                             <property>
                                 <name>hAlign</name>
@@ -220,7 +220,7 @@ Database</comment>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel7</cstring>
+                                <cstring>m_TextLabel7</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -228,14 +228,14 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>Zip</cstring>
+                                <cstring>m_Zip</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel8</cstring>
+                                <cstring>m_TextLabel8</cstring>
                             </property>
                             <property stdset="1">
                                 <name>frameShape</name>
@@ -255,7 +255,7 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>Place</cstring>
+                                <cstring>m_Place</cstring>
                             </property>
                             <property>
                                 <name>hAlign</name>
@@ -268,7 +268,7 @@ Database</comment>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel9</cstring>
+                                <cstring>m_TextLabel9</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -276,14 +276,14 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>Phone</cstring>
+                                <cstring>m_Phone</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel10</cstring>
+                                <cstring>m_TextLabel10</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -291,7 +291,7 @@ Database</comment>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>EMail</cstring>
+                                <cstring>m_EMail</cstring>
                             </property>
                         </widget>
                     </vbox>
@@ -315,56 +315,56 @@ Database</comment>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>FirstName</cstring>
+                                <cstring>m_FirstName</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>LastName</cstring>
+                                <cstring>m_LastName</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>Brevet</cstring>
+                                <cstring>m_Brevet</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>Street</cstring>
+                                <cstring>m_Street</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>Zip</cstring>
+                                <cstring>m_Zip</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>Place</cstring>
+                                <cstring>m_Place</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>Phone</cstring>
+                                <cstring>m_Phone</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>EMail</cstring>
+                                <cstring>m_EMail</cstring>
                             </property>
                         </widget>
                     </vbox>
@@ -390,7 +390,7 @@ Database</comment>
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>OkBtn</cstring>
+                        <cstring>m_OkBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>autoMask</name>
@@ -409,7 +409,7 @@ Database</comment>
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>PushButton2</cstring>
+                        <cstring>m_PushButton2</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -441,7 +441,7 @@ Database</comment>
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>HelpBtn</cstring>
+                        <cstring>m_HelpBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -454,19 +454,19 @@ Database</comment>
 </widget>
 <connections>
     <connection>
-        <sender>OkBtn</sender>
+        <sender>m_OkBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiverBaseFrm</receiver>
         <slot>accept()</slot>
     </connection>
     <connection>
-        <sender>PushButton2</sender>
+        <sender>m_PushButton2</sender>
         <signal>clicked()</signal>
         <receiver>NewDiverBaseFrm</receiver>
         <slot>reject()</slot>
     </connection>
     <connection>
-        <sender>HelpBtn</sender>
+        <sender>m_HelpBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiverBaseFrm</receiver>
         <slot>showHelp()</slot>

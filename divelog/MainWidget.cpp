@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.27 2001/10/26 11:57:30 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.28 2001/10/31 16:07:18 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.27 2001/10/26 11:57:30 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.28 2001/10/31 16:07:18 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
@@ -179,7 +179,6 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     /*
     || Set up Tabbed Area
     */
-    //m_l1->setText( "Depth="+QString::number( m_profile->depth() ) );       // DEBUG
 
     /*
     || Set up List Area
@@ -223,20 +222,20 @@ void MainWidget::fileImport()
 void MainWidget::fileNewDiver()
 {
     int result=0;
-    m_newDiverFrm= new NewDiverFrm( 0, 0, TRUE );
+    m_newDiverFrm= new NewDiverFrm( "Test", 0, 0 );
 
     result=m_newDiverFrm->exec();
     qDebug( "NewDiverFrm->result=%d", result );
     if ( result )
     {
-        qDebug( "First Name:\t%s", m_newDiverFrm->FirstName->text().latin1() );
-        qDebug( "Last Name:\t%s",  m_newDiverFrm->LastName->text().latin1() );
-        qDebug( "Brevet:\t%s", m_newDiverFrm->Brevet->text().latin1() );
-        qDebug( "Street:\t%s", m_newDiverFrm->Street->text().latin1() );
-        qDebug( "Zip:\t%s", m_newDiverFrm->Zip->text().latin1() );
-        qDebug( "PLace:\t%s", m_newDiverFrm->Place->text().latin1() );
-        qDebug( "Phone:\t%s", m_newDiverFrm->Phone->text().latin1() );
-        qDebug( "EMail:\t%s", m_newDiverFrm->EMail->text().latin1() );
+        qDebug( "First Name:\t%s", m_newDiverFrm->m_FirstName->text().latin1() );
+        qDebug( "Last Name:\t%s",  m_newDiverFrm->m_LastName->text().latin1() );
+        qDebug( "Brevet:\t%s", m_newDiverFrm->m_Brevet->text().latin1() );
+        qDebug( "Street:\t%s", m_newDiverFrm->m_Street->text().latin1() );
+        qDebug( "Zip:\t%s", m_newDiverFrm->m_Zip->text().latin1() );
+        qDebug( "PLace:\t%s", m_newDiverFrm->m_Place->text().latin1() );
+        qDebug( "Phone:\t%s", m_newDiverFrm->m_Phone->text().latin1() );
+        qDebug( "EMail:\t%s", m_newDiverFrm->m_EMail->text().latin1() );
     }
     delete m_newDiverFrm;
 }
