@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.6 2001/08/20 20:10:40 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.7 2001/08/22 14:52:06 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,16 +13,18 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.6 2001/08/20 20:10:40 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.7 2001/08/22 14:52:06 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
+#include <qpointarray.h>
+
 #include "profilefield.h"
 
 #define TIME_TEXT "Time"
 #define DEPTH_TEXT "Depth"
 
-#define TICK_SIZE 10
+#define TICK_SIZE 5
 #define TICK_DISTANCE_FACTOR 3
 
 #define RIGHT_MARGIN 10
@@ -56,7 +58,16 @@ void ProfileField::init()
     CHECK_PTR( m_numberFm );
     CHECK_PTR( m_legendFm );
 
-    setPalette( QPalette( QColor( 250, 250, 200 ) ) ); // Background color
+    m_backgroundColor=QColor( 250, 250, 200 );
+    m_gridPenColor=lightGray;
+    m_axesPenColor=black;
+    m_graphPenColor=black;
+    m_graphBrushColor=blue;
+    m_legendColor=black;
+    m_numberColor=blue;;
+
+
+    setPalette( QPalette( m_backgroundColor ) ); // Background color
 
     // Just to get rid of the warning:
     mainwidget_cvs_id+=0;
@@ -112,6 +123,7 @@ void ProfileField::setTimeFormat( TimeFormat timeFormat )
 void ProfileField::setProfile( QPointArray profile )
 {
     m_profile=profile;
+    repaint( false );
 }
 
 /*
@@ -163,6 +175,7 @@ void ProfileField::drawProfile( QPainter* p )
 {
     ASSERT( m_depth!=0 );
     ASSERT( m_samples!=0 );
+    CHECK_PTR( p );
     ASSERT( !m_profile.isEmpty() );
 
     float depth_scale=m_depthAxisRect.height()/(10*m_depth);   // a little helper
@@ -171,14 +184,15 @@ void ProfileField::drawProfile( QPainter* p )
     p->save();
     p->translate( m_origin.x(), m_origin.y() );
     p->scale( time_scale, depth_scale );
-    p->setBrush( QBrush( blue ) );
+    p->setPen( m_graphPenColor );
+    p->setBrush( m_graphBrushColor );
     p->drawPolygon( m_profile );
     p->restore();
 }
 
 
 void ProfileField::drawCoosy( QPainter* p )
-{   // FIXME : get fontMetrics from Painer !
+{
     ASSERT( m_depth!=0 );
     ASSERT( m_samples!=0 );
 
@@ -186,10 +200,12 @@ void ProfileField::drawCoosy( QPainter* p )
     float time_scale=m_timeAxisRect.width()/m_samples;    // dito
 
     /*
-    || Draw the Labels
+    || Draw the Legend
     */
 
     p->setFont( m_legendFont );
+    p->setPen( m_legendColor );
+
     p->drawText( m_timeAxisRect.x()
                 +m_timeAxisRect.width()/2
                 -m_legendFm->width( TIME_TEXT )/2,
@@ -198,9 +214,9 @@ void ProfileField::drawCoosy( QPainter* p )
 
     // Rotate the coosy to draw vertical text
 
-    p->save();                            // save normal state
+    p->save();                            	// save normal state
 
-    p->translate( 0, rect().bottom() );   // rotate about lower left corner
+    p->translate( 0, rect().bottom() );   	// rotate about lower left corner
     p->rotate( -90 );
 
     p->drawText( m_depthAxisRect.height()/2      // draw the text
@@ -208,11 +224,13 @@ void ProfileField::drawCoosy( QPainter* p )
                  m_legendFm->ascent(),
                  DEPTH_TEXT );
 
-    p->restore();                         // restore normal state
+    p->restore();                         	// restore normal state
 
     /*
     || Draw the axes
     */
+
+    p->setPen( m_axesPenColor );
     p->drawLine( m_origin, QPoint( m_timeAxisRect.right(), m_origin.y() ) );
     p->drawLine( m_origin, QPoint( m_origin.x(), m_depthAxisRect.bottom() ) );
 
@@ -235,12 +253,21 @@ void ProfileField::drawCoosy( QPainter* p )
     for ( int i=0; qRound( i*tick_distance_pixel ) < m_depthAxisRect.height(); i++ )
     {
         QString number = QString::number( i*tick_distance_scaled );
-        p->drawText( m_origin.x() - TICK_SIZE/2 - m_numberFm->width( number ),
+        p->setPen( m_numberColor );
+        p->drawText( m_origin.x() - TICK_SIZE - m_numberFm->width( number ),
                      m_origin.y() + qRound( i*tick_distance_pixel ) +m_numberFm->height()/2 -1,
                      number );
-        p->drawLine( m_origin.x() -TICK_SIZE/2,
+
+        p->setPen( m_axesPenColor );
+        p->drawLine( m_origin.x() -TICK_SIZE,
                      m_origin.y() + qRound( i*tick_distance_pixel ),
-                     m_origin.x() +TICK_SIZE/2,
+                     m_origin.x() + 0,
+                     m_origin.y() + qRound( i*tick_distance_pixel ) );
+
+        p->setPen( m_gridPenColor );
+        p->drawLine( m_origin.x() + 0,
+                     m_origin.y() + qRound( i*tick_distance_pixel ),
+                     m_origin.x() + m_timeAxisRect.width(),
                      m_origin.y() + qRound( i*tick_distance_pixel ) );
     }
 
@@ -263,18 +290,18 @@ void ProfileField::drawCoosy( QPainter* p )
         QString number= sampleToTime( i*tick_distance_scaled );
 
         p->drawText( m_origin.x() + qRound( i*tick_distance_pixel ) -m_numberFm->width( number )/2 -1,
-                     m_origin.y() - TICK_SIZE/2,
+                     m_origin.y() - TICK_SIZE,
                      number );
         p->drawLine( m_origin.x() + qRound( i*tick_distance_pixel ),
-                     m_origin.y() + -TICK_SIZE/2,
+                     m_origin.y() - TICK_SIZE,
                      m_origin.x() + qRound( i*tick_distance_pixel ),
-                     m_origin.y() + TICK_SIZE/2 );
+                     m_origin.y() + 0 );
     }
 }
 
 void ProfileField::paintEvent( QPaintEvent* )
 {                                     
-    QRect    canvasSize=rect();// QRect( 0, 0, width(), height() );
+    QRect    canvasSize=rect();
     QPixmap  pix( size() );          		    // Pixmap for double-buffering
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );

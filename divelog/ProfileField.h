@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.6 2001/08/20 20:10:40 markus Exp $       *
+* CVS Id 	 : $Id: ProfileField.h,v 1.7 2001/08/22 14:52:06 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -16,7 +16,6 @@
 
 #include <qwidget.h>
 #include <qpointarray.h>
-
 
 class ProfileField : public QWidget
 {
@@ -95,6 +94,15 @@ private:
 
     QFont m_numberFont;
     QFont m_legendFont;
+
+    QColor m_backgroundColor;
+    QColor m_gridPenColor;
+    QColor m_axesPenColor;
+    QColor m_graphPenColor;
+    QColor m_graphBrushColor;
+    QColor m_legendColor;
+    QColor m_numberColor;
+
 
     QFontMetrics *m_numberFm;
     QFontMetrics *m_legendFm;
