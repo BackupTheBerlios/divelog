@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.27 2002/04/10 11:52:55 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.28 2002/04/22 18:46:20 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.27 2002/04/10 11:52:55 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.28 2002/04/22 18:46:20 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -325,7 +325,7 @@ void ProfileField::setHideSamples( int hideSamples, bool doRepaint )
 QSizePolicy ProfileField::sizePolicy() const
 {
     // the profile may be shrunken and expanded
-    return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+    return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::Expanding );
 }
 
 QString ProfileField::sampleToTime( int sample )
@@ -560,7 +560,7 @@ void ProfileField::paintEvent( QPaintEvent* )
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );
 
-    qDebug( "%s->paintEvent", this->name() );
+    // DEBUG qDebug( "%s->paintEvent", this->name() );
 
     if ( !m_mouseSelectionRect.isNull() )    // draw the selection rectangle
     {

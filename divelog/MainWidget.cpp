@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.50 2002/04/10 11:52:55 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.51 2002/04/22 18:46:20 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.50 2002/04/10 11:52:55 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.51 2002/04/22 18:46:20 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -127,8 +127,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_s1 = new QSplitter( QSplitter::Vertical, this , "m_s1" );
     m_s2 = new QSplitter( QSplitter::Horizontal, m_s1 , "m_s2" );
 
-//    m_l1 = new QLabel( "", m_s1 );    // DEBUG
     m_infoArea = new InfoAreaFrm( m_s1, "m_infoArea" );
+    m_s1->setResizeMode( m_infoArea, QSplitter::KeepSize );
     m_diveListView= new QListView( m_s2, "m_diveListView" );
 
     /*
@@ -136,6 +136,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     */
 
     m_profileBox = new QVBox( m_s2 ,"m_profileBox" );
+
     //m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
     m_profile = new ProfileField( m_profileBox, "m_profile" );
 
@@ -202,10 +203,11 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_diveListView->addColumn( "#" );
     m_diveListView->addColumn( "Date" );
     m_diveListView->addColumn( "Time" );
+    m_diveListView->addColumn( "Place" );
 
     m_diveListView->setAllColumnsShowFocus( TRUE );
     m_diveListView->setSorting( 1 ); // Initially sort by date
-
+    m_diveListView->setColumnAlignment( 0 , QListView::AlignRight );
 
     DivelogDAO db;                  // access object to the database
     vector< DiveListVO > *allDivesTmp; // temporary container for the list entries
@@ -225,12 +227,11 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     }
     delete allDivesTmp;
 
-    m_diveListView->setColumnWidthMode( 0, QListView::Maximum );
-    m_diveListView->setColumnWidthMode( 1, QListView::Maximum );
-    m_diveListView->setColumnWidthMode( 2, QListView::Maximum );
+    m_s2->setResizeMode( m_diveListView, QSplitter::KeepSize );
 
     connect( m_profile, SIGNAL( mouseDepthChanged( const QString& ) ), m_profileMouseDepth, SLOT( setText( const QString & ) ) );
     connect( m_diveListView, SIGNAL( clicked ( QListViewItem*  ) ), this, SLOT( diveSelected(  QListViewItem*  ) ) );
+    connect( m_diveListView, SIGNAL( returnPressed ( QListViewItem*  ) ), this, SLOT( diveSelected(  QListViewItem*  ) ) );
                           
     setCentralWidget( m_s1 );
 
