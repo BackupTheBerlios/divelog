@@ -8,10 +8,17 @@ class NewDiveComputerFrm : public NewDiveComputerBaseFrm
 
 public:
     NewDiveComputerFrm( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
+    NewDiveComputerFrm( const QString& serialNumber, QWidget* parent = 0, const char* name = 0);
     ~NewDiveComputerFrm();
 
 protected slots:
     void showHelp();
+
+private slots:
+    void accept();
+
+private:
+    void init();
 
 };
 

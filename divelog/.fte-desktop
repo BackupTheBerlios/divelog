@@ -1,13 +1,8 @@
 FTE Desktop 2
-F|13|/home/markus/projects/divelog/mysql/tables
-F|6|/home/markus/projects/divelog/divelogdao.cpp
-F|7|/home/markus/projects/divelog/divelogdao.h
+F|3|/home/markus/projects/divelog/infoareafrm.h
 F|8|/home/markus/projects/divelog/divelog.pro
 F|1|/home/markus/projects/divelog/mainwidget.cpp
-F|12|/home/markus/projects/divelog/newdiverbasefrm.h
 F|10|/home/markus/projects/divelog/newdiverfrm.cpp
-F|9|/home/markus/projects/divelog/newdiverfrm.h
 F|2|/home/markus/projects/divelog/mainwidget.h
-F|3|/home/markus/projects/divelog/profilefield.cpp
 F|5|/home/markus/projects/divelog/main.cpp
-F|4|/home/markus/projects/divelog/profilefield.h
+F|9|/home/markus/projects/divelog/newdiverfrm.h

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : newdiverfrm.cpp                                                  *
-* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.4 2001/11/06 08:33:16 markus Exp $      *
+* CVS Id 	 : $Id: NewDiverFrm.cpp,v 1.5 2001/11/08 08:35:17 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Form for entering information about a diver.             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.4 2001/11/06 08:33:16 markus Exp $";
+static const char *newdiverfrm_cvs_id="$Id: NewDiverFrm.cpp,v 1.5 2001/11/08 08:35:17 markus Exp $";
 #include "newdiverfrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -50,9 +50,9 @@ void NewDiverFrm::init()
     || Change keyvalue-labels to red
     */
 
-    QPalette pal = m_firstNameLbl->palette();
+    QPalette pal = m_FirstNameLbl->palette();
     pal.setColor( QColorGroup::Foreground, red );
-    m_firstNameLbl->setPalette( pal );
+    m_FirstNameLbl->setPalette( pal );
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     newdiverfrm_cvs_id+=0;
@@ -66,8 +66,11 @@ void NewDiverFrm::accept()
 {
     if ( m_FirstName->text().isEmpty() )
     {
-        // FIXME: get name from object instead of verbatim
-        QMessageBox::information( this, "Empty Field", "The field \"First Name\" must not be empty!" );
+        // FIXME : Dont match \&
+        QString fieldName = m_FirstNameLbl->text().replace( QRegExp( "&" ), "" );
+
+        QMessageBox::information( this, "Empty Field",
+                                        "The field \""+fieldName+"\" must not be empty!" );
     }
     else
     {
@@ -81,5 +84,13 @@ void NewDiverFrm::accept()
 NewDiverFrm::~NewDiverFrm()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+/* 
+ * protected slot
+ */
+void NewDiverFrm::showHelp()
+{
+    qWarning( "NewDiverFrm::showHelp() not yet implemented!" );
 }
 

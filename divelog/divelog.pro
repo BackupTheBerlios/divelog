@@ -16,7 +16,10 @@ HEADERS  = mainwidget.h\
            divelogdao.h\
            UDCF.h\
            newdiverfrm.h\
-           infoareafrm.h
+           infoareafrm.h\
+           newfillingstationfrm.h\
+           newdivetypefrm.h\
+           newdivecomputerfrm.h
 
 SOURCES  = main.cpp\
            mainwidget.cpp\
@@ -24,7 +27,11 @@ SOURCES  = main.cpp\
            myscrollbar.cpp\
            divelogdao.cpp\
            newdiverfrm.cpp\
-           infoareafrm.cpp
+           infoareafrm.cpp\
+           newfillingstationfrm.cpp\
+           newdivetypefrm.cpp\
+           newdivecomputerfrm.cpp
+           
 
 INTERFACES = newdiverbasefrm.ui\
              infoareabasefrm.ui\

@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.20 2001/10/31 16:07:18 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.21 2001/11/08 08:35:17 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -29,6 +29,9 @@ class QSpacerItem;
 class QString;
 class QListView;
 class NewDiverFrm;
+class NewFillingStationFrm;
+class NewDiveTypeFrm;
+class NewDiveComputerFrm;
 class InfoAreaFrm;
 
 class MainWidget : public QMainWindow
@@ -40,12 +43,13 @@ public:
 protected slots:
 
     /*
-    ||  File Menu
+    ||  DataBase Menu
     */
-    void fileImport();
-    void fileNewDiver();
-    void fileSave();
-    void fileClose();
+    void dbImport();
+    void dbNewDiver();
+    void dbNewFillingStation();
+    void dbNewDiveType();
+    void dbNewDiveComputer();
 
     /*
     || Settings Menu
@@ -78,8 +82,11 @@ private:
 
     QListView*    m_diveListView;
 
-    NewDiverFrm*	m_newDiverFrm;
-    InfoAreaFrm*  m_infoArea;
+    NewDiverFrm*					m_newDiverFrm;
+    NewFillingStationFrm*	m_newFillingStationFrm;
+    NewDiveTypeFrm*				m_newDiveTypeFrm;
+    NewDiveComputerFrm*		m_newDiveComputerFrm;
+    InfoAreaFrm*  				m_infoArea;
 };
 
 #endif  // MAINWIDGET_H

@@ -14,7 +14,7 @@ Database</comment>
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>294</width>
+            <width>290</width>
             <height>371</height>
         </rect>
     </property>
@@ -116,7 +116,7 @@ Database</comment>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>m_firstNameLbl</cstring>
+                                <cstring>m_FirstNameLbl</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>

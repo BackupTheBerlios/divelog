@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.28 2001/10/31 16:07:18 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.29 2001/11/08 08:35:17 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.28 2001/10/31 16:07:18 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.29 2001/11/08 08:35:17 markus Exp $";
 
 // own headers
 #include "mainwidget.h"
@@ -24,6 +24,9 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.28 2001/10/31 16:0
 #include "myscrollbar.h"
 #include "dive104.dat"
 #include "newdiverfrm.h"
+#include "newdivetypefrm.h"
+#include "newdivecomputerfrm.h"
+#include "newfillingstationfrm.h"
 #include "infoareafrm.h"
 
 // Qt
@@ -72,18 +75,19 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     || Build up the Menu
     */
 
-    QPopupMenu *file_mn = new QPopupMenu( this );   // make a file menu
-    CHECK_PTR( file_mn );                           // better check if it worked...
+    QPopupMenu *db_mn = new QPopupMenu( this );     // make a database menu
+    CHECK_PTR( db_mn );                           // better check if it worked...
                                                 
     // now add items to the menu
-    file_mn->insertItem( "&Import",    this, SLOT( fileImport() ) );
-    file_mn->insertItem( "&New Diver", this, SLOT( fileNewDiver() ) );
-    file_mn->insertItem( "&Save", 	this, SLOT( fileSave() ), CTRL+Key_S );
-    file_mn->insertItem( "&Close",	this, SLOT( fileClose()), CTRL+Key_W );
-    file_mn->insertSeparator();
-    file_mn->insertItem( "E&xit",  qApp, SLOT( quit() ), CTRL+Key_Q );
+    db_mn->insertItem( "&Import",    this, SLOT( dbImport() ) );
+    db_mn->insertItem( "New &Diver", this, SLOT( dbNewDiver() ) );
+    db_mn->insertItem( "New &Filling Station", this, SLOT( dbNewFillingStation() ) );
+    db_mn->insertItem( "New Dive &Type", this, SLOT( dbNewDiveType() ) );
+    db_mn->insertItem( "New Dive C&omputer", this, SLOT( dbNewDiveComputer() ) );
+    db_mn->insertSeparator();
+    db_mn->insertItem( "E&xit",  qApp, SLOT( quit() ), CTRL+Key_Q );
 
-    // same as above (see file menu)
+    // same as above (see database menu)
     QPopupMenu *settings_mn = new QPopupMenu( this );
     CHECK_PTR( settings_mn );
 
@@ -98,7 +102,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_main_mn = new QMenuBar( this );
     CHECK_PTR( m_main_mn );
 
-    m_main_mn->insertItem( "&File", file_mn );
+    m_main_mn->insertItem( "&Database", db_mn );
     m_main_mn->insertItem( "&Settings", settings_mn );
     m_main_mn->insertSeparator();
     m_main_mn->insertItem( "&Help", help_mn );
@@ -210,7 +214,7 @@ Slots
 || Menu-slots : implement the menu functions
 */
 
-void MainWidget::fileImport()
+void MainWidget::dbImport()
 {
     QString s( QFileDialog::getOpenFileName( QString::null, "Universal Dive Computer Format (*.UDCF)", this ) );
     if ( !s.isEmpty() )
@@ -219,7 +223,7 @@ void MainWidget::fileImport()
     }
 }
 
-void MainWidget::fileNewDiver()
+void MainWidget::dbNewDiver()
 {
     int result=0;
     m_newDiverFrm= new NewDiverFrm( "Test", 0, 0 );
@@ -240,14 +244,48 @@ void MainWidget::fileNewDiver()
     delete m_newDiverFrm;
 }
 
-void MainWidget::fileSave()
+void MainWidget::dbNewFillingStation()
 {
-    qWarning( "Not Implemented: MainWidget::fileSave()");
+    int result=0;
+    m_newFillingStationFrm= new NewFillingStationFrm( "Test", 0, 0 );
+
+    result=m_newFillingStationFrm->exec();
+    qDebug( "NewFillingStationFrm->result=%d", result );
+    if ( result )
+    {
+        qDebug( "Station Name:\t%s", m_newFillingStationFrm->m_StationName->text().latin1() );
+        qDebug( "First Name:\t%s", m_newFillingStationFrm->m_FirstName->text().latin1() );
+        qDebug( "Last Name:\t%s",  m_newFillingStationFrm->m_LastName->text().latin1() );
+    }
+    delete m_newFillingStationFrm;
 }
 
-void MainWidget::fileClose()
+void MainWidget::dbNewDiveType()
 {
-    qWarning( "Not Implemented: MainWidget::fileClose()");
+    int result=0;
+    m_newDiveTypeFrm= new NewDiveTypeFrm( "Test", 0, 0 );
+
+    result=m_newDiveTypeFrm->exec();
+    qDebug( "NewDiveTypeFrm->result=%d", result );
+    if ( result )
+    {
+        qDebug( "Dive Type:\t%s", m_newDiveTypeFrm->m_DiveType->text().latin1() );
+    }
+    delete m_newDiveTypeFrm;
+}
+
+void MainWidget::dbNewDiveComputer()
+{
+    int result=0;
+    m_newDiveComputerFrm= new NewDiveComputerFrm( "Test", 0, 0 );
+
+    result=m_newDiveComputerFrm->exec();
+    qDebug( "NewDiveComputerFrm->result=%d", result );
+    if ( result )
+    {
+        qDebug( "Dive Computer:\t%s", m_newDiveComputerFrm->m_SerialNumber->text().latin1() );
+    }
+    delete m_newDiveComputerFrm;
 }
 
 void MainWidget::settingsCommunication()
