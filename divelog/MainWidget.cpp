@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.11 2001/09/10 16:21:29 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.12 2001/09/10 18:44:54 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.11 2001/09/10 16:21:29 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.12 2001/09/10 18:44:54 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -63,52 +63,56 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 
     help_mn->insertItem( "&About", this, SLOT( about() ) );
 
-    main_mn = new QMenuBar( this );
-    CHECK_PTR( main_mn );
+    m_main_mn = new QMenuBar( this );
+    CHECK_PTR( m_main_mn );
 
-    main_mn->insertItem( "&File", file_mn );
-    main_mn->insertItem( "&Settings", settings_mn );
-    main_mn->insertSeparator();
-    main_mn->insertItem( "&Help", help_mn );
-    main_mn->setSeparator( QMenuBar::InWindowsStyle );
+    m_main_mn->insertItem( "&File", file_mn );
+    m_main_mn->insertItem( "&Settings", settings_mn );
+    m_main_mn->insertSeparator();
+    m_main_mn->insertItem( "&Help", help_mn );
+    m_main_mn->setSeparator( QMenuBar::InWindowsStyle );
 
 
     /*
     || Set up Splitters
     */
 
-    s1 = new QSplitter( QSplitter::Vertical, this , "s1" );
-    s2 = new QSplitter( QSplitter::Horizontal, s1 , "s2" );
+    m_s1 = new QSplitter( QSplitter::Vertical, this , "m_s1" );
+    m_s2 = new QSplitter( QSplitter::Horizontal, m_s1 , "m_s2" );
 
-    l1 = new QLabel( "", s1 );    // DEBUG
-    l2 = new QLabel( "", s2 );    // DEBUG
+    m_l1 = new QLabel( "", m_s1 );    // DEBUG
+    m_l2 = new QLabel( "", m_s2 );    // DEBUG
 
-    profileBox = new QVBox( s2 ,"profileBox" );
-    profile = new ProfileField( profileBox, "profile", testdata );
+    m_profileBox = new QVBox( m_s2 ,"m_profileBox" );
+    m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
 
     /*
     || Set up Scrollbars
     */
 
-    offsetBar  = new MyScrollBar( MyScrollBar::Horizontal, profileBox, "offsetBar" );
-    samplesBar = new MyScrollBar( MyScrollBar::Horizontal, profileBox, "samplesBar" );
+    m_offsetBar  = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_offsetBar" );
+    m_samplesBar = new MyScrollBar( MyScrollBar::Horizontal, m_profileBox, "m_samplesBar" );
 
-    samplesBar->setMinValue( 3 );
-    samplesBar->setMaxValue( profile->samples() );
-    samplesBar->setValue( profile->samples() );
-    connect( samplesBar, SIGNAL( valueChanged( int ) ), profile, SLOT( setShowSamples( int ) ) );
-    // connect( profile   , SIGNAL( showSamplesChanged( int ) ), samplesBar, setValue( int ) );
+    m_samplesBar->setMinValue( 3 );
+    m_samplesBar->setMaxValue( m_profile->samples() );
+    m_samplesBar->setValue( m_profile->samples() );
 
-    offsetBar->setMinValue( 0 );
-    offsetBar->setMaxValue( profile->samples() - samplesBar->value() );
+    m_offsetBar->setMinValue( 0 );
+    m_offsetBar->setMaxValue( m_profile->samples() - m_samplesBar->value() );
 
-    l1->setText( "Depth="+QString::number( profile->depth() ) );       // DEBUG
-    l2->setText( "Samples="+QString::number( profile->samples() ) );   // DEBUG
+    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_profile, SLOT( setShowSamples( int ) ) );
+    connect( m_profile   , SIGNAL( showSamplesChanged( int ) ), m_samplesBar, SLOT( setValue( int ) ) );
 
-    setCentralWidget( s1 );
+    connect( m_samplesBar, SIGNAL( valueChanged( int ) ), this, SLOT( adaptOffsetBar( int ) ) );
+    connect( m_offsetBar , SIGNAL( valueChanged( int ) ), m_profile, SLOT( setTimeStart( int ) ) );
+
+    m_l1->setText( "Depth="+QString::number( m_profile->depth() ) );       // DEBUG
+    m_l2->setText( "Samples="+QString::number( m_profile->samples() ) );   // DEBUG
+
+    setCentralWidget( m_s1 );
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-     mainwidget_cvs_id+=0;
+    mainwidget_cvs_id+=0;
 }
 
 /*
@@ -116,6 +120,15 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 Slots
 =================================================================
 */
+
+void MainWidget::adaptOffsetBar( int v )
+{
+    m_offsetBar->setMaxValue( m_profile->samples()-v );
+    if ( m_offsetBar->value() > m_offsetBar->maxValue() )
+    {
+        m_offsetBar->setValue( m_offsetBar->maxValue() );
+    }
+}
 
 void MainWidget::fileOpen()
 {

@@ -2,7 +2,7 @@
 #define MYSCROLLBAR_H
 /******************************************************************************
 * Filename : myscrollbar.h                                                    *
-* CVS Id 	 : $Id: MyScrollBar.h,v 1.2 2001/09/10 16:21:29 markus Exp $                                                             *
+* CVS Id 	 : $Id: MyScrollBar.h,v 1.3 2001/09/10 18:44:54 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for myscrollbar.cpp                               *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -31,8 +31,8 @@ public:
 public slots:
 
     void setValue( int );
-    void setMin( int );
-    void setMax( int );
+    void setMinValue( int );
+    void setMaxValue( int );
 
 private:
     void init();

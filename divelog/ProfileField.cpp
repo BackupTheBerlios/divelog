@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.13 2001/09/08 09:25:26 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.14 2001/09/10 18:44:54 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.13 2001/09/08 09:25:26 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.14 2001/09/10 18:44:54 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -146,6 +146,7 @@ void ProfileField::setTimeStart( int start )
 
     m_timeStart=start;
     emit timeStartChanged( start );
+    repaint( FALSE );
 }
 
 void ProfileField::setShowSamples( int showSamples )
@@ -220,14 +221,12 @@ void ProfileField::drawProfile( QPainter* p )
     float depth_scale=(float) m_depthAxisRect.height()/(10*m_depth);   // a little helper
     float time_scale =(float) m_timeAxisRect.width()/(m_showSamples-1);    // dito
 
-    qDebug( "time_scale\t=%f", time_scale );
-
     p->save();
-    p->translate( m_origin.x(), m_origin.y() );
+    p->translate( m_origin.x()-timeStart()*time_scale, m_origin.y() );
     p->scale( time_scale, depth_scale );
     p->setPen( m_graphPenColor );
     p->setBrush( m_graphBrushColor );
-    p->drawPolyline( m_profile, 0, m_showSamples );
+    p->drawPolyline( m_profile, timeStart(), m_showSamples );
     p->restore();
 }
 
@@ -321,12 +320,11 @@ void ProfileField::drawCoosy( QPainter* p )
     /*
     || Draw Time-Labels ( quite as above... )
     */
-    float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);    // dito
+    float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
 
     // one tick is each tick_unit
     tick_unit = (float)m_numberFm->width( sampleToTime( m_showSamples ) ) * TICK_DISTANCE_FACTOR / time_scale;
     qDebug( "m_showSamples\t=%i", m_showSamples );
-    qDebug( "tick_unit\t=%f", tick_unit );
     ASSERT( tick_unit>0 );
 
     // Adjust tick_unit. If it is <1 then there are multiple tick marks with the
@@ -340,7 +338,7 @@ void ProfileField::drawCoosy( QPainter* p )
     for ( int i=0; qRound( i*tick_distance_pixel ) < m_timeAxisRect.width(); i++ )
     {
         // Time
-        QString number= sampleToTime( qRound( i*tick_unit ) );
+        QString number= sampleToTime( qRound( timeStart()+i*tick_unit ) );
         p->setPen( m_numberColor );
         p->drawText( m_origin.x() + qRound( i*tick_distance_pixel ) -m_numberFm->width( number )/2 -1,
                      m_origin.y() - TICK_SIZE,

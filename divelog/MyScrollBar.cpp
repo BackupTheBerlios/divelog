@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : myscrollbar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.2 2001/09/10 16:21:29 markus Exp $                                                             *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.3 2001/09/10 18:44:54 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Enhance the QScrollBar                                   *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.2 2001/09/10 16:21:29 markus Exp $";
+static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.3 2001/09/10 18:44:54 markus Exp $";
 
 #include "myscrollbar.h"
 
@@ -33,4 +33,23 @@ void MyScrollBar::init()
 {
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     myscrollbar_cvs_id+=0;
+}
+
+/*
+|| Slots
+*/
+
+void MyScrollBar::setMinValue( int v )
+{
+    QScrollBar::setMinValue( v );
+}
+
+void MyScrollBar::setMaxValue( int v )
+{
+    QScrollBar::setMaxValue( v );
+}
+
+void MyScrollBar::setValue( int v )
+{
+    QScrollBar::setValue( v );
 }

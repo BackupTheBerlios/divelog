@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.6 2001/09/10 16:21:29 markus Exp $             *
+* CVS Id 	 : $Id: MainWidget.h,v 1.7 2001/09/10 18:44:54 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -29,6 +29,9 @@ public:
     MainWidget( QWidget* parent=0, const char* name=0 );
 
 protected slots:
+
+    void adaptOffsetBar( int );
+
     /*
     ||  File Menu
     */
@@ -48,18 +51,18 @@ protected slots:
     void about();
 
 private:
-    QMenuBar* main_mn;            // The main menu
-    QSplitter* s1;
-    QSplitter* s2;
+    QMenuBar*  m_main_mn;            // The main menu
+    QSplitter* m_s1;
+    QSplitter* m_s2;
 
-    QLabel* l1;           // DEBUG Labels
-    QLabel* l2;
-    QLabel* l3;
+    QLabel* m_l1;           // DEBUG Labels
+    QLabel* m_l2;
+    QLabel* m_l3;
 
-    QVBox*  profileBox;
-    ProfileField* profile;
-    MyScrollBar*   samplesBar;
-    MyScrollBar*   offsetBar;
+    QVBox*  			m_profileBox;
+    ProfileField* m_profile;
+    MyScrollBar*  m_samplesBar;
+    MyScrollBar*  m_offsetBar;
 };
 
 #endif  // MAINWIDGET_H
