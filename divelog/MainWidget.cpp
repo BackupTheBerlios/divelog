@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.5 2001/08/20 14:18:02 markus Exp $       *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.6 2001/08/20 20:10:40 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -17,7 +17,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.5 2001/08/20 14:18:02 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.6 2001/08/20 20:10:40 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -29,11 +29,17 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.5 2001/08/20 14:18
 #include <qsplitter.h>
 
 #include <qlabel.h>
-// #include <qlayout.h>
+
+#include <qpointarray.h>
+
+#include "dive104.dat"
 
 MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     : QMainWindow( parent, name )
 {
+    QPointArray testdata;
+    testdata.setPoints( 64, points );
+
     /*
     || Build up the Menu
     */
@@ -79,6 +85,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     l2 = new QLabel( "", s2 );    // DEBUG
 
     profile = new ProfileField( s2, "profile field" );
+    profile->setProfile( testdata );
 
     l1->setText( "Depth="+QString::number( profile->depth() ) );       // DEBUG
     l2->setText( "Samples="+QString::number( profile->samples() ) );   // DEBUG

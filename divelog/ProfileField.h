@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.5 2001/08/20 14:15:32 markus Exp $       *
+* CVS Id 	 : $Id: ProfileField.h,v 1.6 2001/08/20 20:10:40 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -15,6 +15,8 @@
 ******************************************************************************/
 
 #include <qwidget.h>
+#include <qpointarray.h>
+
 
 class ProfileField : public QWidget
 {
@@ -24,6 +26,8 @@ public:
     || Constructors
     */
     ProfileField( QWidget *parent=0, const char* name=0 );
+
+    enum  TimeFormat{ ms, MinSec=ms, hms, HourMinSec=hms };
 
     /*
     || Setting methots
@@ -35,6 +39,7 @@ public:
     float depth() const { return m_depth; }
     int   samples() const { return m_samples; }
     int   secsPerSample() const { return m_secsPerSample; }
+    TimeFormat timeFormat() const { return m_timeFormat; }
 
 		/*
 		|| other functions
@@ -49,6 +54,8 @@ public slots:
     void setDepth( float depth );
     void setSamples( int samples );
     void setSecsPerSample( int secsPerSample );
+    void setProfile( QPointArray profile );
+    void setTimeFormat( TimeFormat timeFormat );
 
 signals:
 
@@ -59,6 +66,7 @@ signals:
     void depthChanged( float );
     void samplesChanged( int );
     void secsPerSampleChanged( int );
+    void timeFormatChanged( TimeFormat );
 
 protected:
 
@@ -70,10 +78,15 @@ private:
     void  init();          // General Object initialisation
 
     void 	drawCoosy( QPainter *p );
+    void  drawProfile( QPainter *p );
+
+    QString sampleToTime( int sample );
 
     float m_depth;         // Profile depth in meters
     int   m_samples;       // Number of samples the computer made for this dive
     int   m_secsPerSample; // Number of seconds between two samples
+
+    TimeFormat m_timeFormat;
 
     QPoint m_origin;
 
@@ -85,5 +98,8 @@ private:
 
     QFontMetrics *m_numberFm;
     QFontMetrics *m_legendFm;
+
+    QPointArray m_profile;
 };
+
 #endif
