@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.19 2001/10/04 21:03:17 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.20 2001/10/05 13:09:28 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.19 2001/10/04 21:03:17 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.20 2001/10/05 13:09:28 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -214,6 +214,30 @@ void MainWidget::fileOpen()
         qDebug( "Group Size:\t%ld", m_udcfData->groupSize );
         qDebug( "Group Index:\t%ld", m_udcfData->groupIndex );
 
+        m_udcfGroup = m_udcfData->groupList;
+
+        for ( int i=0; i<m_udcfData->groupIndex; i++)
+        {
+            qDebug( "Group[%d].diveIndex=%ld", i, m_udcfGroup[i].diveIndex );
+            for ( int j=0; j<m_udcfGroup[i].diveIndex; j++ )
+            {
+                qDebug( "Group[%d].diveList[%d] %d.%d.%d", i, j,
+                        m_udcfGroup[i].diveList[j].day,
+                        m_udcfGroup[i].diveList[j].month,
+                        m_udcfGroup[i].diveList[j].year );
+
+            }
+        }
+/*
+        for ( int i=0; i<m_udcfGroup[0].diveIndex; i++ )
+        {
+            qDebug( "#%d: %d.%d.%d", i,
+                    						m_udcfGroup[0].diveList[i].day,
+                    						m_udcfGroup[0].diveList[i].month,
+                                m_udcfGroup[0].diveList[i].year );
+
+        }
+ */
         UDCFFree( m_udcfData );
     }
 }
