@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.15 2001/10/05 16:12:42 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.16 2001/10/16 07:16:41 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,7 +14,6 @@
 ******************************************************************************/
 
 #include <qmainwindow.h>
-#include <UDCF.h>
 
 // Forward define Classes used by this class.
 // This avoids including header files and speeds
@@ -41,7 +40,7 @@ protected slots:
     /*
     ||  File Menu
     */
-    void fileOpen();
+    void fileImport();
     void fileNew();
     void fileSave();
     void fileClose();
@@ -79,15 +78,6 @@ private:
 
     QListView*     m_diveListView;
 
-/*
-=================================================================
-    UDCF Data
-=================================================================
-*/
-
-    UDCF* 				m_udcfData;
-    UDCFGroup*    m_udcfGroup;
-    UDCFDive*     m_udcfDive;
 };
 
 #endif  // MAINWIDGET_H

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.23 2001/10/05 17:48:39 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.24 2001/10/16 07:16:40 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,11 +16,15 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.23 2001/10/05 17:48:39 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.24 2001/10/16 07:16:40 markus Exp $";
 
+// own headers
 #include "mainwidget.h"
 #include "profilefield.h"
+#include "myscrollbar.h"
+#include "dive104.dat"
 
+// Qt
 #include <qapplication.h>
 #include <qmenubar.h>
 #include <qpopupmenu.h>
@@ -34,8 +38,8 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.23 2001/10/05 17:4
 #include <qfiledialog.h>
 #include <qlistbox.h>
 #include <qheader.h>
-#include "myscrollbar.h"
-#include "dive104.dat"
+
+// others
 
 #define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
 #define MOUSE_DEPTH_LABEL "Depth: "     // Label for depth at mouse cursor.
@@ -70,7 +74,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     CHECK_PTR( file_mn );                           // better check if it worked...
                                                 
     // now add items to the menu
-    file_mn->insertItem( "&Open", 	this, SLOT( fileOpen() ), CTRL+Key_O );
+    file_mn->insertItem( "&Import", this, SLOT( fileImport() ) );
     file_mn->insertItem( "&New", 		this, SLOT( fileNew() ), CTRL+Key_N );
     file_mn->insertItem( "&Save", 	this, SLOT( fileSave() ), CTRL+Key_S );
     file_mn->insertItem( "&Close",	this, SLOT( fileClose()), CTRL+Key_W );
@@ -204,57 +208,12 @@ Slots
 || Menu-slots : implement the menu functions
 */
 
-void MainWidget::fileOpen()
+void MainWidget::fileImport()
 {
-    QString s( QFileDialog::getOpenFileName( QString::null, "Universal Dive Computer Format (*.profile)", this ) );
+    QString s( QFileDialog::getOpenFileName( QString::null, "Universal Dive Computer Format (*.UDCF)", this ) );
     if ( !s.isEmpty() )
     {
         qDebug( "Filename: %s", s.latin1() );
-
-        m_udcfData=UDCFReadFile( (char*) s.latin1() );
-        CHECK_PTR( m_udcfData );
-
-        qDebug( "Version:\t%ld", m_udcfData->version );
-        qDebug( "Vendor:\t%s", m_udcfData->vendor );
-        qDebug( "Model:\t%s", m_udcfData->model );
-        qDebug( "Driver Version:\t%ld", m_udcfData->driverVersion );
-        qDebug( "Personal Info:\t%s", m_udcfData->personalInfo );
-        qDebug( "Total Dives:\t%ld", m_udcfData->totalDives );
-        qDebug( "Serial ID:\t%s", m_udcfData->serialID );
-        qDebug( "Group Size:\t%ld", m_udcfData->groupSize );
-        qDebug( "Group Index:\t%ld", m_udcfData->groupIndex );
-
-        m_udcfGroup = m_udcfData->groupList;
-        int count=0;
-
-        m_diveListView->clear();
-
-        for ( int group=0; group<=m_udcfData->groupIndex; group++)
-        {
-            for ( int dive=0; dive<=m_udcfGroup[group].diveIndex; dive++ )
-            {
-                qDebug( "Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d",
-                        group, dive,
-                        m_udcfGroup[group].diveList[dive].day,
-                        m_udcfGroup[group].diveList[dive].month,
-                        m_udcfGroup[group].diveList[dive].year,
-                        m_udcfGroup[group].diveList[dive].hour,
-                        m_udcfGroup[group].diveList[dive].minute );
-
-                count++;
-
-                QString number;
-                QString date;
-                QString time;
-
-                number.sprintf( "%03d", count );
-                date.sprintf( "%02d.%02d.%04d", m_udcfGroup[group].diveList[dive].day, m_udcfGroup[group].diveList[dive].month, m_udcfGroup[group].diveList[dive].year );
-                time.sprintf( "%02d:%02d", m_udcfGroup[group].diveList[dive].hour, m_udcfGroup[group].diveList[dive].minute );
-
-                (void) new QListViewItem( m_diveListView, number, date, time );
-            }
-        }
-        UDCFFree( m_udcfData );
     }
 }
 
