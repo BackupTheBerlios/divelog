@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-CONFIG   += qt debug
+CONFIG   += qt thread debug
 DEFINES  = QT_FATAL_ASSERT
 
 INCLUDEPATH = /usr/local/include

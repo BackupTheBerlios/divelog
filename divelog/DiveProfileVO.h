@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVEPROFILEVO_H
 /******************************************************************************
 * Filename : DiveProfileVO.h                                                  *
-* CVS Id   : $Id: DiveProfileVO.h,v 1.6 2002/09/16 17:08:11 grunwalm Exp $    *
+* CVS Id   : $Id: DiveProfileVO.h,v 1.7 2002/09/16 17:48:43 grunwalm Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveProfileVO.cpp                        *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -40,6 +40,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <map>
 #include <qstring.h>
 
+using namespace std;
+  
 class DiveProfileVO
 {
 public:
