@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DiveVO.cpp                                                       *
-* CVS Id   : $Id: DiveVO.cpp,v 1.2 2002/04/03 11:43:33 markus Exp $           *
+* CVS Id   : $Id: DiveVO.cpp,v 1.3 2002/04/10 11:52:55 markus Exp $           *
 * --------------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about dives ( Value Object ), *
 *                    i.e. maximum depth, length, profile...                   *
@@ -230,96 +230,128 @@ DiveVO& DiveVO::operator=( const DiveVO& d )
     return *this;
 }
 
-/*
-// Stream/Shift Operators
-ostream& operator<<( ostream& ostr, DiveVO& profile )
-// -------------------------------------------------
-// FIXME: This is not a DiveVO serialisation, but a
-// FIXME: DiveProfileVO ser. !
-// Use : Serialize a Dive Profile Value Object
-// Parameters  : ostr - output stream
-//               profile - profile to serialize
-//
-// Note: Serialisation order:
-//  <Number of Depth Samples>
-//    <Depth Samples>
-//  <Number of marks>
-//    <marks>
-//  <Seconds per Sample>
-//  <Number of Samples>
-//  <Maximum Depth>
-// -------------------------------------------------
-{
-    ostr << profile.m_profile.size() << DIVE_PROFILE_SEPARATOR;
-
-    for ( uint i=0; i<profile.m_profile.size(); i++ )
-    {
-        ostr << profile.m_profile.point( i ).x() << DIVE_PROFILE_SEPARATOR
-             << profile.m_profile.point( i ).y() << DIVE_PROFILE_SEPARATOR;
-    }
-
-    ostr << profile.m_marks.size() << DIVE_PROFILE_SEPARATOR;
-
-    map< uint, UDCFMarkerType >::iterator i;
-    for ( i=profile.m_marks.begin(); i!=profile.m_marks.end(); i++ )
-    {
-        ostr << (*i).first  << DIVE_PROFILE_SEPARATOR
-             << (*i).second << DIVE_PROFILE_SEPARATOR;
-    }
-
-    ostr << profile.m_secsPerSample << DIVE_PROFILE_SEPARATOR
-         << profile.m_samples << DIVE_PROFILE_SEPARATOR
-         << profile.m_maxDepth << DIVE_PROFILE_SEPARATOR;
-
-    return ostr;
-}
-
-istream& operator>>( istream& istr, DiveVO& profile )
-{
-    uint profile_size;
-    uint marks_size;
-
-    istr >> profile_size;
-
-    profile.m_profile.resize( profile_size );
-    for ( uint i=0; i<profile_size; i++ )
-    {
-        uint sample;
-        uint depth;
-
-        istr >> sample ;
-        istr >> depth;
-
-        profile.m_profile.setPoint( i, sample, depth );
-    }
-
-    profile.m_marks.clear();
-
-    istr >> marks_size;
-
-    for ( uint i=0; i<marks_size; i++ )
-    {
-        uint sample;
-        int  imark;
-        UDCFMarkerType mark;
-
-        istr >> sample >> imark;
-
-        mark=(UDCFMarkerType) imark;
-
-        profile.m_marks[ sample ]=mark;
-    }
-
-    istr >> profile.m_secsPerSample
-         >> profile.m_samples
-         >> profile.m_maxDepth ;
-
-    return istr;
-}
-*/
 
 /*
 || Accessors
 */
 
-// All in header file
+void DiveVO::setNumber( const int& number )
+{
+    m_number = number;
+}
+
+void DiveVO::setDate( const string& date )
+{
+    m_date= date;
+}
+
+void DiveVO::setTime( const string& time )
+{
+    m_time= time;
+}
+
+void DiveVO::setSync( const bool& sync )
+{
+    m_sync= sync;
+}
+
+void DiveVO::setDiver_number( const int& diver_number )
+{
+    m_diver_number= diver_number;
+}
+
+void DiveVO::setPlace( const string& place )
+{
+    m_place= place;
+}
+
+void DiveVO::setLocation( const string& location )
+{
+    m_location= location;
+}
+
+void DiveVO::setAltitude_mode( const double& altitude_mode )
+{
+    m_altitude_mode= altitude_mode;
+}
+
+void DiveVO::setWater_temperature( const double& water_temperature )
+{
+    m_water_temperature= water_temperature;
+}
+
+void DiveVO::setStart_pressure( const double& start_pressure )
+{
+    m_start_pressure= start_pressure;
+}
+
+void DiveVO::setEnd_pressure( const double& end_pressure )
+{
+    m_end_pressure= end_pressure;
+}
+
+void DiveVO::setSurface_intervall( const double& surface_intervall )
+{
+    m_surface_intervall= surface_intervall;
+}
+
+void DiveVO::setMax_depth( const double& max_depth )
+{
+    m_max_depth= max_depth;
+}
+
+void DiveVO::setLength( const string& length )
+{
+    m_length= length;
+}
+
+void DiveVO::setProfile( const DiveProfileVO& profile )
+{
+    m_profile= profile;
+}
+
+void DiveVO::setLog( const string& log )
+{
+    m_log= log;
+}
+
+void DiveVO::setPartner_diver_number( const int& partner_diver_number )
+{
+    m_partner_diver_number= partner_diver_number;
+}
+
+void DiveVO::setWeather( const string& weather )
+{
+    m_weather= weather;
+}
+
+void DiveVO::setSight( const string& sight )
+{
+    m_sight= sight;
+}
+
+void DiveVO::setLead( const double& lead )
+{
+    m_lead= lead;
+}
+
+void DiveVO::setAir_temperature( const double& air_temperature )
+{
+    m_air_temperature= air_temperature;
+}
+
+void DiveVO::setDive_type( const int& dive_type )
+{
+    m_dive_type= dive_type;
+}
+
+void DiveVO::setFilling_station_number( const int& filling_station_number )
+{
+    m_filling_station_number= filling_station_number;
+}
+
+void DiveVO::setBottleNumber( const int& bottle_number )
+{
+    m_bottle_number= bottle_number;
+}
+

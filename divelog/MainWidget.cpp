@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.49 2002/03/26 10:41:21 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.50 2002/04/10 11:52:55 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.49 2002/03/26 10:41:21 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.50 2002/04/10 11:52:55 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -29,6 +29,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.49 2002/03/26 10:4
 #include "InfoAreaFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
+#include "DiveVO.h"
 #include "DiveTypeVO.h"
 #include "DiveComputerVO.h"
 #include "FillingStationVO.h"
@@ -430,8 +431,39 @@ void MainWidget::settingsCommunication()
 
 void MainWidget::diveSelected( QListViewItem* item )
 {
-    qWarning( "Not Implemented: MainWidget::diveSelected()");
-    cerr << item->text(1);
+    bool conversionOk;
+    cerr << item->text(0);
+    DiveVO search;
+    vector< DiveVO > result;
+    search.setNumber( item->text(0).toInt() );
+
+    DivelogDAO db;
+    try
+    {                        // V Search only by number
+        result = db.searchDive( search, "10000000000000000000000" );
+    }
+    catch( DivelogDAOException e )
+    {
+        cerr << e << endl;
+    }
+
+    if ( result.size() != 1 )
+    {
+        cerr << "Error: found more than one entry for Dive Nr" << item->text( 0 ) << endl;
+    }
+    else
+    {
+        DiveVO dive = result.front();
+        DiveProfileVO diveProfile = dive.profile();
+
+        m_profile->setDepth( diveProfile.maxDepth() );
+        m_profile->setSamples( diveProfile.samples() );
+        m_profile->setHideSamples( 0, false );
+        m_profile->setSecsPerSample( diveProfile.secsPerSample() );
+        m_profile->setTimeStart( 0, false );
+
+        m_profile->setProfile( diveProfile.profile() );
+    }
 }
 
 

@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.26 2002/02/08 16:41:34 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.27 2002/04/10 11:52:55 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.26 2002/02/08 16:41:34 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.27 2002/04/10 11:52:55 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -159,7 +159,7 @@ void ProfileField::setDepth( float depth )
 
 void ProfileField::setSamples( int samples )
 // -------------------------------------------------
-// Use : Change the number od samples shown in the
+// Use : Change the number of samples shown in the
 //       profile
 // Parameters  : samples - samples to set
 // Side-Effects: sets m_samples
@@ -171,7 +171,7 @@ void ProfileField::setSamples( int samples )
         return;
     }
 
-    m_samples=0;
+    m_samples=samples;
     emit samplesChanged( samples );
 }
 
@@ -382,7 +382,7 @@ void ProfileField::drawProfile( QPainter* p )
 // -------------------------------------------------
 {
     ASSERT( m_depth!=0 );            // Assure sane values
-    ASSERT( m_samples!=0 );
+    /*ASSERT( m_samples!=0 );*/// DEBUG
     ASSERT( m_showSamples>=3 );
 
     CHECK_PTR( p );
@@ -420,7 +420,7 @@ void ProfileField::drawCoosy( QPainter* p )
 // -------------------------------------------------
 {
     ASSERT( m_depth!=0 );        // assure sane values
-    ASSERT( m_samples!=0 );
+/*    ASSERT( m_samples!=0 ); */// DEBUG
     ASSERT( m_showSamples>=3 );
 
     float depth_scale=m_depthAxisRect.height()/m_depth;   // a little helper
@@ -560,7 +560,7 @@ void ProfileField::paintEvent( QPaintEvent* )
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );
 
-    //qDebug( "%s->paintEvent", this->name() );
+    qDebug( "%s->paintEvent", this->name() );
 
     if ( !m_mouseSelectionRect.isNull() )    // draw the selection rectangle
     {

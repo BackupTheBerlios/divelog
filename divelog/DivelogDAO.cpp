@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.25 2002/04/03 11:43:33 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.26 2002/04/10 11:52:55 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,7 +14,7 @@
 *         anything to do with it. ( This refers especially to QString which   *
 *         would be far more powerfull then basic_string...)                   *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.25 2002/04/03 11:43:33 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.26 2002/04/10 11:52:55 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DiveVO.h"
@@ -599,13 +599,13 @@ vector<DiverVO> DivelogDAO::searchDiver( const DiverVO& d, const string& mask="0
              << er.type_name << "\"." << endl;
     }
     return t;
-}
-
+}                                                                         //         1         2
+                                                                          //12345678901234567890123
 vector<DiveVO> DivelogDAO::searchDive( const DiveVO& d, const string& mask="00000000000000000000000" )
 // mask==1 -> use this field
 // idea: use mask with  >, <, =, contains...
 {
-    ASSERT( mask.size()==32 );
+    ASSERT( mask.size()==23 );
     vector<DiveVO> t;
     try
     {
