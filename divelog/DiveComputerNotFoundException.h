@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : DiveComputerNotFoundException.h																	*
-* CVS Id   : $Id: DiveComputerNotFoundException.h,v 1.5 2002/08/10 18:15:44 grunwalm Exp $                                                             *
+* CVS Id   : $Id: DiveComputerNotFoundException.h,v 1.6 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Divecomputer couldn't*
 *                    be identified.                                           *
@@ -37,40 +37,40 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVECOMPUTER_NOT_FOUND_EXCEPTION
 
 #include "DivelogDAOException.h"
-#include <string>
+#include <qstring.h>
 #include <iostream>
 
 class DiveComputerNotFoundException : public DivelogDAOException
 {
 public:
     
-    DiveComputerNotFoundException( const string serialNumber,
-                                   const string model=0,
-                                 	 const string personalInfo=0 );
-    ~DiveComputerNotFoundException() throw();
+    DiveComputerNotFoundException( const QString serialNumber,
+                                   const QString model=0,
+                                 	 const QString personalInfo=0 );
+    ~DiveComputerNotFoundException() throw() {} ;
 
     friend ostream& operator << (ostream& os, const DiveComputerNotFoundException e);
 
-    const string model() const
+    const QString model() const
     {
         return m_model;
     }
 
-    const string serialNumber() const
+    const QString serialNumber() const
     {
         return m_serialNumber;
     }
 
-    const string personalInfo() const
+    const QString personalInfo() const
     {
         return m_personalInfo;
     }
 
 private:
 
-    string m_serialNumber;
-    string m_model;
-    string m_personalInfo;
+    QString m_serialNumber;
+    QString m_model;
+    QString m_personalInfo;
 };
 
 #endif

@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVELISTVO_H
 /******************************************************************************
 * Filename : DiveListVO.h                                                     *
-* CVS Id   : $Id: DiveListVO.h,v 1.3 2002/06/02 09:55:13 grunwalm Exp $         *
+* CVS Id   : $Id: DiveListVO.h,v 1.4 2002/09/16 17:08:11 grunwalm Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveListVO.cpp                           *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * Notes :                                                                     *
 ******************************************************************************/
 
-#include <string>
+#include <qstring.h>
 
 class DiveListVO
 {
@@ -46,35 +46,35 @@ public:
     DiveListVO();
     DiveListVO( const DiveListVO& d );
     DiveListVO( const int&    number,
-                const string& date,  // DATETIME split up
-                const string& time,
+                const QString& date,  // DATETIME split up
+                const QString& time,
                 const int&    diver_number,
-                const string& place,
-                const string& location );
+                const QString& place,
+                const QString& location );
 
     void init( const int&    number,
-               const string& date,  // DATETIME split up
-               const string& time,
+               const QString& date,  // DATETIME split up
+               const QString& time,
                const int&    diver_number,
-               const string& place,
-               const string& location );
+               const QString& place,
+               const QString& location );
 
     /*
     || Accessors
     */
-    void setNumber( const int& number );
-    void setDate( const string& date );
-    void setTime( const string& time );
-    void setDiver_number( const int& diver_number );
-    void setPlace( const string& place );
-    void setLocation( const string& location );
+    void number( const int& number );
+    void date( const QString& date );
+    void time( const QString& time );
+    void diver_number( const int& diver_number );
+    void place( const QString& place );
+    void location( const QString& location );
 
     int    number() const 								{ return m_number; }
-    string date() const   								{ return m_date; }
-    string time() const   								{ return m_time; }
+    QString date() const   								{ return m_date; }
+    QString time() const   								{ return m_time; }
     int    diver_number() const 					{ return m_diver_number; }
-    string place() const  								{ return m_place; }
-    string location() const 							{ return m_location; }
+    QString place() const  								{ return m_place; }
+    QString location() const 							{ return m_location; }
 
     /*
     || Operators
@@ -87,11 +87,11 @@ private:
     void init();
 
     int    m_number;
-    string m_date;  // DATETIME split up
-    string m_time;
+    QString m_date;  // DATETIME split up
+    QString m_time;
     int    m_diver_number;
-    string m_place;
-    string m_location;
+    QString m_place;
+    QString m_location;
 };
 
 

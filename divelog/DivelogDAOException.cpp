@@ -20,33 +20,36 @@ along with divelog; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 **************************************************************************/
 
-/******************************************************************************
-* Filename : DivelogDAOException.cpp																          *
-* CVS Id   : $Id: DivelogDAOException.cpp,v 1.4 2002/06/02 09:55:13 grunwalm Exp $                                                             *
-* --------------------------------------------------------------------------- *
-* Files subject    : Base-Exception thrown by DivelogDAO 											*
-* Owner            : Markus Grunwald                                          *
-* Date of Creation : Thu Nov 15 2001                                          *
-* --------------------------------------------------------------------------- *
-* To Do List :                                                                *
-* --------------------------------------------------------------------------- *
-* Notes :                                                                     *
-******************************************************************************/
-static char *DivelogDAOException_cvs_id="$Id: DivelogDAOException.cpp,v 1.4 2002/06/02 09:55:13 grunwalm Exp $";
+/***********************************************************************************
+* Filename : DivelogDAOException.cpp																               *
+* CVS Id   : $Id: DivelogDAOException.cpp,v 1.5 2002/09/16 17:08:11 grunwalm Exp $ *
+* -------------------------------------------------------------------------------- *
+* Files subject    : Base-Exception thrown by DivelogDAO 	                         *
+* Owner            : Markus Grunwald                                               *
+* Date of Creation : Thu Nov 15 2001                                               *
+* -------------------------------------------------------------------------------- *
+* To Do List :                                                                     *
+* -------------------------------------------------------------------------------- *
+* Notes :                                                                          *
+***********************************************************************************/
+static char DivelogDAOException_cvs_id[]="$Id: DivelogDAOException.cpp,v 1.5 2002/09/16 17:08:11 grunwalm Exp $";
 
 #include "DivelogDAOException.h"
 #include<iostream>
-#include<string>
+#include<qstring.h>
 
-DivelogDAOException::DivelogDAOException(const string message = "")
+DivelogDAOException::DivelogDAOException(const QString message = "")
     : m_msg(message)
 {
     m_msg = message;
+
+    // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
+    DivelogDAOException_cvs_id[0]+=0;
 }
     
 ostream& operator << (ostream& os, const DivelogDAOException e)
 {
-   os << "DivelogDAOException(" << e.m_msg << ")";
+   os << "DivelogDAOException(" << e.m_msg.latin1() << ")";
    return os;
 }
 

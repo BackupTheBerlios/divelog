@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : newfillingstationfrm.cpp                                         *
-* CVS Id   : $Id: NewFillingStationFrm.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: NewFillingStationFrm.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Profide a dialog for entering information about a filling*
 *                    station.                                                 *
@@ -33,11 +33,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newfillingstationfrm_cvs_id="$Id: NewFillingStationFrm.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $";
+static char newfillingstationfrm_cvs_id[]="$Id: NewFillingStationFrm.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $";
 #include "NewFillingStationFrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
+#include <qregexp.h>
+
 
 /*
  *  Constructs a NewFillingStationFrm which is a child of 'parent', with the 
@@ -78,7 +80,7 @@ void NewFillingStationFrm::init()
     m_StationNameLbl->setPalette( pal );
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    newfillingstationfrm_cvs_id+=0;
+    newfillingstationfrm_cvs_id[0]+=0;
 }
 
 /*  

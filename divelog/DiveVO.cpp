@@ -22,10 +22,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : DiveVO.cpp                                                       *
-* CVS Id   : $Id: DiveVO.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $         *
+* CVS Id   : $Id: DiveVO.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $         *
 * --------------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about dives ( Value Object ), *
-*                    i.e. maximum depth, length, profile...                   *
+*                    i.e. maximum depth, duration, profile...                   *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Thr Feb 14 2002                                          *
 * --------------------------------------------------------------------------- *
@@ -49,66 +49,63 @@ DiveVO::DiveVO()
 {
 }
 
-DiveVO::DiveVO( const int& number,
-                const string& date,  // DATETIME split up
-                const string& time,
-                const int&    sync,
+DiveVO::DiveVO( const int& number,          // NOT NULL
+                const QDateTime& date_time, // NOT NULL
+                const bool&   sync,         // NOT NULL
                 const int&    diver_number,
-                const string& place,
-                const string& location,
+                const QString& place,
+                const QString& location,
                 const double& altitude_mode,
                 const double& water_temperature,
                 const double& start_pressure,
                 const double& end_pressure,
                 const double& surface_intervall,
                 const double& max_depth,
-                const string& length,
+                const QString& duration,
                 const DiveProfileVO profile,
-                const string& log,      // TEXT
+                const QString& log,      // TEXT
                 const int&    partner_diver_number,
-                const string& weather,
-                const string& sight,
+                const QString& weather,
+                const QString& sight,
                 const double& lead,
                 const double& air_temperature,
                 const int& 	  dive_type,
                 const int&    filling_station_number,
                 const int&    bottle_number )
 {
-    init( number, date, time, sync, diver_number, place, location,  altitude_mode,
+    init( number, date_time, sync, diver_number, place, location,  altitude_mode,
           water_temperature, start_pressure, end_pressure, surface_intervall,
-          max_depth, length, profile, log, partner_diver_number, weather,
+          max_depth, duration, profile, log, partner_diver_number, weather,
           sight, lead, air_temperature, dive_type, filling_station_number,
           bottle_number );
 }
 
-void DiveVO::init( const int&    number,
-                   const string& date,  // DATETIME split up
-                   const string& time,
-                   const int&    sync,
+void DiveVO::init( const int& number,          // NOT NULL
+                   const QDateTime& date_time, // NOT NULL
+                   const bool&   sync,         // NOT NULL
                    const int&    diver_number,
-                   const string& place,
-                   const string& location,
+                   const QString& place,
+                   const QString& location,
                    const double& altitude_mode,
                    const double& water_temperature,
                    const double& start_pressure,
                    const double& end_pressure,
                    const double& surface_intervall,
                    const double& max_depth,
-                   const string& length,
+                   const QString& duration,
                    const DiveProfileVO profile,
-                   const string& log,      // TEXT
+                   const QString& log,      // TEXT
                    const int&    partner_diver_number,
-                   const string& weather,
-                   const string& sight,
+                   const QString& weather,
+                   const QString& sight,
                    const double& lead,
                    const double& air_temperature,
-                   const int& 	 dive_type,
+                   const int& 	  dive_type,
                    const int&    filling_station_number,
-                   const int&    bottle_number )
+                const int&    bottle_number )
 {
     m_number                 = number;
-    m_date                   = date;  // DATETIME split up
-    m_time                   = time;
+    m_date_time              = date_time;
     m_sync                   = sync;
     m_diver_number           = diver_number;
     m_place                  = place;
@@ -119,7 +116,7 @@ void DiveVO::init( const int&    number,
     m_end_pressure           = end_pressure;
     m_surface_intervall      = surface_intervall;
     m_max_depth              = max_depth;
-    m_length                 = length;
+    m_duration                 = duration;
     m_profile                = profile;
     m_log                    = log;      // TEXT
     m_partner_diver_number   = partner_diver_number;
@@ -141,77 +138,6 @@ DiveVO::DiveVO( const DiveVO& d )
     (*this)= d ;
 }
 
-#ifdef undefined
-DiveVO::DiveVO( const UDCFSample* samples, const uint maxIndex )
-// -------------------------------------------------
-// Use : Read existing profile data from an UDCF
-//       sample.
-// Parameters  : samples - the UDCF sample data
-//                         structure
-//               maxIndex - one-past-end index
-//                          of samples
-// -------------------------------------------------
-{
-    m_profile.resize( maxIndex ); // This is too big because maxIndex contains
-    															// marks and other infos as well
-																  // So resize it later to the proper size
-    uint depth_count=0;           // Counts real depth Values;
-    uint mark_count=0;            // Counts marks
-
-    m_maxDepth=0;
-
-    for ( uint i=0 ; i<maxIndex; i++ )
-    {
-//        cerr << "Sample #" << i << "  Type : " << samples[i].type << endl; // DEBUG
-/*  // DEBUG
-             << "depth       : " << samples[i].data.depth << endl
-             << "sampleTime  : " << samples[i].data.sampleTime << endl
-             << "mark        : " << samples[i].data.mark << endl
-             << "point       : " << samples[i].data.point.x << " | " << samples[i].data.point.x << endl
-             << "work        : " << samples[i].data.work << endl
-             << "mix         : " << samples[i].data.mix << endl;
-*/
-        switch ( samples[i].type )
-        {
-        case ST_DEPTH:
-            // The depth entry in the point array is only an index, not
-            // the real time                     V
-            m_profile.setPoint( depth_count, depth_count, qRound( samples[i].data.depth*10 ) );
-            m_maxDepth = QMAX( m_maxDepth, qRound(samples[i].data.depth*10)/10.0 );
-            depth_count++;
-            break;
-        case ST_TD:   // Don't know
-            break;
-        case ST_MARK:
-            m_marks[ depth_count ] = samples[i].data.mark;
-            mark_count++;
-            break;
-        case ST_MIX:
-            cerr << "Sample #" << i << "  Type : " << samples[i].type << endl // DEBUG
-                 << "depth       : " << samples[i].data.depth << endl
-                 << "sampleTime  : " << samples[i].data.sampleTime << endl
-                 << "mark        : " << samples[i].data.mark << endl
-                 << "point       : " << samples[i].data.point.x << " | " << samples[i].data.point.x << endl
-                 << "work        : " << samples[i].data.work << endl
-                 << "mix         : " << samples[i].data.mix << endl;
-            break;
-        case ST_SAMPLETIME:
-            m_secsPerSample=(uint) samples[i].data.sampleTime; // FIXME: any doubles
-                                                               //        possible ?
-           break;
-        case ST_WORK: // Don't know
-            break;
-        default:
-            break;
-        }
-    }
-
-    m_profile.resize( depth_count ); // Now we know for sure how many depth values
-                                     // we have, so we trim them.
-    m_samples=depth_count;
-}
-#endif
-
 void DiveVO::init()
 // -------------------------------------------------
 // Use : general initialisation
@@ -225,8 +151,7 @@ DiveVO& DiveVO::operator=( const DiveVO& d )
 // -------------------------------------------------
 {
     m_number                 = d.m_number;
-    m_date                   = d.m_date;  // DATETIME split up
-    m_time                   = d.m_time;
+    m_date_time              = d.m_date_time; 
     m_sync                   = d.m_sync;
     m_diver_number           = d.m_diver_number;
     m_place                  = d.m_place;
@@ -237,7 +162,7 @@ DiveVO& DiveVO::operator=( const DiveVO& d )
     m_end_pressure           = d.m_end_pressure;
     m_surface_intervall      = d.m_surface_intervall;
     m_max_depth              = d.m_max_depth;
-    m_length                 = d.m_length;
+    m_duration                 = d.m_duration;
     m_profile                = d.m_profile;
     m_log                    = d.m_log;      // TEXT
     m_partner_diver_number   = d.m_partner_diver_number;
@@ -257,122 +182,117 @@ DiveVO& DiveVO::operator=( const DiveVO& d )
 || Accessors
 */
 
-void DiveVO::setNumber( const int& number )
+void DiveVO::number( const int& number )
 {
     m_number = number;
 }
 
-void DiveVO::setDate( const string& date )
+void DiveVO::date_time( const QDateTime& date_time )
 {
-    m_date= date;
+    m_date_time= date_time;
 }
 
-void DiveVO::setTime( const string& time )
-{
-    m_time= time;
-}
-
-void DiveVO::setSync( const bool& sync )
+void DiveVO::sync( const bool& sync )
 {
     m_sync= sync;
 }
 
-void DiveVO::setDiver_number( const int& diver_number )
+void DiveVO::diver_number( const int& diver_number )
 {
     m_diver_number= diver_number;
 }
 
-void DiveVO::setPlace( const string& place )
+void DiveVO::place( const QString& place )
 {
     m_place= place;
 }
 
-void DiveVO::setLocation( const string& location )
+void DiveVO::location( const QString& location )
 {
     m_location= location;
 }
 
-void DiveVO::setAltitude_mode( const double& altitude_mode )
+void DiveVO::altitude_mode( const double& altitude_mode )
 {
     m_altitude_mode= altitude_mode;
 }
 
-void DiveVO::setWater_temperature( const double& water_temperature )
+void DiveVO::water_temperature( const double& water_temperature )
 {
     m_water_temperature= water_temperature;
 }
 
-void DiveVO::setStart_pressure( const double& start_pressure )
+void DiveVO::start_pressure( const double& start_pressure )
 {
     m_start_pressure= start_pressure;
 }
 
-void DiveVO::setEnd_pressure( const double& end_pressure )
+void DiveVO::end_pressure( const double& end_pressure )
 {
     m_end_pressure= end_pressure;
 }
 
-void DiveVO::setSurface_intervall( const double& surface_intervall )
+void DiveVO::surface_intervall( const double& surface_intervall )
 {
     m_surface_intervall= surface_intervall;
 }
 
-void DiveVO::setMax_depth( const double& max_depth )
+void DiveVO::max_depth( const double& max_depth )
 {
     m_max_depth= max_depth;
 }
 
-void DiveVO::setLength( const string& length )
+void DiveVO::duration( const QString& duration )
 {
-    m_length= length;
+    m_duration= duration;
 }
 
-void DiveVO::setProfile( const DiveProfileVO& profile )
+void DiveVO::profile( const DiveProfileVO& profile )
 {
     m_profile= profile;
 }
 
-void DiveVO::setLog( const string& log )
+void DiveVO::log( const QString& log )
 {
     m_log= log;
 }
 
-void DiveVO::setPartner_diver_number( const int& partner_diver_number )
+void DiveVO::partner_diver_number( const int& partner_diver_number )
 {
     m_partner_diver_number= partner_diver_number;
 }
 
-void DiveVO::setWeather( const string& weather )
+void DiveVO::weather( const QString& weather )
 {
     m_weather= weather;
 }
 
-void DiveVO::setSight( const string& sight )
+void DiveVO::sight( const QString& sight )
 {
     m_sight= sight;
 }
 
-void DiveVO::setLead( const double& lead )
+void DiveVO::lead( const double& lead )
 {
     m_lead= lead;
 }
 
-void DiveVO::setAir_temperature( const double& air_temperature )
+void DiveVO::air_temperature( const double& air_temperature )
 {
     m_air_temperature= air_temperature;
 }
 
-void DiveVO::setDive_type( const int& dive_type )
+void DiveVO::dive_type( const int& dive_type )
 {
     m_dive_type= dive_type;
 }
 
-void DiveVO::setFilling_station_number( const int& filling_station_number )
+void DiveVO::filling_station_number( const int& filling_station_number )
 {
     m_filling_station_number= filling_station_number;
 }
 
-void DiveVO::setBottleNumber( const int& bottle_number )
+void DiveVO::bottle_number( const int& bottle_number )
 {
     m_bottle_number= bottle_number;
 }

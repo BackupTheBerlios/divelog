@@ -20,19 +20,19 @@ along with divelog; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 **************************************************************************/
 
-/**********************************************************************
-* Filename : DiveComputerVO.cpp                                       *
-* CVS Id   : $Id: DiveComputerVO.cpp,v 1.4 2002/06/02 09:55:13 grunwalm Exp $*
-* ------------------------------------------------------------------- *
-* Files subject    : Datastructure holding data about divecomputers 	*
-*                    (Value Object)   																*
-* Owner            : Markus Grunwald (MG)                             *
-* Date of Creation : Thu Nov 22 2001                                  *
-* ------------------------------------------------------------------- *
-* To Do List :                                                        *
-* ------------------------------------------------------------------- *
-* Notes :                                                             *
-**********************************************************************/
+/*****************************************************************************
+* Filename : DiveComputerVO.cpp                                              *
+* CVS Id   : $Id: DiveComputerVO.cpp,v 1.5 2002/09/16 17:08:11 grunwalm Exp $*
+* -------------------------------------------------------------------------- *
+* Files subject    : Datastructure holding data about divecomputers 	       *
+*                    (Value Object)   																       *
+* Owner            : Markus Grunwald (MG)                                    *
+* Date of Creation : Thu Nov 22 2001                                         *
+* -------------------------------------------------------------------------- *
+* To Do List :                                                               *
+* -------------------------------------------------------------------------- *
+* Notes :                                                                    *
+*****************************************************************************/
 #include "DiveComputerVO.h"
 
 /*
@@ -50,16 +50,16 @@ DiveComputerVO::DiveComputerVO( const DiveComputerVO& diveComputer )
     m_name   				= diveComputer.m_name;
 }
 
-DiveComputerVO::DiveComputerVO( const string& serial_number,
+DiveComputerVO::DiveComputerVO( const QString& serial_number,
 																const unsigned int& diver_number,
-                    						const string& name)
+                    						const QString& name)
 {
     init( serial_number, diver_number, name );
 }
 
-void DiveComputerVO::init( const string& serial_number,
+void DiveComputerVO::init( const QString& serial_number,
 													 const unsigned int& diver_number,
-                    			 const string& name )
+                    			 const QString& name )
 {
     m_serial_number = serial_number;
     m_diver_number  = diver_number;
@@ -71,6 +71,7 @@ DiveComputerVO& DiveComputerVO::operator=( const DiveComputerVO& diveComputer )
     m_serial_number = diveComputer.m_serial_number;
     m_diver_number  = diveComputer.m_diver_number;
     m_name   				= diveComputer.m_name;
+    return *this;
 }
 
 void DiveComputerVO::init()
@@ -81,7 +82,7 @@ void DiveComputerVO::init()
 || Accessors
 */
 
-string DiveComputerVO::serial_number() const
+QString DiveComputerVO::serial_number() const
 {
     return m_serial_number;
 }
@@ -91,23 +92,23 @@ unsigned int DiveComputerVO::diver_number() const
     return m_diver_number;
 }
 
-string DiveComputerVO::name() const
+QString DiveComputerVO::name() const
 {
     return m_name;
 }
 
 
-void DiveComputerVO::setSerial_number ( const string& serial_number )
+void DiveComputerVO::serial_number ( const QString& serial_number )
 {
     m_serial_number=serial_number;
 }
 
-void DiveComputerVO::setDiver_number( const unsigned int& diver_number )
+void DiveComputerVO::diver_number( const unsigned int& diver_number )
 {
     m_diver_number=diver_number;
 }
 
-void DiveComputerVO::setName( const string& name )
+void DiveComputerVO::name( const QString& name )
 {
     m_name=name;
 }

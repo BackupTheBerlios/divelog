@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : DiveListViewItem.cpp                                             *
-* CVS Id 	 : $Id: DiveListViewItem.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $*
+* CVS Id 	 : $Id: DiveListViewItem.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $*
 * --------------------------------------------------------------------------- *
 * Files subject    : Special List View Item for dives                         *
 *                    - Sorting of number by number, not by string             *
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *DiveListViewItem_cvs_id="$Id: DiveListViewItem.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $";
+static char DiveListViewItem_cvs_id[]="$Id: DiveListViewItem.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $";
 
 #include "DiveListViewItem.h"
 #include "DiveListVO.h"
@@ -42,9 +42,9 @@ DiveListViewItem::DiveListViewItem( DiveListVO &d, QListView *parent )
 		: QListViewItem( parent )
 {
     QListViewItem::setText( 0, QString::number( d.number() ) );
-    QListViewItem::setText( 1,  d.date().c_str() );
-    QListViewItem::setText( 2,  d.time().c_str() );
-    QListViewItem::setText( 3,  d.place().c_str() );
+    QListViewItem::setText( 1,  d.date() );
+    QListViewItem::setText( 2,  d.time() );
+    QListViewItem::setText( 3,  d.place() );
 }
 
 QString DiveListViewItem::key ( int column, bool ascending ) const
@@ -65,6 +65,6 @@ QString DiveListViewItem::key ( int column, bool ascending ) const
 void DiveListViewItem::init()
 {
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    DiveListViewItem_cvs_id+=0;
+    DiveListViewItem_cvs_id[0]+=0;
 }
 

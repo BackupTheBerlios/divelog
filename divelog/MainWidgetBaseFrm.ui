@@ -1,0 +1,1325 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>MainWidgetBaseFrm</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>MainWidgetBaseFrm</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>757</width>
+            <height>566</height>
+        </rect>
+    </property>
+    <property name="sizePolicy">
+        <sizepolicy>
+            <hsizetype>5</hsizetype>
+            <vsizetype>5</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+    </property>
+    <property name="caption">
+        <string>Divelog</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="margin">
+            <number>2</number>
+        </property>
+        <property name="spacing">
+            <number>0</number>
+        </property>
+        <widget class="QSplitter">
+            <property name="name">
+                <cstring>m_horMoveSplitter</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <widget class="QListView">
+                <column>
+                    <property name="text">
+                        <string>#</string>
+                    </property>
+                    <property name="clickable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="resizeable">
+                        <bool>true</bool>
+                    </property>
+                </column>
+                <column>
+                    <property name="text">
+                        <string>Date</string>
+                    </property>
+                    <property name="clickable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="resizeable">
+                        <bool>true</bool>
+                    </property>
+                </column>
+                <column>
+                    <property name="text">
+                        <string>Time</string>
+                    </property>
+                    <property name="clickable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="resizeable">
+                        <bool>true</bool>
+                    </property>
+                </column>
+                <column>
+                    <property name="text">
+                        <string>Place</string>
+                    </property>
+                    <property name="clickable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="resizeable">
+                        <bool>true</bool>
+                    </property>
+                </column>
+                <column>
+                    <property name="text">
+                        <string>Location</string>
+                    </property>
+                    <property name="clickable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="resizeable">
+                        <bool>true</bool>
+                    </property>
+                </column>
+                <property name="name">
+                    <cstring>m_diveListView</cstring>
+                </property>
+                <property name="allColumnsShowFocus">
+                    <bool>true</bool>
+                </property>
+            </widget>
+            <widget class="QSplitter">
+                <property name="name">
+                    <cstring>m_verMoveSplitter</cstring>
+                </property>
+                <property name="orientation">
+                    <enum>Vertical</enum>
+                </property>
+                <property name="whatsThis" stdset="0">
+                    <string>This splitter can be moved up and down. It seperates Profile Field and Info Area</string>
+                </property>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>Layout24</cstring>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <property name="margin">
+                            <number>0</number>
+                        </property>
+                        <property name="spacing">
+                            <number>2</number>
+                        </property>
+                        <widget class="ProfileField">
+                            <property name="name">
+                                <cstring>m_profile</cstring>
+                            </property>
+                            <property name="minimumSize">
+                                <size>
+                                    <width>329</width>
+                                    <height>160</height>
+                                </size>
+                            </property>
+                        </widget>
+                        <widget class="MyScrollBar">
+                            <property name="name">
+                                <cstring>m_samplesBar</cstring>
+                            </property>
+                        </widget>
+                        <widget class="MyScrollBar">
+                            <property name="name">
+                                <cstring>m_offsetBar</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLayoutWidget">
+                            <property name="name">
+                                <cstring>Layout6</cstring>
+                            </property>
+                            <hbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <property name="margin">
+                                    <number>0</number>
+                                </property>
+                                <property name="spacing">
+                                    <number>6</number>
+                                </property>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>Layout4</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <property name="margin">
+                                            <number>0</number>
+                                        </property>
+                                        <property name="spacing">
+                                            <number>6</number>
+                                        </property>
+                                        <widget class="QLayoutWidget">
+                                            <property name="name">
+                                                <cstring>Layout2</cstring>
+                                            </property>
+                                            <hbox>
+                                                <property name="name">
+                                                    <cstring>unnamed</cstring>
+                                                </property>
+                                                <property name="margin">
+                                                    <number>0</number>
+                                                </property>
+                                                <property name="spacing">
+                                                    <number>6</number>
+                                                </property>
+                                                <widget class="QLabel">
+                                                    <property name="name">
+                                                        <cstring>m_profileMouseTimeLabel</cstring>
+                                                    </property>
+                                                    <property name="text">
+                                                        <string>Time:</string>
+                                                    </property>
+                                                </widget>
+                                                <widget class="QLabel">
+                                                    <property name="name">
+                                                        <cstring>m_profileMouseTime</cstring>
+                                                    </property>
+                                                    <property name="sizePolicy">
+                                                        <sizepolicy>
+                                                            <hsizetype>0</hsizetype>
+                                                            <vsizetype>5</vsizetype>
+                                                            <horstretch>0</horstretch>
+                                                            <verstretch>0</verstretch>
+                                                        </sizepolicy>
+                                                    </property>
+                                                    <property name="text">
+                                                        <string>00:00</string>
+                                                    </property>
+                                                    <property name="alignment">
+                                                        <set>AlignCenter</set>
+                                                    </property>
+                                                </widget>
+                                            </hbox>
+                                        </widget>
+                                        <spacer>
+                                            <property name="name">
+                                                <cstring>Spacer1</cstring>
+                                            </property>
+                                            <property name="orientation">
+                                                <enum>Horizontal</enum>
+                                            </property>
+                                            <property name="sizeType">
+                                                <enum>Expanding</enum>
+                                            </property>
+                                            <property name="sizeHint">
+                                                <size>
+                                                    <width>30</width>
+                                                    <height>0</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                        <widget class="QLayoutWidget">
+                                            <property name="name">
+                                                <cstring>Layout1</cstring>
+                                            </property>
+                                            <hbox>
+                                                <property name="name">
+                                                    <cstring>unnamed</cstring>
+                                                </property>
+                                                <property name="margin">
+                                                    <number>0</number>
+                                                </property>
+                                                <property name="spacing">
+                                                    <number>6</number>
+                                                </property>
+                                                <widget class="QLabel">
+                                                    <property name="name">
+                                                        <cstring>m_profileMouseDepthLabel</cstring>
+                                                    </property>
+                                                    <property name="text">
+                                                        <string>Depth:</string>
+                                                    </property>
+                                                </widget>
+                                                <widget class="QLabel">
+                                                    <property name="name">
+                                                        <cstring>m_profileMouseDepth</cstring>
+                                                    </property>
+                                                    <property name="sizePolicy">
+                                                        <sizepolicy>
+                                                            <hsizetype>0</hsizetype>
+                                                            <vsizetype>5</vsizetype>
+                                                            <horstretch>0</horstretch>
+                                                            <verstretch>0</verstretch>
+                                                        </sizepolicy>
+                                                    </property>
+                                                    <property name="text">
+                                                        <string>40.0</string>
+                                                    </property>
+                                                    <property name="alignment">
+                                                        <set>AlignCenter</set>
+                                                    </property>
+                                                </widget>
+                                            </hbox>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <spacer>
+                                    <property name="name">
+                                        <cstring>Spacer3</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>30</width>
+                                            <height>0</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                                <widget class="QLabel">
+                                    <property name="name">
+                                        <cstring>m_profileMouseWarning</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Ascend !</string>
+                                    </property>
+                                </widget>
+                                <spacer>
+                                    <property name="name">
+                                        <cstring>Spacer2</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>40</width>
+                                            <height>0</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </hbox>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QTabWidget">
+                    <property name="name">
+                        <cstring>m_InfoArea</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>5</hsizetype>
+                            <vsizetype>5</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="tabPosition">
+                        <enum>Top</enum>
+                    </property>
+                    <widget class="QWidget">
+                        <property name="name">
+                            <cstring>m_GeneralInfo</cstring>
+                        </property>
+                        <attribute name="title">
+                            <string>General Info</string>
+                        </attribute>
+                        <vbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QLayoutWidget">
+                                <property name="name">
+                                    <cstring>Layout20</cstring>
+                                </property>
+                                <hbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <property name="margin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="spacing">
+                                        <number>6</number>
+                                    </property>
+                                    <widget class="QLayoutWidget">
+                                        <property name="name">
+                                            <cstring>Layout31</cstring>
+                                        </property>
+                                        <hbox>
+                                            <property name="name">
+                                                <cstring>unnamed</cstring>
+                                            </property>
+                                            <property name="margin">
+                                                <number>0</number>
+                                            </property>
+                                            <property name="spacing">
+                                                <number>6</number>
+                                            </property>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>m_TextLabel8</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>Number</string>
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>m_Number</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>1000</string>
+                                                </property>
+                                                <property name="alignment">
+                                                    <set>AlignVCenter|AlignRight</set>
+                                                </property>
+                                                <property name="hAlign" stdset="0">
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>TextLabel3_3</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>on</string>
+                                                </property>
+                                            </widget>
+                                            <widget class="QLabel">
+                                                <property name="name">
+                                                    <cstring>m_DateTime</cstring>
+                                                </property>
+                                                <property name="text">
+                                                    <string>04. June 1975</string>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                    <spacer>
+                                        <property name="name">
+                                            <cstring>Spacer21</cstring>
+                                        </property>
+                                        <property name="orientation">
+                                            <enum>Horizontal</enum>
+                                        </property>
+                                        <property name="sizeType">
+                                            <enum>Expanding</enum>
+                                        </property>
+                                        <property name="sizeHint">
+                                            <size>
+                                                <width>20</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                    </spacer>
+                                </hbox>
+                            </widget>
+                            <widget class="Line">
+                                <property name="name">
+                                    <cstring>Line1</cstring>
+                                </property>
+                                <property name="frameShape">
+                                    <enum>HLine</enum>
+                                </property>
+                                <property name="frameShadow">
+                                    <enum>Sunken</enum>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QLayoutWidget">
+                                <property name="name">
+                                    <cstring>Layout26</cstring>
+                                </property>
+                                <grid>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <property name="margin">
+                                        <number>0</number>
+                                    </property>
+                                    <property name="spacing">
+                                        <number>6</number>
+                                    </property>
+                                    <widget class="QLabel" row="3" column="3">
+                                        <property name="name">
+                                            <cstring>m_TextLabel13</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Duration</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="4" column="0">
+                                        <property name="name">
+                                            <cstring>m_TextLabel3</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Weather</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="3" column="4">
+                                        <property name="name">
+                                            <cstring>m_Duration</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="maximumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>32767</height>
+                                            </size>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>AlignRight</set>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="hAlign" stdset="0">
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="2" column="0">
+                                        <property name="name">
+                                            <cstring>m_TextLabel10</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Dive Type</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="3">
+                                        <property name="name">
+                                            <cstring>m_TextLabel12</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Air Temperature</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="5">
+                                        <property name="name">
+                                            <cstring>m_AirTemperatureUnit</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>°C</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="4" column="5">
+                                        <property name="name">
+                                            <cstring>m_LeadUnit</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>kg</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="2" column="3">
+                                        <property name="name">
+                                            <cstring>m_TextLabel14</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Max. Depth</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_Location</cstring>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="2" column="4">
+                                        <property name="name">
+                                            <cstring>m_MaxDepth</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="maximumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>32767</height>
+                                            </size>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>AlignRight</set>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="hAlign" stdset="0">
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="1" column="0">
+                                        <property name="name">
+                                            <cstring>m_TextLabel6</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Location</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="3" column="5">
+                                        <property name="name">
+                                            <cstring>m_LengthUnit</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>min</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="3">
+                                        <property name="name">
+                                            <cstring>m_TextLabel11</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Water Temperature</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_Place</cstring>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>10</width>
+                                                <height>10</height>
+                                            </size>
+                                        </property>
+                                        <property name="frameShape">
+                                            <enum>LineEditPanel</enum>
+                                        </property>
+                                        <property name="frameShadow">
+                                            <enum>Sunken</enum>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="2" column="5">
+                                        <property name="name">
+                                            <cstring>m_MaxDepthUnit</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>m</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="1" column="4">
+                                        <property name="name">
+                                            <cstring>m_AirTemperature</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="maximumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>32767</height>
+                                            </size>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>AlignRight</set>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="hAlign" stdset="0">
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="4" column="1" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_Weather</cstring>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_DiveType</cstring>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="0">
+                                        <property name="name">
+                                            <cstring>m_TextLabel5</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Place</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="5" column="4">
+                                        <property name="name">
+                                            <cstring>m_Sight</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="maximumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>32767</height>
+                                            </size>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>AlignRight</set>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="hAlign" stdset="0">
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="4" column="3">
+                                        <property name="name">
+                                            <cstring>m_TextLabel1</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Lead</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="5" column="5">
+                                        <property name="name">
+                                            <cstring>m_SightUnit</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>m</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="4" column="4">
+                                        <property name="name">
+                                            <cstring>m_Lead</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="maximumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>32767</height>
+                                            </size>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>AlignRight</set>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="hAlign" stdset="0">
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="3" column="0">
+                                        <property name="name">
+                                            <cstring>m_TextLabel9</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Buddy</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="5" column="0" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_TextLabel2</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Filling Station</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="0" column="4">
+                                        <property name="name">
+                                            <cstring>m_WaterTemperature</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="minimumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>0</height>
+                                            </size>
+                                        </property>
+                                        <property name="maximumSize">
+                                            <size>
+                                                <width>50</width>
+                                                <height>32767</height>
+                                            </size>
+                                        </property>
+                                        <property name="alignment">
+                                            <set>AlignRight</set>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="hAlign" stdset="0">
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="3" column="1" rowspan="1" colspan="2">
+                                        <property name="name">
+                                            <cstring>m_Buddy</cstring>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="0" column="5">
+                                        <property name="name">
+                                            <cstring>m_WaterTemperatureUnit</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>°C</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLabel" row="5" column="3">
+                                        <property name="name">
+                                            <cstring>m_SightLabel</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>5</hsizetype>
+                                                <vsizetype>1</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>Sight</string>
+                                        </property>
+                                    </widget>
+                                    <widget class="QLineEdit" row="5" column="2">
+                                        <property name="name">
+                                            <cstring>m_FillingStation</cstring>
+                                        </property>
+                                        <property name="readOnly">
+                                            <bool>true</bool>
+                                        </property>
+                                    </widget>
+                                </grid>
+                            </widget>
+                        </vbox>
+                    </widget>
+                    <widget class="QWidget">
+                        <property name="name">
+                            <cstring>m_Notes</cstring>
+                        </property>
+                        <attribute name="title">
+                            <string>Notes</string>
+                        </attribute>
+                        <vbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <property name="margin">
+                                <number>11</number>
+                            </property>
+                            <property name="spacing">
+                                <number>6</number>
+                            </property>
+                            <widget class="QTextBrowser">
+                                <property name="name">
+                                    <cstring>m_TextBrowser1</cstring>
+                                </property>
+                            </widget>
+                        </vbox>
+                    </widget>
+                    <widget class="QWidget">
+                        <property name="name">
+                            <cstring>m_tab</cstring>
+                        </property>
+                        <attribute name="title">
+                            <string>Dive Gear</string>
+                        </attribute>
+                    </widget>
+                </widget>
+            </widget>
+        </widget>
+    </vbox>
+</widget>
+<menubar>
+    <property name="name">
+        <cstring>menubar</cstring>
+    </property>
+    <item text="&amp;Database" name="databaseMenu">
+        <action name="dbImportAction"/>
+        <separator/>
+        <action name="dbReloadDivelistAction"/>
+        <action name="dbNewDiverAction"/>
+        <action name="dbNewDiveComputerAction"/>
+        <action name="dbNewFillingStationAction"/>
+        <action name="dbNewDiveTypeAction"/>
+        <separator/>
+        <action name="dbExitAction"/>
+    </item>
+    <item text="&amp;Settings" name="settingsMenu">
+    </item>
+    <item text="&amp;Help" name="helpMenu">
+        <action name="helpContentsAction"/>
+        <action name="helpIndexAction"/>
+        <separator/>
+        <action name="helpAboutAction"/>
+    </item>
+</menubar>
+<toolbars>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>toolBar</cstring>
+        </property>
+        <property name="label">
+            <string>Tools</string>
+        </property>
+        <action name="helpAboutAction"/>
+        <action name="dbImportAction"/>
+    </toolbar>
+</toolbars>
+<customwidgets>
+    <customwidget>
+        <class>ProfileField</class>
+        <header location="local">/home/markus/projects/divelog/ProfileField.h</header>
+        <sizehint>
+            <width>329</width>
+            <height>160</height>
+        </sizehint>
+        <container>0</container>
+        <sizepolicy>
+            <hordata>3</hordata>
+            <verdata>7</verdata>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+        <pixmap>image0</pixmap>
+        <signal>depthChanged( float )</signal>
+        <signal>samplesChanged( int )</signal>
+        <signal>secsPerSampleChanged( int )</signal>
+        <signal>timeFormatChanged( TimeFormat )</signal>
+        <signal>timeStartChanged( int )</signal>
+        <signal>showSamplesChanged( int )</signal>
+        <signal>hideSamplesChanged( int )</signal>
+        <signal>mouseTimeChanged( const QString&amp; )</signal>
+        <signal>mouseDepthChanged( const QString&amp; )</signal>
+        <slot access="public" specifier="">setProfile( const DiveProfileVO&amp; profile )</slot>
+        <slot access="public" specifier="">setDepth( float depth )</slot>
+        <slot access="public" specifier="">setSamples( int samples )</slot>
+        <slot access="public" specifier="">setSecsPerSample( int secsPerSample )</slot>
+        <slot access="public" specifier="">setTimeFormat( TimeFormat timeFormat )</slot>
+        <slot access="public" specifier="">setTimeStart( int timeStart, bool doRepaint )</slot>
+        <slot access="public" specifier="">setTimeStart( int timeStart )</slot>
+        <slot access="public" specifier="">setShowSamples( int showSamples, bool doRepaint )</slot>
+        <slot access="public" specifier="">setShowSamples( int showSamples )</slot>
+        <slot access="public" specifier="">setHideSamples( int hideSamples, bool doRepaint )</slot>
+        <slot access="public" specifier="">setHideSamples( int hideSamples )</slot>
+    </customwidget>
+    <customwidget>
+        <class>MyScrollBar</class>
+        <header location="local">/home/markus/projects/divelog/MyScrollBar.h</header>
+        <sizehint>
+            <width>484</width>
+            <height>12</height>
+        </sizehint>
+        <container>0</container>
+        <sizepolicy>
+            <hordata>5</hordata>
+            <verdata>0</verdata>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+        <pixmap>image1</pixmap>
+        <signal>sliderPressed()</signal>
+        <signal>sliderReleased()</signal>
+        <signal>nextLine()</signal>
+        <signal>prevLine()</signal>
+        <signal>nextPage()</signal>
+        <signal>prevPage()</signal>
+        <signal>valueChanged( int )</signal>
+        <signal>sliderMoved( int )</signal>
+        <slot access="public" specifier="">setValue( int )</slot>
+        <slot access="public" specifier="">setMinValue(  int )</slot>
+        <slot access="public" specifier="">setMaxValue( int )</slot>
+        <property type="Bool">draggingSlider</property>
+        <property type="Int">lineStep</property>
+        <property type="Int">maxValue</property>
+        <property type="Int">minValue</property>
+        <property type="Orientation">orientation</property>
+        <property type="Int">pageStep</property>
+        <property type="Bool">tracking</property>
+        <property type="Int">value</property>
+    </customwidget>
+</customwidgets>
+<actions>
+    <action>
+        <property name="name">
+            <cstring>helpContentsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Contents</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Contents...</string>
+        </property>
+        <property name="accel">
+            <number>0</number>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpIndexAction</cstring>
+        </property>
+        <property name="text">
+            <string>Index</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Index...</string>
+        </property>
+        <property name="accel">
+            <number>0</number>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpAboutAction</cstring>
+        </property>
+        <property name="text">
+            <string>About</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;About...</string>
+        </property>
+        <property name="accel">
+            <number>0</number>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbImportAction</cstring>
+        </property>
+        <property name="text">
+            <string>&amp;Import</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbReloadDivelistAction</cstring>
+        </property>
+        <property name="text">
+            <string>(Re) &amp;Load Divelist</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbNewDiverAction</cstring>
+        </property>
+        <property name="text">
+            <string>New &amp;Diver</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbNewFillingStationAction</cstring>
+        </property>
+        <property name="text">
+            <string>New &amp;Filling Station</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbNewDiveTypeAction</cstring>
+        </property>
+        <property name="text">
+            <string>New Dive &amp;Type</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbNewDiveComputerAction</cstring>
+        </property>
+        <property name="text">
+            <string>New Dive &amp;Computer</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>dbExitAction</cstring>
+        </property>
+        <property name="text">
+            <string>E&amp;xit</string>
+        </property>
+        <property name="accel">
+            <number>4194385</number>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setCommunicationAction</cstring>
+        </property>
+        <property name="text">
+            <string>Action</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpAboutQtAction</cstring>
+        </property>
+        <property name="text">
+            <string>Action</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpAboutLicenseAction</cstring>
+        </property>
+        <property name="text">
+            <string>Action</string>
+        </property>
+    </action>
+</actions>
+<images>
+    <image name="image0">
+        <data format="XPM.GZ" length="53389">789ced9ccd6e9b401446f77e0ae4d959d5e4afaa52557d844a5d56aaba20aea276914d9b2eaaaaefde620c060c3317f84406eb5c5b31138e98f181990b61c2d52efbf4f143b6bbdafc7cce9fbfefb3fdb7fc47b6fbfaebe9e9f7e72fefff6cb677b76fb39b37d7d9ebec66fb6ab375d93e73d787288a0f45f1feb67815c5bc28eeef8a5751f445f1317fccf7f78722a109640a632d325d19debd744342b11699ff23698f87589b4c57bc5d557069095ea34ce75d2d34299b6b94d9782373629ccb7489f5f355cb7ce9167563ed329312ba669964f34b8e884ce74e3fe73096f3427b5de1ce6d6e4f387f956b2339ae5c5b21619996b1dec4b8f8f836a2aef0f7b3e4a7aa3de1babca1cdcded2c23d3982ccced8f6cc9d066d7ac715e634e0b2a99c66e156f9aae9b0f43cea2aaeac17166e16e5e1f9991fed9fa0c50f1233308d567fb33b7d3dd2be9c8ec8c3f81baa2fbc472f846096f96691c3355d9dcb5b3de64c6575d2f9e5c4c434ab82ac376c674f346c530710699422620b33ec0936d7c6accb0cc532a48b6f1a931c8143211998eb0844da679efe430c89432aa6c9eec175c92519d6726fb05976490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296490296402f7cdeb990ac83432c14908674ba24a2f9541a6900976737f9cb895139188c9f4cc351acb2053c844ba79b9a4aef45219ce33850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32850c32854cbfccd6e3e2906965fa64bace43649169646a99ada71d21731253c96c0bab653271cb162699fe7c9d600f5e2a73eae6cdd5c89cc49432db4f883b2e90cdc7329c670a99f698d9af0d9946a6af9b77039946a63f9bb7039946863153c8b4af80fa61641a1912909041a690695d01d1cde731f59119383b42a691219b0b19640a99e6a91163e64ca691cd1dd97c26834c21834c21c3e5a490219b0b19640a99d615d0008c4c23739419fa3b0732adccf1b6c5b144369fc52053c8f4cb2c6f9bf3f83281cc7a165cebb70b376c8d4cffad5e644e628627bbf2f8b211119379f6a1db8397ca2053c80c4cc3769ec7978d67b8361732c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432c81432bd32cb9bbcdcea1dcbf4de37effcf305328dcc403747e614263071cbf3f8327304643aef393227300363a647e6046678e216d97c34c379a69041a69041a69041a690b1c8b444b25f7049462593f0c894063285814c61205318c814063285814c6120531885cc074213dbbfef36ff003f4e1b60</data>
+    </image>
+    <image name="image1">
+        <data format="XPM.GZ" length="5964">789cedd8b10ac2301080e13d4f117a5b91566b8782f80882a3200ed7a8e8d045eb20e2bb9b4b9aa6e298c110ee0f484e5ce4a39ab6cce56ebb917929ee3df65725d5056f323f3ebaeeb93fac5f22ab9b5a2e2aa95fb299c8502a094d458bc682469ceb55d3d8d2a896b468041a4f675ae6c363801016165c3c018cdba933390532b3734c11c9b0f5ced609a00d889da3ca5e7c66eb9ce90d7262e78422cc41da3a5b65764e2c8b69a4cdb10c9c2e3b2795c3d4bee6acae63e704f3972fdadf6d27cdce49e5fe8c358b3b875969764e2a7bb43628febe0a4dec9c5074a33c904c9f9318670ceb6fdf89fb0d3cc8f773cf4064768eabc963e8ecbd121fd4cbbf2a</data>
+    </image>
+</images>
+<connections>
+    <connection>
+        <sender>helpIndexAction</sender>
+        <signal>activated()</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>helpIndex()</slot>
+    </connection>
+    <connection>
+        <sender>helpContentsAction</sender>
+        <signal>activated()</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>helpContents()</slot>
+    </connection>
+    <connection>
+        <sender>helpAboutAction</sender>
+        <signal>activated()</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>helpAbout()</slot>
+    </connection>
+    <connection>
+        <sender>dbExitAction</sender>
+        <signal>activated()</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>m_samplesBar</sender>
+        <signal>valueChanged( int )</signal>
+        <receiver>m_offsetBar</receiver>
+        <slot>setMaxValue(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_profile</sender>
+        <signal>timeStartChanged( int )</signal>
+        <receiver>m_offsetBar</receiver>
+        <slot>setValue(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_samplesBar</sender>
+        <signal>valueChanged( int )</signal>
+        <receiver>m_profile</receiver>
+        <slot>setHideSamples(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_profile</sender>
+        <signal>mouseDepthChanged( const QString&amp; )</signal>
+        <receiver>m_profileMouseDepth</receiver>
+        <slot>setText(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>m_offsetBar</sender>
+        <signal>valueChanged( int )</signal>
+        <receiver>m_profile</receiver>
+        <slot>setTimeStart(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_diveListView</sender>
+        <signal>clicked(QListViewItem*)</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>diveSelected(QListViewItem*)</slot>
+    </connection>
+    <connection>
+        <sender>m_diveListView</sender>
+        <signal>spacePressed(QListViewItem*)</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>diveSelected(QListViewItem*)</slot>
+    </connection>
+    <connection>
+        <sender>m_diveListView</sender>
+        <signal>returnPressed(QListViewItem*)</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>diveSelected(QListViewItem*)</slot>
+    </connection>
+    <connection>
+        <sender>dbImportAction</sender>
+        <signal>activated()</signal>
+        <receiver>MainWidgetBaseFrm</receiver>
+        <slot>dbImport()</slot>
+    </connection>
+    <connection>
+        <sender>m_profile</sender>
+        <signal>mouseTimeChanged( const QString&amp; )</signal>
+        <receiver>m_profileMouseTime</receiver>
+        <slot>setText(const QString&amp;)</slot>
+    </connection>
+</connections>
+<forwards>
+    <forward>class DiveComputerVO</forward>
+</forwards>
+<slots>
+    <slot>helpIndex()</slot>
+    <slot>helpContents()</slot>
+    <slot>helpAbout()</slot>
+    <slot>dbImport()</slot>
+    <slot access="protected">dbLoadDiveList()</slot>
+    <slot access="protected">dbNewDiveComputer( const DiveComputerVO &amp; diveComputer )</slot>
+    <slot access="protected">dbNewDiveComputer()</slot>
+    <slot access="protected">dbNewDiveType()</slot>
+    <slot access="protected">dbNewDiver()</slot>
+    <slot access="protected">dbNewFillingStation()</slot>
+    <slot access="protected">helpAboutQt()</slot>
+    <slot access="protected">settingCommunication()</slot>
+    <slot access="protected">helpAboutLicense()</slot>
+    <slot access="protected">diveSelected( QListViewItem * item )</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

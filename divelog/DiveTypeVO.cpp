@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /**********************************************************************
 * Filename : DiveTypeVO.cpp                                           *
-* CVS Id   : $Id: DiveTypeVO.cpp,v 1.3 2002/06/02 09:55:13 grunwalm Exp $                                                     *
+* CVS Id   : $Id: DiveTypeVO.cpp,v 1.4 2002/09/16 17:08:11 grunwalm Exp $                                                     *
 * ------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about divetypes	      *
 *                    (Value Object)   																*
@@ -50,14 +50,14 @@ DiveTypeVO::DiveTypeVO( const DiveTypeVO& diveType )
 }
 
 DiveTypeVO::DiveTypeVO( const unsigned int& number,
-                        const string& description
+                        const QString& description
 											)
 {
     init( number, description );
 }
 
 void DiveTypeVO::init( const unsigned int& number,
-                       const string& description
+                       const QString& description
                      )
 {
     m_number       = number;
@@ -68,6 +68,7 @@ DiveTypeVO& DiveTypeVO::operator=( const DiveTypeVO& diveType )
 {
     m_number       = diveType.m_number;
     m_description  = diveType.m_description;
+    return *this;
 }
 
 void DiveTypeVO::init()
@@ -83,19 +84,19 @@ unsigned int DiveTypeVO::number() const
     return m_number;
 }
 
-string DiveTypeVO::description() const
+QString DiveTypeVO::description() const
 {
     return m_description;
 }
 
 
 
-void DiveTypeVO::setNumber ( const unsigned int& number )
+void DiveTypeVO::number ( const unsigned int& number )
 {
     m_number=number;
 }
 
-void DiveTypeVO::setDescription( const string& description )
+void DiveTypeVO::description( const QString& description )
 {
     m_description=description;
 }

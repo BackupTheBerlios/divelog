@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.30 2002/06/02 09:55:13 grunwalm Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.31 2002/09/16 17:08:11 grunwalm Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,12 +35,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.30 2002/06/02 09:55:13 grunwalm Exp $";
+static char profilefield_cvs_id[]="$Id: ProfileField.cpp,v 1.31 2002/09/16 17:08:11 grunwalm Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qpointarray.h>
 
+#include "DiveProfileVO.h"
 #include "ProfileField.h"
 
 // Some constants which set the appearance.
@@ -69,6 +70,7 @@ ProfileField::ProfileField( QWidget *parent=0, const char* name=0 )
     init();
 }
 
+/*
 ProfileField::ProfileField( QWidget *parent, const char* name, QPointArray profile )
     : QWidget( parent, name )
 // -------------------------------------------------
@@ -82,6 +84,7 @@ ProfileField::ProfileField( QWidget *parent, const char* name, QPointArray profi
     init();
     setProfile( profile );
 }
+*/
 
 ProfileField::ProfileField( QWidget *parent, const char* name, const DiveProfileVO& profile )
     : QWidget( parent, name )
@@ -90,12 +93,10 @@ ProfileField::ProfileField( QWidget *parent, const char* name, const DiveProfile
 // Parameters: parent= parent of the widget
 //             name  = name of the widget
 //             profile = profile data to show
-//                       Use an extra class for this sometime!
 // -------------------------------------------------
 {
-    // FIXME : implement it
-    qDebug( "ProfileField::ProfileField( QWidget *parent, const char* name, const DiveProfileVO& profile ) not implemented !" );
-    exit(1);
+    init();
+    setProfile( profile );
 }
 
 void ProfileField::init()
@@ -154,12 +155,37 @@ void ProfileField::init()
     m_mouseSelectionRect.setHeight( 0 );
 
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    profilefield_cvs_id+=0;
+    profilefield_cvs_id[0]+=0;
 }
 
 /*
 || Slots
 */
+
+void ProfileField::setProfile( const DiveProfileVO& diveProfile )
+// -------------------------------------------------
+// Use : Set all dive profile data
+// Parameters  : diveProfile: dive profile class
+// Side-Effects: called methods emit several signals
+//               (see there)
+//               calls paintEvent
+// -------------------------------------------------
+{
+    // FIXME: the order of the following method calls
+    //        is important, allthough it shouldn't.
+    //        With the wrong order, the displayed length
+    //        of the dive is wrong.
+
+    setDepth( diveProfile.maxDepth() );
+    setSamples( diveProfile.samples() );
+    setHideSamples( 0, false );
+    setSecsPerSample( diveProfile.secsPerSample() );
+    setTimeStart( 0, false );
+
+    m_profile=diveProfile.profile();
+    repaint( FALSE );
+}
+
 
 void ProfileField::setDepth( float depth )
 // -------------------------------------------------
@@ -233,6 +259,7 @@ void ProfileField::setTimeFormat( TimeFormat timeFormat )
     emit timeFormatChanged( timeFormat );
 }
 
+/*
 void ProfileField::setProfile( QPointArray profile )
 // -------------------------------------------------
 // Use : set the data to be displayed
@@ -244,6 +271,7 @@ void ProfileField::setProfile( QPointArray profile )
     m_profile=profile;
     repaint( FALSE );
 }
+*/
 
 void ProfileField::setTimeStart( int start )
 {

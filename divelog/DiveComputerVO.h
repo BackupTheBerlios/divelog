@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVECOMPUTERVO_H
 /******************************************************************************
 * Filename : DiveComputerVO.h                                                 *
-* CVS Id   : $Id: DiveComputerVO.h,v 1.3 2002/06/02 09:55:13 grunwalm Exp $   *
+* CVS Id   : $Id: DiveComputerVO.h,v 1.4 2002/09/16 17:08:11 grunwalm Exp $   *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveComputerVO.cpp                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * Notes :                                                                     *
 ******************************************************************************/
 
-#include <string>
+#include <qstring.h>
 
 class DiveComputerVO
 {
@@ -45,27 +45,27 @@ public:
     */
     DiveComputerVO();
     DiveComputerVO( const DiveComputerVO& diveComputer );
-    DiveComputerVO( const string& serial_number,
+    DiveComputerVO( const QString& serial_number,
 										const unsigned int& diver_number,
-                    const string& name
+                    const QString& name
                   );
 
-    void init( const string& serial_number,
+    void init( const QString& serial_number,
 							 const unsigned int& diver_number,
-               const string& name
+               const QString& name
              );
 
     /*
     || Accessors
     */
 
-    string serial_number() const;
+    QString serial_number() const;
     unsigned int diver_number() const;
-    string name() const;
+    QString name() const;
 
-    void setSerial_number ( const string& serialNumber );
-    void setDiver_number( const unsigned int& diver_number );
-    void setName( const string& name );
+    void serial_number ( const QString& serialNumber );
+    void diver_number( const unsigned int& diver_number );
+    void name( const QString& name );
 
     /*
     || Operators
@@ -77,9 +77,9 @@ public:
 private:
     void init();
 
-    string m_serial_number;
+    QString m_serial_number;
     unsigned int m_diver_number;
-    string m_name;
+    QString m_name;
 
 };
 

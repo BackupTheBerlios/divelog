@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define FILLINGSTATIONVO_H
 /******************************************************************************
 * Filename : FillingStationVO.h                                               *
-* CVS Id   : $Id: FillingStationVO.h,v 1.3 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: FillingStationVO.h,v 1.4 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for FillingStationVO.cpp                     *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * Notes :                                                                     *
 ******************************************************************************/
 
-#include <string>
+#include <qstring.h>
 
 class FillingStationVO
 {
@@ -46,15 +46,15 @@ public:
     FillingStationVO();
     FillingStationVO( const FillingStationVO& fs );
     FillingStationVO( const unsigned int& number,
-    									const string& stationname,
-    									const string& first_name,
-                      const string& last_name
+    									const QString& stationname,
+    									const QString& first_name,
+                      const QString& last_name
                     );
 
     void init( const unsigned int& number,
-    					 const string& stationname,
-    					 const string& first_name,
-               const string& last_name
+    					 const QString& stationname,
+    					 const QString& first_name,
+               const QString& last_name
              );
 
     /*
@@ -62,14 +62,14 @@ public:
     */
 
     unsigned int number() const;
-    string stationname() const;
-    string first_name() const;
-    string last_name() const;
+    QString stationname() const;
+    QString first_name() const;
+    QString last_name() const;
 
-    void setNumber ( const unsigned int& number );
-    void setStationname( const string& stationname );
-    void setFirst_name( const string& first_name );
-    void setLast_name( const string& last_name );
+    void number ( const unsigned int& number );
+    void stationname( const QString& stationname );
+    void first_name( const QString& first_name );
+    void last_name( const QString& last_name );
 
     /*
     || Operators
@@ -82,9 +82,9 @@ private:
     void init();
 
     unsigned int m_number;
-    string m_stationname;
-    string m_first_name;
-    string m_last_name;
+    QString m_stationname;
+    QString m_first_name;
+    QString m_last_name;
 
 };
 

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /************************************************************************************
 * Filename : DiverNotFoundException.cpp																              *
-* CVS Id   : $Id: DiverNotFoundException.cpp,v 1.4 2002/06/02 09:55:13 grunwalm Exp $ *
+* CVS Id   : $Id: DiverNotFoundException.cpp,v 1.5 2002/09/16 17:08:11 grunwalm Exp $ *
 * --------------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Divecr couldn't            *
 *                    be identified.                                                 *
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------------- *
 * Notes :                                                                           *
 *************************************************************************************/
-static char *DiverNotFoundException_cvs_id="$Id: DiverNotFoundException.cpp,v 1.4 2002/06/02 09:55:13 grunwalm Exp $";
+static char DiverNotFoundException_cvs_id[]="$Id: DiverNotFoundException.cpp,v 1.5 2002/09/16 17:08:11 grunwalm Exp $";
 
 #include "DiverNotFoundException.h"
 #include "DivelogDAOException.h"
@@ -41,15 +41,15 @@ static char *DiverNotFoundException_cvs_id="$Id: DiverNotFoundException.cpp,v 1.
 #include <iostream>
                                                
 DiverNotFoundException::DiverNotFoundException( const unsigned int& number=0,
-                                                const string& first_name="",
-                                                const string& last_name="",
-                                                const string& brevet="",
-                                                const string& street="",
-                                                const string& house_number="",
+                                                const QString& first_name="",
+                                                const QString& last_name="",
+                                                const QString& brevet="",
+                                                const QString& street="",
+                                                const QString& house_number="",
                                                 const int& zip=0,
-                                                const string& place="",
-                                                const string& phone="",
-                                                const string& email="" )
+                                                const QString& place="",
+                                                const QString& phone="",
+                                                const QString& email="" )
 : DivelogDAOException()
 {
     m_number       = number;
@@ -62,9 +62,12 @@ DiverNotFoundException::DiverNotFoundException( const unsigned int& number=0,
     m_place        = place;
     m_phone        = phone;
     m_email        = email;
+
+    // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
+    DiverNotFoundException_cvs_id[0]+=0;
 }
 
-DiverNotFoundException::DiverNotFoundException( const DiverVO& diver )
+DiverNotFoundException::DiverNotFoundException( const DiverSO& diver )
 : DivelogDAOException()
 {
     m_number       = diver.number();
@@ -84,27 +87,27 @@ unsigned int DiverNotFoundException::number() const
     return m_number;
 }
 
-string DiverNotFoundException::first_name() const
+QString DiverNotFoundException::first_name() const
 {
     return m_first_name;
 }
 
-string DiverNotFoundException::last_name() const
+QString DiverNotFoundException::last_name() const
 {
     return m_last_name;
 }
 
-string DiverNotFoundException::brevet() const
+QString DiverNotFoundException::brevet() const
 {
     return m_brevet;
 }
 
-string DiverNotFoundException::street() const
+QString DiverNotFoundException::street() const
 {
     return m_street;
 }
 
-string DiverNotFoundException::house_number() const
+QString DiverNotFoundException::house_number() const
 {
     return m_house_number;
 }
@@ -114,17 +117,17 @@ int 	 DiverNotFoundException::zip() const
     return m_zip;
 }
 
-string DiverNotFoundException::place() const
+QString DiverNotFoundException::place() const
 {
     return m_place;
 }
 
-string DiverNotFoundException::phone() const
+QString DiverNotFoundException::phone() const
 {
     return m_phone;
 }
 
-string DiverNotFoundException::email() const
+QString DiverNotFoundException::email() const
 {
     return m_email;
 }
@@ -141,15 +144,15 @@ ostream& operator << (ostream& os, const DiverNotFoundException e)
     else
     {
         os << "\tnumber       : " << e.m_number << endl
-           << "\tfirst_name   : " << e.m_first_name << endl
-           << "\tlast_name    : " << e.m_last_name << endl
-           << "\tbrevet       : " << e.m_brevet << endl
-           << "\tstreet       : " << e.m_street << endl
-           << "\thouse_number : " << e.m_house_number << endl
+           << "\tfirst_name   : " << e.m_first_name.latin1() << endl
+           << "\tlast_name    : " << e.m_last_name.latin1() << endl
+           << "\tbrevet       : " << e.m_brevet.latin1() << endl
+           << "\tstreet       : " << e.m_street.latin1() << endl
+           << "\thouse_number : " << e.m_house_number.latin1() << endl
            << "\tzip          : " << e.m_zip << endl
-           << "\tplace        : " << e.m_place << endl
-           << "\tphone        : " << e.m_phone << endl
-           << "\temail        : " << e.m_email;
+           << "\tplace        : " << e.m_place.latin1() << endl
+           << "\tphone        : " << e.m_phone.latin1() << endl
+           << "\temail        : " << e.m_email.latin1();
     }
     os << endl;
     return os;

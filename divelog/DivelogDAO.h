@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVELOGDAO_H
 /******************************************************************************
 * Filename : divelogdao.h                                                     *
-* CVS Id   : $Id: DivelogDAO.h,v 1.20 2002/08/10 18:15:44 grunwalm Exp $      *
+* CVS Id   : $Id: DivelogDAO.h,v 1.21 2002/09/16 17:08:11 grunwalm Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header file for divelogdao.cpp                           *
 * Owner            : Markus Grunwald                                          *
@@ -44,7 +44,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "DivelogDAOException.h"
 #include "DiverVO.h"
+#include "DiverSO.h"
 #include "DiveVO.h"
+#include "DiveSO.h"
 #include "DiveListVO.h"
 #include "FillingStationVO.h"
 #include "DiveTypeVO.h"
@@ -59,10 +61,10 @@ class DivelogDAO
 {
 
 public:
-    DivelogDAO( char* db=MYSQL_DATABASE,
-                char* host=MYSQL_HOST,
-                char* user=MYSQL_USER,
-                char* passwd=MYSQL_PASSWD ) throw ( DivelogDAOException );
+    DivelogDAO( const char db[]=MYSQL_DATABASE,
+                const char host[]=MYSQL_HOST,
+                const char user[]=MYSQL_USER,
+                const char passwd[]=MYSQL_PASSWD ) throw ( DivelogDAOException );
 
     ~DivelogDAO();
 
@@ -72,8 +74,8 @@ public:
     void insertDiveType( const DiveTypeVO& diveType ) throw ( DivelogDAOException );
     void insertDiveComputer( const DiveComputerVO& diveComputer ) throw ( DivelogDAOException );
 
-    vector<DiverVO> searchDiver( const DiverVO& d, const string& mask="0000000000" );
-    vector<DiveVO>  searchDive ( const DiveVO&  d, const string& mask="00000000000000000000000" );
+    vector<DiverVO> searchDiver( const DiverSO& d );
+    vector<DiveVO>  searchDive ( const DiveSO&  d );
 
     vector<DiveListVO> diveList( const int& diver_number );
 

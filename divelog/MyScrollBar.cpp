@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : MyScrollBar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.15 2002/06/02 09:55:13 grunwalm Exp $     *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.16 2002/09/16 17:08:11 grunwalm Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : QScrollBar has (nearly?) no slots. We implement some     *
 *                    more to make it more usefull.                            *
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.15 2002/06/02 09:55:13 grunwalm Exp $";
+static char myscrollbar_cvs_id[]="$Id: MyScrollBar.cpp,v 1.16 2002/09/16 17:08:11 grunwalm Exp $";
 
 #include "MyScrollBar.h"
 
@@ -55,7 +55,7 @@ MyScrollBar::MyScrollBar( int minValue, int maxValue, int LineStep, int PageStep
 void MyScrollBar::init()
 {
     // Just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    myscrollbar_cvs_id+=0;
+    myscrollbar_cvs_id[0]+=0;
 }
 
 /*

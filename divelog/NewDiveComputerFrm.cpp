@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : newdivecomputerfrm.cpp                                           *
-* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.13 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: NewDiveComputerFrm.cpp,v 1.14 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    computer (EON/Aladin/...)                                *
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.13 2002/06/02 09:55:13 grunwalm Exp $";
+static char newdivecomputerfrm_cvs_id[]="$Id: NewDiveComputerFrm.cpp,v 1.14 2002/09/16 17:08:11 grunwalm Exp $";
 #include "NewDiveComputerFrm.h"
 #include "DivelogDAO.h"
 #include "DiverVO.h"
@@ -46,8 +46,9 @@ static const char *newdivecomputerfrm_cvs_id="$Id: NewDiveComputerFrm.cpp,v 1.13
 #include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qcombobox.h>
+#include <qregexp.h>
 
-/* 
+/*
  *  Constructs a NewDiveComputerFrm which is a child of 'parent', with the 
  *  name 'name' and widget flags set to 'f' 
  *
@@ -91,7 +92,7 @@ void NewDiveComputerFrm::init()
     initDiverCombo();
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    newdivecomputerfrm_cvs_id+=0;
+    newdivecomputerfrm_cvs_id[0]+=0;
 }
 
 void NewDiveComputerFrm::initDiverCombo()
@@ -102,8 +103,10 @@ void NewDiveComputerFrm::initDiverCombo()
     DivelogDAO db;
     try
     {
-        DiverVO dummy;
-        vector<DiverVO> db_DiverList =db.searchDiver( dummy, "0000000000" );  // dump the whole table
+        DiverSO search;
+
+        search.number( 0 );
+        vector<DiverVO> db_DiverList =db.searchDiver( search );  // dump the whole table
 
         vector<DiverVO>::iterator i;
 
@@ -113,9 +116,9 @@ void NewDiveComputerFrm::initDiverCombo()
         {
             DiverVO diver( *i );
             indexCoder.push_back( diver.number() );
-            m_Owner->insertItem( ( diver.first_name()+" "+diver.last_name() ).c_str() );
+            m_Owner->insertItem( ( diver.first_name()+" "+diver.last_name() ) );
 
-            qDebug(" Diver = %s", diver.first_name().c_str() );
+            qDebug(" Diver = %s", diver.first_name().latin1() );
         }
     }
     catch( DiverNotFoundException e )

@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVETYPE_H
 /******************************************************************************
 * Filename : DiveTypeVO.h                                                     *
-* CVS Id   : $Id: DiveTypeVO.h,v 1.3 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: DiveTypeVO.h,v 1.4 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveTypeVO.cpp                           *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * Notes :                                                                     *
 ******************************************************************************/
 
-#include <string>
+#include <qstring.h>
 
 class DiveTypeVO
 {
@@ -46,11 +46,11 @@ public:
     DiveTypeVO();
     DiveTypeVO( const DiveTypeVO& fs );
     DiveTypeVO( const unsigned int& number,
-    						const string& description
+    						const QString& description
     					);
 
     void init( const unsigned int& number,
-    					 const string& description
+    					 const QString& description
              );
 
     /*
@@ -58,10 +58,10 @@ public:
     */
 
     unsigned int number() const;
-    string description() const;
+    QString description() const;
 
-    void setNumber ( const unsigned int& number );
-    void setDescription( const string& description );
+    void number ( const unsigned int& number );
+    void description( const QString& description );
 
     /*
     || Operators
@@ -74,7 +74,7 @@ private:
     void init();
 
     unsigned int m_number;
-    string 			 m_description;
+    QString			 m_description;
 
 };
 

@@ -1,6 +1,5 @@
-#!/usr/bin/perl 
+#!/usr/bin/perl
 # Copyright 2002 Markus Grunwald 
-# All other Copyrights (especially Qt and mysql) belong to their owners 
 
 #*************************************************************************
 #This file is part of divelog.
@@ -22,7 +21,7 @@
 
 #******************************************************************************
 # Filename : eoncsvimport.pl                                                  *
-# CVS Id   : $Id: eoncsvimport.pl,v 1.1 2002/06/02 09:59:52 grunwalm Exp $     *
+# CVS Id   : $Id: eoncsvimport.pl,v 1.2 2002/09/16 17:08:11 grunwalm Exp $    *
 # --------------------------------------------------------------------------- *
 # Files subject    :                                                          *
 # Owner            : Markus Grunwald (MG)                                     *
@@ -37,17 +36,63 @@
 use DBI();
 
 my $csvname = shift;
+$csvname_short=substr($csvname,0,4);
 
 # Connect to the database.
-my $dbh = DBI->connect("DBI:mysql:database=divelog-test;host=zaphod",
+my $dbh = DBI->connect("DBI:mysql:database=divelog-test;host=localhost",
                        "markus", "ArPPCa", {'RaiseError' => 1});
 
 open  MAIN,    "$csvname.csv"      or die "can't open $csvname.csv : $!";
-open  PROFILE, "$cvsname\$pro.csv" or die "can't open $cvsname\$pro.csv: $!";
-#open  NOTES,   "$cvsname\$not.csv" or die "can't open $cvsname\$pro.csv: $!";
-#open  PROFILE, "$cvsname\$dge.csv" or die "can't open $cvsname\$pro.csv: $!";
 
-while (<MAIN>){
+open  PROFILE, "$csvname_short\$pro.csv" or die "can't open $csvname_short\$pro.csv: $!";
+open  NOTES,   "$csvname_short\$not.csv" or die "can't open $csvname_short\$not.csv: $!";
+open  GEAR,    "$csvname_short\$dge.csv" or die "can't open $csvname_short\$dge.csv: $!";
+
+my @profiles;
+my @marks;
+my @profile_count;
+my @marks_count;
+my @max_depths;
+
+while (<PROFILE>)
+{
+    ($DiveRecordID,$SegmentNo,$Depth,$ASC,$SLOW,$Ceiling,$SURF)=split(/,/);
+    $Sample=$SegmentNo-1;
+    
+    $profile_count[ $DiveRecordID ]=$profile_count[ $DiveRecordID ]+1;
+    
+    $profiles[ $DiveRecordID ]=$profiles[ $DiveRecordID ] . $Sample . " " . int($Depth*10) . " ";
+    
+    if ( $max_depth[ $DiveRecordID ] < $Depth )
+    {
+        $max_depth[ $DiveRecordID ]=$Depth;
+    }
+    
+    #Map to UDCF markers. Use with care, they are undocumented in the .h file :(
+    if ( $ASC !=0 )
+    {
+        $marks[ $DiveRecordID ]=$marks[ $DiveRecordID ] . $SegmentNo . " 1 ";  #C_ASC 
+        $marks_count[ $DiveRecordID ]++;
+    }
+    if ( $SLOW !=0 )
+    {
+        $marks[ $DiveRecordID ]=$marks[ $DiveRecordID ] . $SegmentNo . " 5 ";  # ?C_RBT?
+        $marks_count[ $DiveRecordID ]++;
+    }
+    if ( $Ceiling !=0 )
+    {
+        $marks[ $DiveRecordID ]=$marks[ $DiveRecordID ] . $SegmentNo . " 2 ";  # C_DECO
+        $marks_count[ $DiveRecordID ]++;
+    }
+    if ( $SURF !=0 )
+    {
+        $marks[ $DiveRecordID ]=$marks[ $DiveRecordID ] . $SegmentNo . " 3 ";  # C_SURF
+        $marks_count[ $DiveRecordID ]++;
+    }
+}
+
+while (<MAIN>)
+{
     ($RecordID,$DiveNumber,$Date,$TimeIn,$RSeries,$DCDiveNo,$DivTimeSec,$SurfIntSec,
      $MaxDepth,$AvgDepth,$SerialNo,$PersData,$DCType,$SampleRate,$AltitudeMode,
      $SolTimeAdj,$Modified,$Location,$Site,$Weather,$WaterVis,$AirTemp,$WaterTemp,
@@ -96,10 +141,32 @@ while (<MAIN>){
     $len_m=int(( $DivTimeSec%3600 )/60);
     $len_s=$DivTimeSec-$len_h*3600-$len_m*60;
     
+    if ( $marks_count[ $RecordID ]==undefined )
+    {
+        $marks_count[ $RecordID ] = 0;
+    }
     
-    $sql_statement="insert into dive ( number, date, sync, diver_number, place, location, surface_intervall, "
+    print "RecordID=($RecordID)\n";
+    print "DiveNumber=($DiveNumber)\n";
+    print "profile_count=($profile_count[ $RecordID ])\n"; 
+    print "profiles=($profiles[ $RecordID ])\n";
+    print "marks_count=($marks_count[ $RecordID ])\n";
+    print "marks=($marks[ $RecordID ])\n";
+    print "SampleRate=($SampleRate)\n";
+    print "profile_count=($profile_count[ $RecordID ])\n";
+    print "max_depth=($max_depth[ $DiveRecordID ])\n";
+    
+    $profile=$profile_count[ $RecordID ] . " " 
+        . $profiles[ $RecordID ]
+        . $marks_count[ $RecordID ] . " "
+        . $marks[ $RecordID ]
+        . $SampleRate . " "
+        . $profile_count[ $RecordID ] . " " 
+        . $max_depth[ $DiveRecordID ];
+    
+    $sql_statement="insert into dive ( number, date_time, sync, diver_number, place, location, surface_intervall, "
              . "altitude_mode, water_temperature, start_pressure, "
-             . "end_pressure, max_depth, length, profile ) values ( "
+             . "end_pressure, max_depth, duration, profile ) values ( "
              . $DiveNumber .", "
              . "\"$year-$month-$day $hour:$minute:00\", "
              . "1, "
@@ -112,8 +179,8 @@ while (<MAIN>){
              . $CylStrtPres . ", "
              . $CylEndPres . ", "
              . $MaxDepth . ", "
-             . "\"". sprintf( "%u:%02u:%02u", $len_h, $len_m,  $len_s ) . "\", "
-             . "NULL" . ")" ;
+             . "\"". sprintf( "%u:%02u:%02u", $len_h, $len_m, $len_s ) . "\", "
+             . "\"$profile\"" . ")" ;
     print $sql_statement . "\n";
     $dbh->do($sql_statement) ;
     

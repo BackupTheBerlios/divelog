@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : main.cpp                                                         *
-* CVS Id 	 : $Id: main.cpp,v 1.10 2002/06/02 09:55:13 grunwalm Exp $             *
+* CVS Id 	 : $Id: main.cpp,v 1.11 2002/09/16 17:08:11 grunwalm Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Main class for divelog program (to be kept small)        *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -36,7 +36,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <qapplication.h>
 #include "MainWidget.h"
 
-static const char *main_cvs_id="$Id: main.cpp,v 1.10 2002/06/02 09:55:13 grunwalm Exp $";
+using namespace std;
+
+static char main_cvs_id[]="$Id: main.cpp,v 1.11 2002/09/16 17:08:11 grunwalm Exp $";
 
 int main( int argc, char* argv[] )
 {
@@ -50,7 +52,7 @@ int main( int argc, char* argv[] )
     mw.show();
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    main_cvs_id+=0;
+    main_cvs_id[0]+=0;
 
     return a.exec();
 }

@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVERVO_H
 /******************************************************************************
 * Filename : DiverVO.h                                                        *
-* CVS Id   : $Id: DiverVO.h,v 1.6 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: DiverVO.h,v 1.7 2002/09/16 17:08:11 grunwalm Exp $          *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiverVO.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,63 +35,64 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * Notes :                                                                     *
 ******************************************************************************/
 
-#include <string>
+#include <qstring.h>
 
 class DiverVO
 {
 public:
+
     /*
     || Constructors
     */
     DiverVO();
     DiverVO( const DiverVO& d );
     DiverVO( const unsigned int& number,
-             const string& first_name,
-             const string& last_name,
-             const string& brevet,
-             const string& street,
-             const string& house_number,
+             const QString& first_name,
+             const QString& last_name,
+             const QString& brevet,
+             const QString& street,
+             const QString& house_number,
              const int& zip,
-             const string& place,
-             const string& phone,
-             const string& email );
+             const QString& place,
+             const QString& phone,
+             const QString& email );
 
     void init( const unsigned int& number,
-               const string& first_name,
-               const string& last_name,
-               const string& brevet,
-               const string& street,
-               const string& house_number,
+               const QString& first_name,
+               const QString& last_name,
+               const QString& brevet,
+               const QString& street,
+               const QString& house_number,
                const int& zip,
-               const string& place,
-               const string& phone,
-               const string& email );
+               const QString& place,
+               const QString& phone,
+               const QString& email );
 
     /*
     || Accessors
     */
 
     unsigned int number() const;
-    string first_name() const;
-    string last_name() const;
-    string brevet() const;
-    string street() const;
-    string house_number() const;
+    QString first_name() const;
+    QString last_name() const;
+    QString brevet() const;
+    QString street() const;
+    QString house_number() const;
     int 	 zip() const;
-    string place() const;
-    string phone() const;
-    string email() const;
+    QString place() const;
+    QString phone() const;
+    QString email() const;
 
-    void setNumber ( const unsigned int& number );
-    void setFirst_name ( const string& first_name );
-    void setLast_name ( const string& last_name );
-    void setBrevet ( const string& brevet );
-    void setStreet ( const string& street );
-    void setHouse_number( const string& house_number );
-    void setZip	( const int& zip );
-    void setPlace	( const string& place );
-    void setPhone ( const string& phone );
-    void setEmail	( const string& email );
+    void number ( const unsigned int& number );
+    void first_name ( const QString& first_name );
+    void last_name ( const QString& last_name );
+    void brevet ( const QString& brevet );
+    void street ( const QString& street );
+    void house_number( const QString& house_number );
+    void zip	( const int& zip );
+    void place	( const QString& place );
+    void phone ( const QString& phone );
+    void email	( const QString& email );
 
     /*
     || Operators
@@ -99,20 +100,21 @@ public:
 
     DiverVO& operator=( const DiverVO& d );
 
-
-private:
+protected:
     void init();
 
+private:
+
     unsigned int m_number;
-    string m_first_name;
-    string m_last_name;
-    string m_brevet;
-    string m_street;
-    string m_house_number;
+    QString m_first_name;
+    QString m_last_name;
+    QString m_brevet;
+    QString m_street;
+    QString m_house_number;
     int m_zip;
-    string m_place;
-    string m_phone;
-    string m_email;
+    QString m_place;
+    QString m_phone;
+    QString m_email;
 };
 
 

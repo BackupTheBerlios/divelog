@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : DiverVO.cpp                                                      *
-* CVS Id   : $Id: DiverVO.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: DiverVO.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about divers (Value Object)   *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -57,17 +57,17 @@ DiverVO::DiverVO( const DiverVO& d )
     m_email        = d.m_email;
 }
 
-DiverVO::DiverVO( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
-    			   const string& street, const string& house_number, const int& zip, const string& place,
-    			   const string& phone, const string& email )
+DiverVO::DiverVO( const unsigned int& number, const QString& first_name, const QString& last_name, const QString& brevet,
+                  const QString& street, const QString& house_number, const int& zip, const QString& place,
+                  const QString& phone, const QString& email )
 {
     init( number, first_name, last_name, brevet, street,
           house_number, zip, place, phone, email);
 }
 
-void DiverVO::init( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
-    			 const string& street, const string& house_number, const int& zip, const string& place,
-    			 const string& phone, const string& email )
+void DiverVO::init( const unsigned int& number, const QString& first_name, const QString& last_name, const QString& brevet,
+    			 const QString& street, const QString& house_number, const int& zip, const QString& place,
+    			 const QString& phone, const QString& email )
 {
     m_number       = number;
     m_first_name   = first_name;
@@ -93,6 +93,8 @@ DiverVO& DiverVO::operator=( const DiverVO& d )
     m_place        = d.m_place;
     m_phone        = d.m_phone;
     m_email        = d.m_email;
+
+    return *this;
 }
 
 void DiverVO::init()
@@ -108,27 +110,27 @@ unsigned int DiverVO::number() const
     return m_number;
 }
 
-string DiverVO::first_name() const
+QString DiverVO::first_name() const
 {
     return m_first_name;
 }
 
-string DiverVO::last_name() const
+QString DiverVO::last_name() const
 {
     return m_last_name;
 }
 
-string DiverVO::brevet() const
+QString DiverVO::brevet() const
 {
     return m_brevet;
 }
 
-string DiverVO::street() const
+QString DiverVO::street() const
 {
     return m_street;
 }
 
-string DiverVO::house_number() const
+QString DiverVO::house_number() const
 {
     return m_house_number;
 }
@@ -138,69 +140,69 @@ int 	 DiverVO::zip() const
     return m_zip;
 }
 
-string DiverVO::place() const
+QString DiverVO::place() const
 {
     return m_place;
 }
 
-string DiverVO::phone() const
+QString DiverVO::phone() const
 {
     return m_phone;
 }
 
-string DiverVO::email() const
+QString DiverVO::email() const
 {
     return m_email;
 }
 
 
 
-void DiverVO::setNumber ( const unsigned int& number )
+void DiverVO::number ( const unsigned int& number )
 {
     m_number=number;
 }
 
-void DiverVO::setFirst_name ( const string& first_name )
+void DiverVO::first_name ( const QString& first_name )
 {
     m_first_name=first_name;
 }
 
-void DiverVO::setLast_name ( const string& last_name )
+void DiverVO::last_name ( const QString& last_name )
 {
     m_last_name=last_name;
 }
 
-void DiverVO::setBrevet ( const string& brevet )
+void DiverVO::brevet ( const QString& brevet )
 {
     m_brevet=brevet;
 }
 
-void DiverVO::setStreet ( const string& street )
+void DiverVO::street ( const QString& street )
 {
     m_street=street;
 }
 
-void DiverVO::setHouse_number( const string& house_number )
+void DiverVO::house_number( const QString& house_number )
 {
     m_house_number=house_number;
 }
 
-void DiverVO::setZip	( const int& zip )
+void DiverVO::zip	( const int& zip )
 {
     m_zip=zip;
 }
 
-void DiverVO::setPlace	( const string& place )
+void DiverVO::place	( const QString& place )
 {
     m_place=place;
 }
 
-void DiverVO::setPhone ( const string& phone )
+void DiverVO::phone ( const QString& phone )
 {
     m_phone=phone;
 }
 
-void DiverVO::setEmail	( const string& email )
+void DiverVO::email	( const QString& email )
 {
     m_email=email;
 }

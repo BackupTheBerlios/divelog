@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /************************************************************************************
 * Filename : DiveNotFoundException.cpp																              *
-* CVS Id   : $Id: DiveNotFoundException.cpp,v 1.3 2002/06/02 09:55:13 grunwalm Exp $ *
+* CVS Id   : $Id: DiveNotFoundException.cpp,v 1.4 2002/09/16 17:08:11 grunwalm Exp $ *
 * --------------------------------------------------------------------------------- *
 * Files subject    : Exception thrown by DivelogDAO if a Dive couldn't              *
 *                    be identified.                                                 *
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------------- *
 * Notes :                                                                           *
 *************************************************************************************/
-static char *DiveNotFoundException_cvs_id="$Id: DiveNotFoundException.cpp,v 1.3 2002/06/02 09:55:13 grunwalm Exp $";
+static char DiveNotFoundException_cvs_id[]="$Id: DiveNotFoundException.cpp,v 1.4 2002/09/16 17:08:11 grunwalm Exp $";
 
 #include "DiveNotFoundException.h"
 #include "DivelogDAOException.h"
@@ -42,6 +42,8 @@ static char *DiveNotFoundException_cvs_id="$Id: DiveNotFoundException.cpp,v 1.3 
 DiveNotFoundException::DiveNotFoundException( )
 : DivelogDAOException()
 {
+    // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
+    DiveNotFoundException_cvs_id[0]+=0;
 }
 
 

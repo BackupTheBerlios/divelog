@@ -1,14 +1,14 @@
 TEMPLATE = app
 
-CONFIG   = qt debug
+CONFIG   += qt debug
 DEFINES  = QT_FATAL_ASSERT
 
-INCLUDEPATH = /usr/local/include /usr/include/mysql
+INCLUDEPATH = /usr/local/include
 
 MOC_DIR     = .moc
 OBJECTS_DIR = .objects
 
-LIBS     = -lUDCF -lsqlplus -lmysqlclient 
+LIBS     = -lUDCF
 
 HEADERS  = MainWidget.h\
            ProfileField.h\
@@ -23,7 +23,9 @@ HEADERS  = MainWidget.h\
            DivelogDAOException.h\
            DiveComputerNotFoundException.h\
            DiverVO.h\
+           DiverSO.h\
            DiveVO.h\
+           DiveSO.h\
            FillingStationVO.h\
            DiveTypeVO.h\
            DiveComputerVO.h\
@@ -46,7 +48,9 @@ SOURCES  = main.cpp\
            DivelogDAOException.cpp\
            DiveComputerNotFoundException.cpp\
            DiverVO.cpp\
+           DiverSO.cpp\
            DiveVO.cpp\
+           DiveSO.cpp\
            FillingStationVO.cpp\
            DiveTypeVO.cpp\
            DiveComputerVO.cpp\
@@ -56,7 +60,8 @@ SOURCES  = main.cpp\
            DiveListVO.cpp\
            DiveListViewItem.cpp
 
-INTERFACES = NewDiverBaseFrm.ui\
+INTERFACES = MainWidgetBaseFrm.ui\
+             NewDiverBaseFrm.ui\
              InfoAreaBaseFrm.ui\
              NewDiveComputerBaseFrm.ui\
              NewDiveTypeBaseFrm.ui\

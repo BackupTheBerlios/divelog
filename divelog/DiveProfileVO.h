@@ -24,28 +24,27 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define DIVEPROFILEVO_H
 /******************************************************************************
 * Filename : DiveProfileVO.h                                                  *
-* CVS Id   : $Id: DiveProfileVO.h,v 1.5 2002/06/02 09:55:13 grunwalm Exp $      *
+* CVS Id   : $Id: DiveProfileVO.h,v 1.6 2002/09/16 17:08:11 grunwalm Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiveProfileVO.cpp                        *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Thu Nov 22 2001                                          *
 * --------------------------------------------------------------------------- *
-* To Do List :                                                                *
+* To Do List : Need mark for invalid/empty depth/length/profile entries       *
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
 
-#include <string>
 #include <UDCF.h>
 #include <qpointarray.h>
 #include <map>
-#include <iostream>
+#include <qstring.h>
 
 class DiveProfileVO
 {
 public:
 
-    typedef map< uint, UDCFMarkerType> marker_map;
+    typedef multimap< uint, UDCFMarkerType > t_marker_map;
 
     /*
     || Constructors
@@ -62,11 +61,14 @@ public:
 
     QPointArray profile() const { return m_profile; }
 
-    marker_map  marks() const { return m_marks; }
+    t_marker_map marks() const { return m_marks; }
 
     uint        secsPerSample() const { return m_secsPerSample; }
     uint        samples() const { return m_samples; }
     double      maxDepth() const { return m_maxDepth; }
+
+    QString     toQString() const;
+    void        fromQString( const QString& profileString );
 
     /*
     || Operators
@@ -74,15 +76,11 @@ public:
 
     DiveProfileVO& operator=( const DiveProfileVO& p );
 
-    friend ostream& operator<<( ostream& ostr, const DiveProfileVO& profile );
-    friend istream& operator>>( istream& istr, DiveProfileVO& profile );
-    friend string&  operator>>( string&   str, DiveProfileVO& profile );
-
 private:
     void init();
 
     QPointArray m_profile;
-    marker_map  m_marks;
+    t_marker_map  m_marks;
 
     uint m_secsPerSample;
     uint m_samples;

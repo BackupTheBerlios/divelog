@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.20 2002/06/02 09:55:13 grunwalm Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.21 2002/09/16 17:08:11 grunwalm Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -48,7 +48,7 @@ public:
     || Constructors
     */
     ProfileField( QWidget *parent=0, const char* name=0 );
-    ProfileField( QWidget *parent, const char* name, QPointArray profile );
+    //DEBUG: about to remove    ProfileField( QWidget *parent, const char* name, QPointArray profile );
     ProfileField( QWidget *parent, const char* name, const DiveProfileVO& profile );
 
     enum TimeFormat{ Minutes, HourMinutes };
@@ -76,10 +76,12 @@ public slots:
     /*
     || Slots
     */
+    void setProfile( const DiveProfileVO& profile );
+
     void setDepth( float depth );
     void setSamples( int samples );
     void setSecsPerSample( int secsPerSample );
-    void setProfile( QPointArray profile );
+    // DEBUG: about to remove void setProfile( QPointArray profile );
     void setTimeFormat( TimeFormat timeFormat );
 
     void setTimeStart( int timeStart,     bool doRepaint );
@@ -125,9 +127,12 @@ private:
 
     QString sampleToTime( int sample );
 
+    // FIXME: exchange these three with one DiveProfileVO
     float m_depth;         // Profile depth in meters
     int   m_samples;       // Number of samples the computer made for this dive
     int   m_secsPerSample; // Number of seconds between two samples
+
+    QPointArray m_profile;
 
     int   m_timeStart;     // start of displayed time (offset)
     int   m_showSamples;   // samples to show (for zooming)
@@ -154,8 +159,6 @@ private:
 
     QFontMetrics *m_numberFm;
     QFontMetrics *m_legendFm;
-
-    QPointArray m_profile;
 
     bool m_validMousePress;
     int  m_mousePressSample;

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : infoareafrm.cpp                                                                 *
-* CVS Id   : $Id: InfoAreaFrm.cpp,v 1.6 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: InfoAreaFrm.cpp,v 1.7 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Supply a main info-field for the application             *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *infoareafrm_cvs_id="$Id: InfoAreaFrm.cpp,v 1.6 2002/06/02 09:55:13 grunwalm Exp $";
+static char infoareafrm_cvs_id[]="$Id: InfoAreaFrm.cpp,v 1.7 2002/09/16 17:08:11 grunwalm Exp $";
 #include "InfoAreaFrm.h"
 
 /* 
@@ -50,7 +50,7 @@ InfoAreaFrm::InfoAreaFrm( QWidget* parent,  const char* name, WFlags fl )
 void InfoAreaFrm::init()
 {
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    infoareafrm_cvs_id+=0;
+    infoareafrm_cvs_id[0]+=0;
 }
 
 

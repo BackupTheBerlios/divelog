@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : DiveListVO.cpp                                                   *
-* CVS Id   : $Id: DiveListVO.cpp,v 1.3 2002/06/02 09:55:13 grunwalm Exp $       *
+* CVS Id   : $Id: DiveListVO.cpp,v 1.4 2002/09/16 17:08:11 grunwalm Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : This is a "little" DiveVO value object. Is holds only    *
 *                    Data, that is required for building up the selection     *
@@ -58,21 +58,21 @@ DiveListVO::DiveListVO( const DiveListVO& d )
 }
 
 DiveListVO::DiveListVO( const int&    number,
-                        const string& date,  // DATETIME split up
-                        const string& time,
+                        const QString& date,  // DATETIME split up
+                        const QString& time,
                         const int&    diver_number,
-                        const string& place,
-                        const string& location )
+                        const QString& place,
+                        const QString& location )
 {
     init( number,  date, time, diver_number, place, location );
 }
 
 void DiveListVO::init( const int&    number,
-                  const string& date,  // DATETIME split up
-                  const string& time,
+                  const QString& date,  // DATETIME split up
+                  const QString& time,
                   const int&    diver_number,
-                  const string& place,
-                  const string& location )
+                  const QString& place,
+                  const QString& location )
 {
     m_number=number;
     m_date=date;  // DATETIME split up

@@ -22,14 +22,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : DiveProfileVO.cpp                                                *
-* CVS Id   : $Id: DiveProfileVO.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $    *
+* CVS Id   : $Id: DiveProfileVO.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $  *
 * --------------------------------------------------------------------------- *
 * Files subject    : Datastructure holding data about dive profiles ( Value   *
 *                    Object ), i.e. Depth, sample-time, warnings...           *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Tue Feb 05 2002                                          *
 * --------------------------------------------------------------------------- *
-* To Do List :                                                                *
+* To Do List : Need mark for invalid/empty depth/length/profile entries       *
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
@@ -74,12 +74,12 @@ DiveProfileVO::DiveProfileVO( const UDCFSample* samples, const uint maxIndex )
     															// marks and other infos as well
 																  // So resize it later to the proper size
     uint depth_count=0;           // Counts real depth Values;
-    uint mark_count=0;            // Counts marks
 
     m_maxDepth=0;
 
     for ( uint i=0 ; i<maxIndex; i++ )
     {
+
 //        cerr << "Sample #" << i << "  Type : " << samples[i].type << endl; // DEBUG
 /*  // DEBUG
              << "depth       : " << samples[i].data.depth << endl
@@ -101,17 +101,9 @@ DiveProfileVO::DiveProfileVO( const UDCFSample* samples, const uint maxIndex )
         case ST_TD:   // Don't know
             break;
         case ST_MARK:
-            m_marks[ depth_count ] = samples[i].data.mark;
-            mark_count++;
+            m_marks.insert( pair<uint , UDCFMarkerType>(depth_count, samples[i].data.mark ));
             break;
         case ST_MIX:
-            cerr << "Sample #" << i << "  Type : " << samples[i].type << endl // DEBUG
-                 << "depth       : " << samples[i].data.depth << endl
-                 << "sampleTime  : " << samples[i].data.sampleTime << endl
-                 << "mark        : " << samples[i].data.mark << endl
-                 << "point       : " << samples[i].data.point.x << " | " << samples[i].data.point.x << endl
-                 << "work        : " << samples[i].data.work << endl
-                 << "mix         : " << samples[i].data.mix << endl;
             break;
         case ST_SAMPLETIME:
             m_secsPerSample=(uint) samples[i].data.sampleTime; // FIXME: any doubles
@@ -150,95 +142,103 @@ DiveProfileVO& DiveProfileVO::operator=( const DiveProfileVO& d )
     return *this;
 }
 
-// Stream/Shift Operators
-ostream& operator<<( ostream& ostr, const DiveProfileVO& profile )
+QString DiveProfileVO::toQString() const
 // -------------------------------------------------
-// Use : Serialize a Dive Profile Value Object
-// Parameters  : ostr - output stream
-//               profile - profile to serialize
+// Use : Convert a Dive Profile Value Object
+//       to a QString
 //
 // Note: Serialisation order:
 //  <Number of Depth Samples>
 //    <Depth Samples>
 //  <Number of marks>
-//    <marks>
+//    <sample number>
+//    <mark>
 //  <Seconds per Sample>
 //  <Number of Samples>
 //  <Maximum Depth>
 // -------------------------------------------------
 {
-    ostr << profile.m_profile.size() << DIVE_PROFILE_SEPARATOR;
+    QString result;
+    result= QString::number( m_profile.size() ) + DIVE_PROFILE_SEPARATOR;
 
-    for ( uint i=0; i<profile.m_profile.size(); i++ )
+    for ( uint i=0; i<m_profile.size(); i++ )
     {
-        ostr << profile.m_profile.point( i ).x() << DIVE_PROFILE_SEPARATOR
-             << profile.m_profile.point( i ).y() << DIVE_PROFILE_SEPARATOR;
+        result += QString::number( m_profile.point( i ).x() ) + DIVE_PROFILE_SEPARATOR
+               +  QString::number( m_profile.point( i ).y() ) + DIVE_PROFILE_SEPARATOR;
     }
 
-    ostr << profile.m_marks.size() << DIVE_PROFILE_SEPARATOR;
+    result += QString::number( m_marks.size() ) + DIVE_PROFILE_SEPARATOR;
 
-    DiveProfileVO::marker_map::iterator i;
-    for ( i=profile.marks().begin(); i!=profile.marks().end(); i++ )
+    for (DiveProfileVO::t_marker_map::const_iterator it = m_marks.begin();
+         it != m_marks.end();  ++it)
     {
-        ostr << (*i).first  << DIVE_PROFILE_SEPARATOR
-             << (*i).second << DIVE_PROFILE_SEPARATOR;
+        result += QString::number( (*it).first ) + DIVE_PROFILE_SEPARATOR;  // Sample number for marker
+        result += QString::number( (*it).second ) + DIVE_PROFILE_SEPARATOR;   // The marker
+
     }
 
-    ostr << profile.m_secsPerSample << DIVE_PROFILE_SEPARATOR
-         << profile.m_samples << DIVE_PROFILE_SEPARATOR
-         << profile.m_maxDepth << DIVE_PROFILE_SEPARATOR;
+    result += QString::number( m_secsPerSample ) + DIVE_PROFILE_SEPARATOR
+           +  QString::number( m_samples  ) + DIVE_PROFILE_SEPARATOR
+           +  QString::number( m_maxDepth ) + DIVE_PROFILE_SEPARATOR;
 
-    return ostr;
+    return result;
 }
 
-istream& operator>>( istream& istr, DiveProfileVO& profile )
+void DiveProfileVO::fromQString( const QString& profileString )
 {
-    uint profile_size;
-    uint marks_size;
-
-    istr >> profile_size;
-
-    profile.m_profile.resize( profile_size );
-    for ( uint i=0; i<profile_size; i++ )
+    if ( !profileString.isNull() && !profileString.isEmpty() )
     {
-        uint sample;
-        uint depth;
+        QString profStr = profileString.simplifyWhiteSpace ();
+        qDebug("profStr=%s", profStr.latin1() );
+        uint strPos=0;
+        uint profile_size;
 
-        istr >> sample ;
-        istr >> depth;
+        profile_size=profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+        ++strPos;
 
-        profile.m_profile.setPoint( i, sample, depth );
+        m_profile.resize( profile_size );
+
+        for ( uint i=0; i<profile_size; i++ )
+        {
+            uint sample;
+            uint depth;
+
+            sample=profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+            ++strPos;
+            depth=profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+            ++strPos;
+
+            m_profile.setPoint( i, sample, depth );
+        }
+
+        m_marks.clear();
+
+        uint marks_size;
+        marks_size=profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+        ++strPos;
+
+        for ( uint i=0; i<marks_size; i++ )
+        {
+            uint sample;
+            int  imark;
+            UDCFMarkerType mark;
+
+            sample=profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+            ++strPos;
+            imark =profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+            ++strPos;
+            mark  =static_cast< UDCFMarkerType >( imark );
+
+            m_marks.insert( pair<uint , UDCFMarkerType>(sample, mark ) );
+        }
+
+        m_secsPerSample=profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+        ++strPos;
+        m_samples      =profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toUInt();
+        ++strPos;
+        m_maxDepth     =profStr.section(DIVE_PROFILE_SEPARATOR, strPos, strPos ).toDouble();
+        ++strPos;
     }
-
-    profile.m_marks.clear();
-
-    istr >> marks_size;
-
-    for ( uint i=0; i<marks_size; i++ )
-    {
-        uint sample;
-        int  imark;
-        UDCFMarkerType mark;
-
-        istr >> sample >> imark;
-
-        mark=(UDCFMarkerType) imark;
-
-        profile.m_marks[ sample ]=mark;
-    }
-
-    istr >> profile.m_secsPerSample
-         >> profile.m_samples
-         >> profile.m_maxDepth ;
-
-    return istr;
-}
-
-string& operator>>( string& str, DiveProfileVO& profile )
-{
-    istrstream istr( str.c_str() );
-    istr >> profile;
-    return str;
 }
 
 /*

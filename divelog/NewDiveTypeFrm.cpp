@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : newdivetypefrm.cpp                                               *
-* CVS Id   : $Id: NewDiveTypeFrm.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $                                                             *
+* CVS Id   : $Id: NewDiveTypeFrm.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Provide a Dialog for entering information about a dive   *
 *                    type (Deepdive/Drift/Wreck/...)                          *                                                         *
@@ -33,11 +33,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *newdivetypefrm_cvs_id="$Id: NewDiveTypeFrm.cpp,v 1.5 2002/06/02 09:55:13 grunwalm Exp $";
+static char newdivetypefrm_cvs_id[]="$Id: NewDiveTypeFrm.cpp,v 1.6 2002/09/16 17:08:11 grunwalm Exp $";
 #include "NewDiveTypeFrm.h"
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
+#include <qregexp.h>
+
 
 
 /* 
@@ -79,7 +81,7 @@ void NewDiveTypeFrm::init()
     m_DiveTypeLbl->setPalette( pal );
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
-    newdivetypefrm_cvs_id+=0;
+    newdivetypefrm_cvs_id[0]+=0;
 }
 
 /*  
