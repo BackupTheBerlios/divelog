@@ -1,5 +1,5 @@
 #!/bin/bash
-#$Id: tables,v 1.4 2001/10/24 05:53:31 markus Exp $ 
+#$Id: tables,v 1.5 2001/10/26 11:57:42 markus Exp $ 
 
 mysql -u markus --password='ArPPCa' divelog-test <<EOF
 drop table diver;
@@ -26,21 +26,24 @@ create table divecomputer(
 drop table divetype;
 create table divetype (
     number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    description VARCHAR(20)
+    description VARCHAR(20),
+    UNIQUE ( description )
 );
 
 drop table filling_station;
 create table filling_station (
     number  INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    stationname VARCHAR(20),
+    stationname VARCHAR(20) NOT NULL,
     first_name  VARCHAR(20),
-    last_name   VARCHAR(30)
+    last_name   VARCHAR(30),
+    UNIQUE ( stationname )
 );
 
 drop table dive;
 create table dive (
     number INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     date DATETIME NOT NULL,
+    sync INTEGER,
     diver_number INTEGER UNSIGNED NOT NULL REFERENCES diver,
     place VARCHAR(100) NOT NULL,
     location VARCHAR(100),
@@ -52,7 +55,7 @@ create table dive (
     partner_diver_number INTEGER NOT NULL REFERENCES diver,
     weather VARCHAR(20),
     sight   VARCHAR(20),
-    weight  FLOAT,
+    lead  FLOAT,
     air_temperature DOUBLE,
     dive_type INTEGER REFERENCES divetype,
     filling_station_number INTEGER UNSIGNED NOT NULL REFERENCES filling_station,
