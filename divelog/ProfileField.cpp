@@ -1,19 +1,18 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.9 2001/08/26 18:47:57 markus Exp $     *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.10 2001/09/04 16:56:48 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
 * Date of Creation : Tue Aug 14 2001                                          *
 * Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
-* To Do List : Coordinate system                                              *
-*              Graph                                                          *
-*              Resizing,Zooming,Navigation                                    *
+* To Do List : Zooming                                                        *
+*							 Navigation                                             				*
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.9 2001/08/26 18:47:57 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.10 2001/09/04 16:56:48 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -29,6 +28,7 @@ static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.9 2001/08/26 18:
 
 #define RIGHT_MARGIN 10
 #define BOTTOM_MARGIN 10
+
 /*
 || Constructors
 */
@@ -159,11 +159,13 @@ void ProfileField::setShowSamples( int showSamples )
 
     m_showSamples=showSamples;
     emit timeStartChanged( showSamples );
+    repaint( false );
 }
 
 /*
 || other functions
 */
+
 QSizePolicy ProfileField::sizePolicy() const
 {
     return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
@@ -212,18 +214,19 @@ void ProfileField::drawProfile( QPainter* p )
 {
     ASSERT( m_depth!=0 );
     ASSERT( m_samples!=0 );
+    ASSERT( m_showSamples>=3 );
     CHECK_PTR( p );
     ASSERT( !m_profile.isEmpty() );
 
     float depth_scale=m_depthAxisRect.height()/(10*m_depth);   // a little helper
-    float time_scale=m_timeAxisRect.width()/m_samples;    // dito
+    float time_scale=m_timeAxisRect.width()/m_showSamples;    // dito
 
     p->save();
     p->translate( m_origin.x(), m_origin.y() );
     p->scale( time_scale, depth_scale );
     p->setPen( m_graphPenColor );
     p->setBrush( m_graphBrushColor );
-    p->drawPolygon( m_profile );
+    p->drawPolygon( m_profile, FALSE, 0, m_showSamples );
     p->restore();
 }
 
@@ -232,9 +235,10 @@ void ProfileField::drawCoosy( QPainter* p )
 {
     ASSERT( m_depth!=0 );
     ASSERT( m_samples!=0 );
+    ASSERT( m_showSamples>=3 );
 
     float depth_scale=m_depthAxisRect.height()/m_depth;   // a little helper
-    float time_scale=m_timeAxisRect.width()/m_samples;    // dito
+    float time_scale=m_timeAxisRect.width()/m_showSamples;    // dito
 
     /*
     || Draw the Legend
