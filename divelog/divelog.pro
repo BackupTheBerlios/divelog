@@ -30,7 +30,7 @@ INTERFACES = newdiverbasefrm.ui\
              infoareabasefrm.ui\
              newdivecomputerbasefrm.ui\
              newdivetypebasefrm.ui\
-             newfillingstation.ui
+             newfillingstationbasefrm.ui
 
 
 TARGET   = divelog

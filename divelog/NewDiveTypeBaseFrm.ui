@@ -11,7 +11,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>298</width>
+            <width>294</width>
             <height>151</height>
         </rect>
     </property>
@@ -99,7 +99,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>TextLabel1_2</cstring>
+                        <cstring>m_DiveTypeLbl</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -107,14 +107,14 @@
                     </property>
                     <property>
                         <name>buddy</name>
-                        <cstring>DiveType</cstring>
+                        <cstring>m_DiveType</cstring>
                     </property>
                 </widget>
                 <widget>
                     <class>QLineEdit</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>DiveType</cstring>
+                        <cstring>m_DiveType</cstring>
                     </property>
                 </widget>
             </hbox>
@@ -138,7 +138,7 @@
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>OkBtn</cstring>
+                        <cstring>m_OkBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -153,7 +153,7 @@
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>CancelBtn</cstring>
+                        <cstring>m_CancelBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -185,7 +185,7 @@
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>HelpBtn</cstring>
+                        <cstring>m_HelpBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -198,19 +198,19 @@
 </widget>
 <connections>
     <connection>
-        <sender>OkBtn</sender>
+        <sender>m_OkBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveTypeBaseFrm</receiver>
         <slot>accept()</slot>
     </connection>
     <connection>
-        <sender>CancelBtn</sender>
+        <sender>m_CancelBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveTypeBaseFrm</receiver>
         <slot>reject()</slot>
     </connection>
     <connection>
-        <sender>HelpBtn</sender>
+        <sender>m_HelpBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveTypeBaseFrm</receiver>
         <slot>showHelp()</slot>
@@ -218,9 +218,9 @@
     <slot access="protected">showHelp()</slot>
 </connections>
 <tabstops>
-    <tabstop>DiveType</tabstop>
-    <tabstop>OkBtn</tabstop>
-    <tabstop>CancelBtn</tabstop>
-    <tabstop>HelpBtn</tabstop>
+    <tabstop>m_DiveType</tabstop>
+    <tabstop>m_OkBtn</tabstop>
+    <tabstop>m_CancelBtn</tabstop>
+    <tabstop>m_HelpBtn</tabstop>
 </tabstops>
 </UI>

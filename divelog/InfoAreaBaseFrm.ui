@@ -1,23 +1,23 @@
 <!DOCTYPE UI><UI>
-<class>Form1</class>
+<class>InfoAreaBaseFrm</class>
 <widget>
     <class>QWidget</class>
     <property stdset="1">
         <name>name</name>
-        <cstring>Form1</cstring>
+        <cstring>InfoAreaBaseFrm</cstring>
     </property>
     <property stdset="1">
         <name>geometry</name>
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>568</width>
+            <width>560</width>
             <height>349</height>
         </rect>
     </property>
     <property stdset="1">
         <name>caption</name>
-        <string>Form1</string>
+        <string>InfoAreaBaseFrm</string>
     </property>
     <hbox>
         <property stdset="1">
@@ -32,7 +32,7 @@
             <class>QTabWidget</class>
             <property stdset="1">
                 <name>name</name>
-                <cstring>InfoBaseFrm</cstring>
+                <cstring>m_InfoBaseFrm</cstring>
             </property>
             <property stdset="1">
                 <name>tabPosition</name>
@@ -42,7 +42,7 @@
                 <class>QWidget</class>
                 <property stdset="1">
                     <name>name</name>
-                    <cstring>GeneralInfo</cstring>
+                    <cstring>m_GeneralInfo</cstring>
                 </property>
                 <attribute>
                     <name>title</name>
@@ -61,49 +61,49 @@
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Number</cstring>
+                            <cstring>m_Number</cstring>
                         </property>
                     </widget>
                     <widget row="2"  column="1" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>WaterTemperature</cstring>
+                            <cstring>m_WaterTemperature</cstring>
                         </property>
                     </widget>
                     <widget row="3"  column="1" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Duration</cstring>
+                            <cstring>m_Duration</cstring>
                         </property>
                     </widget>
                     <widget row="4"  column="1" >
                         <class>QComboBox</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>DiveType</cstring>
+                            <cstring>m_DiveType</cstring>
                         </property>
                     </widget>
                     <widget row="5"  column="1" >
                         <class>QComboBox</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Buddy</cstring>
+                            <cstring>m_Buddy</cstring>
                         </property>
                     </widget>
                     <widget row="6"  column="1" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Weather</cstring>
+                            <cstring>m_Weather</cstring>
                         </property>
                     </widget>
                     <widget row="0"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel8</cstring>
+                            <cstring>m_TextLabel8</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -111,14 +111,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Number</cstring>
+                            <cstring>m_Number</cstring>
                         </property>
                     </widget>
                     <widget row="3"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel13</cstring>
+                            <cstring>m_TextLabel13</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -126,14 +126,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Duration</cstring>
+                            <cstring>m_Duration</cstring>
                         </property>
                     </widget>
                     <widget row="4"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel10</cstring>
+                            <cstring>m_TextLabel10</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -141,14 +141,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>DiveType</cstring>
+                            <cstring>m_DiveType</cstring>
                         </property>
                     </widget>
                     <widget row="5"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel9</cstring>
+                            <cstring>m_TextLabel9</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -156,14 +156,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Buddy</cstring>
+                            <cstring>m_Buddy</cstring>
                         </property>
                     </widget>
                     <widget row="6"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel3</cstring>
+                            <cstring>m_TextLabel3</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -171,14 +171,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Weather</cstring>
+                            <cstring>m_Weather</cstring>
                         </property>
                     </widget>
                     <widget row="1"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel5</cstring>
+                            <cstring>m_TextLabel5</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -186,21 +186,21 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Place</cstring>
+                            <cstring>m_Place</cstring>
                         </property>
                     </widget>
                     <widget row="1"  column="1" >
                         <class>QComboBox</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Place</cstring>
+                            <cstring>m_Place</cstring>
                         </property>
                     </widget>
                     <widget row="2"  column="0" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel11</cstring>
+                            <cstring>m_TextLabel11</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -208,21 +208,21 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>WaterTemperature</cstring>
+                            <cstring>m_WaterTemperature</cstring>
                         </property>
                     </widget>
                     <widget row="4"  column="3" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Lead</cstring>
+                            <cstring>m_Lead</cstring>
                         </property>
                     </widget>
                     <widget row="1"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel6</cstring>
+                            <cstring>m_TextLabel6</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -230,28 +230,28 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Location</cstring>
+                            <cstring>m_Location</cstring>
                         </property>
                     </widget>
                     <widget row="5"  column="3" >
                         <class>QComboBox</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>FillingStation</cstring>
+                            <cstring>m_FillingStation</cstring>
                         </property>
                     </widget>
                     <widget row="6"  column="3" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Sight</cstring>
+                            <cstring>m_Sight</cstring>
                         </property>
                     </widget>
                     <widget row="0"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel7</cstring>
+                            <cstring>m_TextLabel7</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -259,14 +259,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Date</cstring>
+                            <cstring>m_Date</cstring>
                         </property>
                     </widget>
                     <widget row="2"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel12</cstring>
+                            <cstring>m_TextLabel12</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -274,14 +274,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>AirTemperature</cstring>
+                            <cstring>m_AirTemperature</cstring>
                         </property>
                     </widget>
                     <widget row="5"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel2</cstring>
+                            <cstring>m_TextLabel2</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -289,35 +289,35 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>FillingStation</cstring>
+                            <cstring>m_FillingStation</cstring>
                         </property>
                     </widget>
                     <widget row="3"  column="3" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>MaxDepth</cstring>
+                            <cstring>m_MaxDepth</cstring>
                         </property>
                     </widget>
                     <widget row="0"  column="3" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Date</cstring>
+                            <cstring>m_Date</cstring>
                         </property>
                     </widget>
                     <widget row="1"  column="3" >
                         <class>QComboBox</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Location</cstring>
+                            <cstring>m_Location</cstring>
                         </property>
                     </widget>
                     <widget row="3"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel14</cstring>
+                            <cstring>m_TextLabel14</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -325,14 +325,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>MaxDepth</cstring>
+                            <cstring>m_MaxDepth</cstring>
                         </property>
                     </widget>
                     <widget row="4"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextLabel1</cstring>
+                            <cstring>m_TextLabel1</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -340,14 +340,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Lead</cstring>
+                            <cstring>m_Lead</cstring>
                         </property>
                     </widget>
                     <widget row="6"  column="2" >
                         <class>QLabel</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>SightLabel</cstring>
+                            <cstring>m_SightLabel</cstring>
                         </property>
                         <property stdset="1">
                             <name>text</name>
@@ -355,14 +355,14 @@
                         </property>
                         <property>
                             <name>buddy</name>
-                            <cstring>Sight</cstring>
+                            <cstring>m_Sight</cstring>
                         </property>
                     </widget>
                     <widget row="2"  column="3" >
                         <class>QLineEdit</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>AirTemperature</cstring>
+                            <cstring>m_AirTemperature</cstring>
                         </property>
                     </widget>
                 </grid>
@@ -371,7 +371,7 @@
                 <class>QWidget</class>
                 <property stdset="1">
                     <name>name</name>
-                    <cstring>Notes</cstring>
+                    <cstring>m_Notes</cstring>
                 </property>
                 <attribute>
                     <name>title</name>
@@ -390,14 +390,14 @@
                         <class>QTextBrowser</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>TextBrowser1</cstring>
+                            <cstring>m_TextBrowser1</cstring>
                         </property>
                     </widget>
                     <widget>
                         <class>QLayoutWidget</class>
                         <property stdset="1">
                             <name>name</name>
-                            <cstring>Layout9</cstring>
+                            <cstring>m_Layout9</cstring>
                         </property>
                         <hbox>
                             <property stdset="1">
@@ -412,7 +412,7 @@
                                 <class>QPushButton</class>
                                 <property stdset="1">
                                     <name>name</name>
-                                    <cstring>PushButton1</cstring>
+                                    <cstring>m_EditBtn</cstring>
                                 </property>
                                 <property stdset="1">
                                     <name>text</name>
@@ -422,7 +422,7 @@
                             <spacer>
                                 <property>
                                     <name>name</name>
-                                    <cstring>Spacer5</cstring>
+                                    <cstring>m_Spacer5</cstring>
                                 </property>
                                 <property stdset="1">
                                     <name>orientation</name>
@@ -448,7 +448,7 @@
                 <class>QWidget</class>
                 <property stdset="1">
                     <name>name</name>
-                    <cstring>tab</cstring>
+                    <cstring>m_tab</cstring>
                 </property>
                 <attribute>
                     <name>title</name>

@@ -11,7 +11,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>358</width>
+            <width>354</width>
             <height>230</height>
         </rect>
     </property>
@@ -114,7 +114,7 @@ You have to enter the fields marked in red.</string>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel2</cstring>
+                                <cstring>m_SerialNumberLbl</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -122,14 +122,14 @@ You have to enter the fields marked in red.</string>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>SerialNumber</cstring>
+                                <cstring>m_SerialNumber</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel3</cstring>
+                                <cstring>m_OwnerLbl</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -137,14 +137,14 @@ You have to enter the fields marked in red.</string>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>Owner</cstring>
+                                <cstring>m_Owner</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>TextLabel4</cstring>
+                                <cstring>m_ComputerNameLbl</cstring>
                             </property>
                             <property stdset="1">
                                 <name>text</name>
@@ -152,7 +152,7 @@ You have to enter the fields marked in red.</string>
                             </property>
                             <property>
                                 <name>buddy</name>
-                                <cstring>ComputerName</cstring>
+                                <cstring>m_ComputerName</cstring>
                             </property>
                         </widget>
                     </vbox>
@@ -176,14 +176,14 @@ You have to enter the fields marked in red.</string>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>SerialNumber</cstring>
+                                <cstring>m_SerialNumber</cstring>
                             </property>
                         </widget>
                         <widget>
                             <class>QComboBox</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>Owner</cstring>
+                                <cstring>m_Owner</cstring>
                             </property>
                             <property stdset="1">
                                 <name>duplicatesEnabled</name>
@@ -194,7 +194,7 @@ You have to enter the fields marked in red.</string>
                             <class>QLineEdit</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>ComputerName</cstring>
+                                <cstring>m_ComputerName</cstring>
                             </property>
                         </widget>
                     </vbox>
@@ -220,7 +220,7 @@ You have to enter the fields marked in red.</string>
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>OkBtn</cstring>
+                        <cstring>m_OkBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -235,7 +235,7 @@ You have to enter the fields marked in red.</string>
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>CancelBtn</cstring>
+                        <cstring>m_CancelBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -245,7 +245,7 @@ You have to enter the fields marked in red.</string>
                 <spacer>
                     <property>
                         <name>name</name>
-                        <cstring>Spacer75</cstring>
+                        <cstring>m_Spacer75</cstring>
                     </property>
                     <property stdset="1">
                         <name>orientation</name>
@@ -267,7 +267,7 @@ You have to enter the fields marked in red.</string>
                     <class>QPushButton</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>HelpBtn</cstring>
+                        <cstring>m_HelpBtn</cstring>
                     </property>
                     <property stdset="1">
                         <name>text</name>
@@ -280,19 +280,19 @@ You have to enter the fields marked in red.</string>
 </widget>
 <connections>
     <connection>
-        <sender>OkBtn</sender>
+        <sender>m_OkBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveComputerBaseFrm</receiver>
         <slot>accept()</slot>
     </connection>
     <connection>
-        <sender>CancelBtn</sender>
+        <sender>m_CancelBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveComputerBaseFrm</receiver>
         <slot>reject()</slot>
     </connection>
     <connection>
-        <sender>HelpBtn</sender>
+        <sender>m_HelpBtn</sender>
         <signal>clicked()</signal>
         <receiver>NewDiveComputerBaseFrm</receiver>
         <slot>showHelp()</slot>
@@ -300,11 +300,11 @@ You have to enter the fields marked in red.</string>
     <slot access="protected">showHelp()</slot>
 </connections>
 <tabstops>
-    <tabstop>SerialNumber</tabstop>
-    <tabstop>Owner</tabstop>
-    <tabstop>ComputerName</tabstop>
-    <tabstop>OkBtn</tabstop>
-    <tabstop>CancelBtn</tabstop>
-    <tabstop>HelpBtn</tabstop>
+    <tabstop>m_SerialNumber</tabstop>
+    <tabstop>m_Owner</tabstop>
+    <tabstop>m_ComputerName</tabstop>
+    <tabstop>m_OkBtn</tabstop>
+    <tabstop>m_CancelBtn</tabstop>
+    <tabstop>m_HelpBtn</tabstop>
 </tabstops>
 </UI>

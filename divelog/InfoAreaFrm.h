@@ -2,7 +2,7 @@
 #define INFOAREAFRM_H
 #include "infoareabasefrm.h"
 
-class InfoAreaFrm : public Form1
+class InfoAreaFrm : public InfoAreaBaseFrm
 { 
     Q_OBJECT
 

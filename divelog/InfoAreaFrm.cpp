@@ -1,11 +1,11 @@
 #include "infoareafrm.h"
 
 /* 
- *  Constructs a InfoareaFrm which is a child of 'parent', with the 
+ *  Constructs a InfoAreaFrm which is a child of 'parent', with the 
  *  name 'name' and widget flags set to 'f' 
  */
 InfoAreaFrm::InfoAreaFrm( QWidget* parent,  const char* name, WFlags fl )
-    : Form1( parent, name, fl )
+    : InfoAreaBaseFrm( parent, name, fl )
 {
 }
 
