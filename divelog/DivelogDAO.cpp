@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.3 2001/11/12 22:05:35 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.4 2001/11/13 19:25:53 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -11,16 +11,15 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.3 2001/11/12 22:05:35 markus Exp $";
-
-//#include "divelogdao.h"
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.4 2001/11/13 19:25:53 markus Exp $";
+#include "divelogdao.h"
 //#include <iostream>   // first see, what we need...
 //#include <iomanip>    // dito
-#include <vector>
 #include <sqlplus.hh>   // the mysql++ classes
 #include <custom.hh>    // needed for "sql_create_n"
 #include <qglobal.h>
 #include <UDCF.h>
+#include <string.h>
 
 // FIXME: move this info to a better place
 #define MYSQL_DATABASE "divelog-test"
@@ -34,22 +33,6 @@ sql_create_3 (diveComputer,    			// table name
               string, serial_number,
               int, diver_number,
               string, name )
-
-class DivelogDAO
-{
-
-public:
-    DivelogDAO( char* db=MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD );
-    ~DivelogDAO();
-
-    void importUDCFFile( char* filename );
-
-private:
-
-    Connection* m_con;
-
-};
-
 
 DivelogDAO::DivelogDAO( char* db= MYSQL_DATABASE, char* host=MYSQL_HOST, char* user=MYSQL_USER, char* passwd=MYSQL_PASSWD )
 {
@@ -66,57 +49,59 @@ DivelogDAO::~DivelogDAO()
 
 void DivelogDAO::importUDCFFile( const char* filename )
 {
-        UDCF* udcfData=UDCFReadFile( filename );
-        CHECK_PTR( udcfData );
 
-        qDebug( "Version:\t%ld", udcfData->version );
-        qDebug( "Vendor:\t%s", udcfData->vendor );
-        qDebug( "Model:\t%s", udcfData->model );
-        qDebug( "Driver Version:\t%ld", udcfData->driverVersion );
-        qDebug( "Personal Info:\t%s", udcfData->personalInfo );
-        qDebug( "Total Dives:\t%ld", udcfData->totalDives );
-        qDebug( "Serial ID:\t%s", udcfData->serialID );
-        qDebug( "Group Size:\t%ld", udcfData->groupSize );
-        qDebug( "Group Index:\t%ld", udcfData->groupIndex );
+    int s = strlen( filename );
+    char* test= new char[s];
 
-        /*
-        || First look up if we know that dive-computer
-        */
+    UDCF* udcfData=UDCFReadFile( test );
+    CHECK_PTR( udcfData );
 
-        Query query = m_con->query();
-        query << "select * from divecomputer where serial_number=" << udcfData->serialID;
+    qDebug( "Version:\t%ld", udcfData->version );
+    qDebug( "Vendor:\t%s", udcfData->vendor );
+    qDebug( "Model:\t%s", udcfData->model );
+    qDebug( "Driver Version:\t%ld", udcfData->driverVersion );
+    qDebug( "Personal Info:\t%s", udcfData->personalInfo );
+    qDebug( "Total Dives:\t%ld", udcfData->totalDives );
+    qDebug( "Serial ID:\t%s", udcfData->serialID );
+    qDebug( "Group Size:\t%ld", udcfData->groupSize );
+    qDebug( "Group Index:\t%ld", udcfData->groupIndex );
 
-        vector < diveComputer > db_diveComputers; // Database result
+    /*
+    || First look up if we know that dive-computer
+    */
 
-        query.storein( db_diveComputers );
+    /*FIXME: That damn b...t doesn't work. Why ????
 
-        vector < diveComputer >::iterator i;
+    Query query = m_con->query();
+    query << "select * from divecomputer where serial_number=" << udcfData->serialID;
 
-        for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
+    Result db_diveComputers = query.store(); // Database result
+
+    for ( i=db_diveComputers.begin(); i!=db_diveComputers.end() ;i++ )
+    {
+    qDebug( "mysql: divecomputer serial number =%s", i->serial_number.c_str() );
+    qDebug( "mysql: divecomputer diver  number =%d", i->diver_number );
+    qDebug( "mysql: divecomputer name          =%s", i->name.c_str() );
+    }
+    */
+    int count=0;
+
+    for ( int group=0; group<=udcfData->groupIndex; group++)
+    {
+        for ( int dive=0; dive<=udcfData->groupList[group].diveIndex; dive++ )
         {
-            qDebug( "mysql: divecomputer serial number =%s", i->serial_number.c_str() );
-            qDebug( "mysql: divecomputer diver  number =%d", i->diver_number );
-            qDebug( "mysql: divecomputer name          =%s", i->name.c_str() );
+
+            qDebug( "#%04d Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d",
+                    count, group, dive,
+                    udcfData->groupList[group].diveList[dive].day,
+                    udcfData->groupList[group].diveList[dive].month,
+                    udcfData->groupList[group].diveList[dive].year,
+                    udcfData->groupList[group].diveList[dive].hour,
+                    udcfData->groupList[group].diveList[dive].minute );
+
+            count++;
+
         }
-
-        int count=0;
-
-        for ( int group=0; group<=udcfData->groupIndex; group++)
-        {
-            for ( int dive=0; dive<=udcfData->groupList[group].diveIndex; dive++ )
-            {
-
-                qDebug( "#%04d Group[%d].diveList[%d] %02d.%02d.%04d %02d:%02d",
-                        count, group, dive,
-                        udcfData->groupList[group].diveList[dive].day,
-                        udcfData->groupList[group].diveList[dive].month,
-                        udcfData->groupList[group].diveList[dive].year,
-                        udcfData->groupList[group].diveList[dive].hour,
-                        udcfData->groupList[group].diveList[dive].minute );
-
-                count++;
-
-            }
-        }
-        UDCFFree( udcfData );
+    }
+    UDCFFree( udcfData );
 }
