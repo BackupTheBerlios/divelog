@@ -60,7 +60,8 @@ INTERFACES = NewDiverBaseFrm.ui\
              InfoAreaBaseFrm.ui\
              NewDiveComputerBaseFrm.ui\
              NewDiveTypeBaseFrm.ui\
-             NewFillingStationBaseFrm.ui
+             NewFillingStationBaseFrm.ui\
+             AboutLicenseBaseFrm.ui
 
 
 TARGET   = divelog

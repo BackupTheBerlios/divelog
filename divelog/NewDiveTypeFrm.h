@@ -1,5 +1,6 @@
-/* Copyright 2002 Markus Grunwald */
-/* All other Copyrights (especially Qt and mysql) belong to their owners */
+/* Copyright (C) 2002 Markus Grunwald */
+/* Copyright (C) 1995-2000 Trolltech AS.  All rights reserved. */
+/* Copyright (C) 2000 MySQL AB & MySQL Finland AB & TCX DataKonsult AB */
 
 /*************************************************************************
 This file is part of divelog.

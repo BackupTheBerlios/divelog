@@ -1,5 +1,6 @@
-/* Copyright 2002 Markus Grunwald */
-/* All other Copyrights (especially Qt and mysql) belong to their owners */
+/* Copyright (C) 2002 Markus Grunwald */
+/* Copyright (C) 1995-2000 Trolltech AS.  All rights reserved. */
+/* Copyright (C) 2000 MySQL AB & MySQL Finland AB & TCX DataKonsult AB */
 
 /*************************************************************************
 This file is part of divelog.
@@ -21,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.53 2002/05/15 09:27:51 grunwalm Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.54 2002/06/02 09:55:13 grunwalm Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -30,13 +31,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * Date of Creation : Sun Aug 12 2001                                          *
 * --------------------------------------------------------------------------- *
 * To Do List : improve menu                                                   *
-*              add Dive List                                                  *
-*              add Multi puropse field                                        *
+*              Feed info area with values                                     *
+*              Ability to edit data                                           *
 *              lots to come !                                                 *
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.53 2002/05/15 09:27:51 grunwalm Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.54 2002/06/02 09:55:13 grunwalm Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -76,6 +77,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.53 2002/05/15 09:2
 #include <qlistview.h>
 #include <qheader.h>
 #include <qcombobox.h>
+#include <qtextview.h>
 
 // others
 #include <string>
@@ -97,21 +99,11 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 // -------------------------------------------------
 {
     /*
-    || Set up a test dataset. This has to be removed when
-    || reading of real data is working.
-    */
-
-    //QPointArray testdata;
-    //testdata.setPoints( 64, points );
-
-    //---------------------------------------------------
-
-    /*
     || Build up the Menu
     */
 
     QPopupMenu *db_mn = new QPopupMenu( this );     // make a database menu
-    CHECK_PTR( db_mn );                           // better check if it worked...
+    CHECK_PTR( db_mn );                             // better check if it worked...
                                                 
     // now add items to the menu
     db_mn->insertItem( "&Import",    this, SLOT( dbImport() ) );
@@ -133,6 +125,8 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     CHECK_PTR( help_mn );
 
     help_mn->insertItem( "&About", this, SLOT( about() ) );
+    help_mn->insertItem( "About &Qt", this, SLOT( aboutQt() ) );
+    help_mn->insertItem( "About &License", this, SLOT( aboutLicense() ) );
 
     // Now create the main menu and insert the submenus
     m_main_mn = new QMenuBar( this );
@@ -152,7 +146,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_s1 = new QSplitter( QSplitter::Vertical, this , "m_s1" );
     m_s2 = new QSplitter( QSplitter::Horizontal, m_s1 , "m_s2" );
 
-    m_infoArea = new InfoAreaFrm( m_s1, "m_infoArea" );
+    m_infoArea    = new InfoAreaFrm( m_s1, "m_infoArea" );
     m_diveListView= new QListView( m_s2, "m_diveListView" );
 
     /*
@@ -160,9 +154,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     */
 
     m_profileBox = new QVBox( m_s2 ,"m_profileBox" );
-
-    //m_profile = new ProfileField( m_profileBox, "m_profile", testdata );
-    m_profile = new ProfileField( m_profileBox, "m_profile" );
+    m_profile    = new ProfileField( m_profileBox, "m_profile" );
 
     /*
     || Set up Scrollbars
@@ -183,6 +175,9 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_offsetBar->setMinValue( 0 );
     m_offsetBar->setMaxValue( 0 );
 
+    // *When you see all samples, scrolling is useless, so
+    // the offset bar has full length and can't be moved
+    // *When zoom is at maximum, the offset bar has minimal length
     // Cross connect the samples bar value to the profile field
     connect( m_samplesBar, SIGNAL( valueChanged( int ) ), m_profile, SLOT( setHideSamples ( int ) ) );
     connect( m_profile   , SIGNAL( hideSamplesChanged( int ) ), m_samplesBar, SLOT( setValue( int ) ) );
@@ -196,6 +191,10 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
 
     /*
     || Set up the mouse data fields
+    ||
+    || Every graph display should show the exact values at the mouse
+    || cursor somehow. Of course, we do it here ;)
+    ||
     || how can the layout be change to something not equally spaced or
     || at least some more space in the middle... ???
     */
@@ -212,7 +211,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
                                                 QSizePolicy::Fixed,
                                                 QSizePolicy::Fixed
                                               );
-
+    // Show new values on mouse move above the profile
     connect( m_profile, SIGNAL( mouseTimeChanged( const QString& ) ), m_profileMouseTime, SLOT( setText( const QString & ) ) );
     connect( m_profile, SIGNAL( mouseDepthChanged( const QString& ) ), m_profileMouseDepth, SLOT( setText( const QString & ) ) );
 
@@ -224,6 +223,7 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     /*
     || Set up List Area
     */
+    // Make header
     m_diveListView->addColumn( "#" );
     m_diveListView->addColumn( "Date" );
     m_diveListView->addColumn( "Time" );
@@ -233,11 +233,12 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     m_diveListView->setSorting( 1 ); // Initially sort by date
     m_diveListView->setColumnAlignment( 0 , QListView::AlignRight );
 
+    // Call method to fill the list with data
     dbLoadDiveList();
 
     m_s1->setResizeMode( m_infoArea, QSplitter::KeepSize );
 
-    connect( m_profile, SIGNAL( mouseDepthChanged( const QString& ) ), m_profileMouseDepth, SLOT( setText( const QString & ) ) );
+    // Click or Return selects entry
     connect( m_diveListView, SIGNAL( clicked ( QListViewItem*  ) ), this, SLOT( diveSelected(  QListViewItem*  ) ) );
     connect( m_diveListView, SIGNAL( returnPressed ( QListViewItem*  ) ), this, SLOT( diveSelected(  QListViewItem*  ) ) );
                           
@@ -258,16 +259,20 @@ Slots
 */
 
 void MainWidget::dbLoadDiveList()
+// -------------------------------------------------
+// Use : Menu slot. Read a list of most important data
+//       from tha database and insert this
+//       into the list widget
+// -------------------------------------------------
 {
-    DivelogDAO db;                  // access object to the database
+    DivelogDAO db;                     // access object to the database
     vector< DiveListVO > *allDivesTmp; // temporary container for the list entries
 
-
-    bool load_list=true;
-    bool list_failed=true;
-    while ( list_failed && load_list )
+    bool load_list=true;               // On the first try, we want to load the list
+    bool list_failed=true;             // No try yet, so no errors
+    while ( list_failed && load_list ) // Loop as long as we want to load data and there are errors
     {
-        try
+        try // to load the list items from database
         {
             allDivesTmp = new vector < DiveListVO > ( db.diveList( 1 ) ); // FIXME: get diver number from rc file
             list_failed=false;
@@ -292,7 +297,7 @@ void MainWidget::dbLoadDiveList()
                 allDivesTmp = new vector< DiveListVO >;
                 break;
             default:
-                cerr << "Shouldn't happen !";
+                cerr << "In MainWidget::dbLoadDiveList: unknown exception !";
                 break;
             }
         }
@@ -307,6 +312,7 @@ void MainWidget::dbLoadDiveList()
         }
     }
 
+    // Ensure that we have a valid pointer
     CHECK_PTR( allDivesTmp );
     /*
     || Strange. Didn't manage to make this an "int i" loop
@@ -322,7 +328,10 @@ void MainWidget::dbLoadDiveList()
     {
         (void) new DiveListViewItem( *i, m_diveListView );
     }
+
     delete allDivesTmp;
+    // Now we should adapt the lists size to the new data
+    // This doesn't work, yet...
     m_diveListView->updateGeometry();
     m_s2->setResizeMode( m_diveListView, QSplitter::KeepSize );
 
@@ -338,17 +347,17 @@ void MainWidget::dbImport()
     QString s( QFileDialog::getOpenFileName( QString::null, "Universal Dive Computer Format (*.UDCF)", this ) );
     if ( !s.isEmpty() )
     {
-        qDebug( "Filename: %s", s.latin1() );              // DEBUG
-        DivelogDAO db;
-        DiveComputerVO* diveComputer;
+        qDebug( "Filename: %s", s.latin1() );       // DEBUG output
+        DivelogDAO db;                              // Database access object
+        DiveComputerVO* diveComputer;               // Value object for divecomputers
 
-        bool do_import=true;
-        bool import_failed=true;
+        bool do_import=true;                        // On the first try, we want import
+        bool import_failed=true;                    // a file.
         while ( import_failed && do_import )
         {
-            try
+            try // to import the UDCF File
             {
-                db.importUDCFFile( s.latin1() );        // Insert the file into the database
+                db.importUDCFFile( s.latin1() );    // Insert the file into the database
                 import_failed= false;
             }
             /*
@@ -389,7 +398,7 @@ void MainWidget::dbImport()
             }
         }
         if ( !import_failed )
-        {
+        {   // Show the new data in the list
             dbLoadDiveList();
         }
     }
@@ -438,25 +447,33 @@ void MainWidget::dbNewDiver()
 }
 
 void MainWidget::dbNewFillingStation()
+// -------------------------------------------------
+// Use : Menu slot. Use a dialog box to enter data
+//       about a filling station and insert this into
+//       the database
+// -------------------------------------------------
 {
     int result=0;
+    // Create a new modal dialogbox
     NewFillingStationFrm newFillingStationFrm( this, "newFillingStation", true );
-
     result=newFillingStationFrm.exec();
+
     qDebug( "NewFillingStationFrm->result=%d", result );
-    if ( result )
+
+    if ( result ) // the dialogbox was left with "OK"
     {
         qDebug( "Station Name:\t%s", newFillingStationFrm.m_StationName->text().latin1() );
         qDebug( "First Name:\t%s",   newFillingStationFrm.m_FirstName->text().latin1() );
         qDebug( "Last Name:\t%s",    newFillingStationFrm.m_LastName->text().latin1() );
 
+        // Create a value object for the fillingstation and fill in the new data
         FillingStationVO fillingStation( 0, // Auto increment
                                          newFillingStationFrm.m_StationName->text().latin1(),
                                          newFillingStationFrm.m_FirstName->text().latin1(),
                                          newFillingStationFrm.m_LastName->text().latin1()
                                        );
-        DivelogDAO db;
-        try
+        DivelogDAO db; // Database access object
+        try // to insert the fillingstation into the database
         {
             db.insertFillingStation( fillingStation );
         }
@@ -469,11 +486,18 @@ void MainWidget::dbNewFillingStation()
 
 
 void MainWidget::dbNewDiveType()
+// -------------------------------------------------
+// Use : Menu slot. Use a dialog box to enter data
+//       about a dive type and insert this into the
+//       database
+// -------------------------------------------------
 {
     int result=0;
     NewDiveTypeFrm newDiveTypeFrm( this, "newDiveTypeFrm", true );
-
     result=newDiveTypeFrm.exec();
+
+    // This is stereotype to the other methods... see
+    // dbNewDiveComputer, dbNewDiver ...
     qDebug( "NewDiveTypeFrm->result=%d", result );
     if ( result )
     {
@@ -495,36 +519,41 @@ void MainWidget::dbNewDiveType()
 }
 
 void MainWidget::dbNewDiveComputer()
+// -------------------------------------------------
+// Use : Menu slot. Use a dialog box to enter
+//       information about a divecomputer
+// -------------------------------------------------
+
 {
     DiveComputerVO empty;
     dbNewDiveComputer( empty );
 }
 
 void MainWidget::dbNewDiveComputer( const DiveComputerVO& diveComputer )
+// -------------------------------------------------
+// Use : Menu slot. Use a pre-initialised dialog
+//       Box to enter data about divecomputers
+// -------------------------------------------------
 {
     int result=0;
 
+    // Create a modal dialogbox and fill in values that we know
+    // allready
     NewDiveComputerFrm newDiveComputerFrm( diveComputer.serial_number().c_str(),
                                            diveComputer.name().c_str(),
                                            this,
                                            "newDiveComputer" );
-
-
     result=newDiveComputerFrm.exec();
-    qDebug( "NewDiveComputerFrm->result=%d", result );
-    if ( result )
-    {
-        qDebug( "Serial Number:\t%s", 						newDiveComputerFrm.m_SerialNumber->text().latin1() );
-        qDebug( "Owner Number (combo-box):\t%d",  newDiveComputerFrm.m_Owner->currentItem() );
-        qDebug( "Owner Number (decoded):\t%d",    newDiveComputerFrm.diver_number() );
-        qDebug( "Computer Name:\t%s",    					newDiveComputerFrm.m_ComputerName->text().latin1() );
 
+    if ( result ) // Dialogbox left with "OK"
+    {
+        // Create a value object with the data from the dialogbox
         DiveComputerVO diveComputer( newDiveComputerFrm.m_SerialNumber->text().latin1(),
                                      newDiveComputerFrm.diver_number(),
                                      newDiveComputerFrm.m_ComputerName->text().latin1()
                                    );
-        DivelogDAO db;
-        try
+        DivelogDAO db; // Database Access Object
+        try // to insert the value object into the database
         {
             db.insertDiveComputer( diveComputer );
         }
@@ -536,35 +565,53 @@ void MainWidget::dbNewDiveComputer( const DiveComputerVO& diveComputer )
 }
 
 void MainWidget::settingsCommunication()
+// -------------------------------------------------
+// Use : Menu solot. Open a dialogbox te enter
+//       settings for the communication with the dive
+//       computer
+// -------------------------------------------------
 {
     qWarning( "Not Implemented: MainWidget::settingsCommunication()");
 }
 
 void MainWidget::diveSelected( QListViewItem* item )
+// -------------------------------------------------
+// Use : Menu slot. Fill all data about the selected
+//       Dive into the profile and info area
+// -------------------------------------------------
 {
-    bool conversionOk;
-    cerr << item->text(0);
+    // Create a value object containing the search key(s)
+    // Search key is here the dive number
     DiveVO search;
-    vector< DiveVO > result;
     search.setNumber( item->text(0).toInt() );
 
-    DivelogDAO db;
-    try
-    {                                 // V Search only by number
+    vector< DiveVO > result;
+
+    DivelogDAO db;  // Data Access Object
+    try // to find the data for the selected dive
+    {
+                                      // V Search only by number
         result = db.searchDive( search, "10000000000000000000000" );
     }
-    catch( DivelogDAOException e )
+    catch( DivelogDAOException e )   // FIXME: better exception handling
     {
         cerr << e << endl;
     }
 
-    if ( result.size() != 1 )
-    {
-        cerr << "Error: found more than one entry for Dive Nr" << item->text( 0 ) << endl;
+    if ( result.size() > 1 ) // We search for the primary key, so we expect
+    {                         // exactly one result.
+        cerr << "Error: found more than one entry for Dive Nr" << item->text( 0 ) << endl
+             << "The Database is corrupt !" << endl;
     }
-    else
+    else if ( result.empty() ) // No results. Chances are good, this is caught by exception,
+    {                          // and it shouldn't happen anyway...
+        QMessageBox::warning( this, "Divelog",
+                                   "This dive was not found in the database.\n"
+                                   "Maybe it is corrupt :(" );
+    }
+    else // we have one perfect result
     {
-        DiveVO dive = result.front();
+        DiveVO dive = result.front(); // Our wanted data is the first (and only) one
 
         /*
         || Set up profile field
@@ -572,6 +619,7 @@ void MainWidget::diveSelected( QListViewItem* item )
 
         DiveProfileVO diveProfile = dive.profile();
 
+        // order is importand here, allthough it shouldn't...
         m_profile->setDepth( diveProfile.maxDepth() );
         m_profile->setSamples( diveProfile.samples() );
         m_profile->setHideSamples( 0, false );
@@ -595,16 +643,30 @@ void MainWidget::diveSelected( QListViewItem* item )
         m_infoArea->m_AirTemperature->setText( ( dive.air_temperature() == DBL_MAX ? QString("") : QString::number( dive.air_temperature() ) ) );
         m_infoArea->m_MaxDepth->setText( ( dive.max_depth() == DBL_MAX ? QString("") : QString::number( dive.max_depth() ) )  );
         m_infoArea->m_Duration->setText( dive.length().c_str() ); //FIXME : length() vs Duration is inconsistent
-
-
-
-
     }
 }
 
 
 void MainWidget::about()
+// Use: tell the user about divelog
 {
-    QMessageBox::about( this, "About","This is the Linux DiveLog" );
+    QMessageBox::about( this, "About linux divelog",
+                                "Divelog is an electronic logbook for all the divers among us\n\n"
+                                "Copyright 2002 Markus Grunwald.\n"
+                                "You can use it under the License GPL Version 2 or later\n\n"
+                                "For technical support, see\n"
+                                "http://www.grunwald.2xs.de/divelog\n");
 }
 
+void MainWidget::aboutQt()
+// Use: tell the user about the used qt version
+{
+    QMessageBox::aboutQt( this, "Linux divelog" );
+}
+
+
+void MainWidget::aboutLicense()
+// Use: tell the user about the used license
+{
+
+}

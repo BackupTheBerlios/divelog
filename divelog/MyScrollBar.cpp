@@ -1,5 +1,6 @@
-/* Copyright 2002 Markus Grunwald */
-/* All other Copyrights (especially Qt and mysql) belong to their owners */
+/* Copyright (C) 2002 Markus Grunwald */
+/* Copyright (C) 1995-2000 Trolltech AS.  All rights reserved. */
+/* Copyright (C) 2000 MySQL AB & MySQL Finland AB & TCX DataKonsult AB */
 
 /*************************************************************************
 This file is part of divelog.
@@ -21,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : MyScrollBar.cpp                                                  *
-* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.14 2002/05/15 09:27:51 grunwalm Exp $     *
+* CVS Id 	 : $Id: MyScrollBar.cpp,v 1.15 2002/06/02 09:55:13 grunwalm Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : QScrollBar has (nearly?) no slots. We implement some     *
 *                    more to make it more usefull.                            *
@@ -32,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.14 2002/05/15 09:27:51 grunwalm Exp $";
+static const char *myscrollbar_cvs_id="$Id: MyScrollBar.cpp,v 1.15 2002/06/02 09:55:13 grunwalm Exp $";
 
 #include "MyScrollBar.h"
 
