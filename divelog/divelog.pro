@@ -8,7 +8,7 @@ INCLUDEPATH = /usr/local/include
 MOC_DIR     = .moc
 OBJECTS_DIR = .objects
 
-LIBS     = -lUDCF
+LIBS     = -lUDCF -lm
 
 HEADERS  = MainWidget.h\
            ProfileField.h\

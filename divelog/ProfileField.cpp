@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.31 2002/09/16 17:08:11 grunwalm Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.32 2002/09/30 19:02:25 grunwalm Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -35,11 +35,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static char profilefield_cvs_id[]="$Id: ProfileField.cpp,v 1.31 2002/09/16 17:08:11 grunwalm Exp $";
+static char profilefield_cvs_id[]="$Id: ProfileField.cpp,v 1.32 2002/09/30 19:02:25 grunwalm Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qpointarray.h>
+
+#include <vector>
+#include <math.h>
 
 #include "DiveProfileVO.h"
 #include "ProfileField.h"
@@ -176,6 +179,8 @@ void ProfileField::setProfile( const DiveProfileVO& diveProfile )
     //        With the wrong order, the displayed length
     //        of the dive is wrong.
 
+    qDebug( "ProfileField::setProfile    diveProfile.maxDepth()=%f", diveProfile.maxDepth() );
+    
     setDepth( diveProfile.maxDepth() );
     setSamples( diveProfile.samples() );
     setHideSamples( 0, false );
@@ -473,6 +478,8 @@ void ProfileField::drawCoosy( QPainter* p )
 /*    ASSERT( m_samples!=0 ); */// DEBUG
     ASSERT( m_showSamples>=3 );
 
+    qDebug( "ProfileField::drawCoosy    m_depth=%f", m_depth );
+
     float depth_scale=m_depthAxisRect.height()/m_depth;   // a little helper
 
     /*
@@ -510,16 +517,48 @@ void ProfileField::drawCoosy( QPainter* p )
     p->drawLine( m_origin, QPoint( m_timeAxisRect.right(), m_origin.y() ) );
     p->drawLine( m_origin, QPoint( m_origin.x(), m_depthAxisRect.bottom() ) );
 
+    vector< float > anSaneTickDistances;
+    anSaneTickDistances.push_back( 0.5 );
+    anSaneTickDistances.push_back( 1.0 );
+    anSaneTickDistances.push_back( 2.0 );
+    anSaneTickDistances.push_back( 3.0 );
+    anSaneTickDistances.push_back( 5.0 );
+    anSaneTickDistances.push_back( 7.5 );
 
     /*
     || Draw Depth-Labels
     */
 
-    // tick distance in "real-world-scale".
-    // We round here to get sane labels like "5" in stead of "5.11"
-    float   tick_unit = qRound( (float)m_numberFm->height() * TICK_DISTANCE_FACTOR / depth_scale );
-    ASSERT( tick_unit>0 );
+    //int   nTickNumber = 10; // FIXME: Adjust to size
+    int   nTickNumber = m_depthAxisRect.height() / (3*m_numberFm->height());
+    float fCrooctTickDistance = m_depth / (float)nTickNumber;
+    int   nTickDistanceDigits = (int) log10( fCrooctTickDistance );
 
+    qDebug( "nTickNumber         = %i", nTickNumber );
+    qDebug( "fCrooctTickDistance = %f", fCrooctTickDistance );
+    qDebug( "nTickDistanceDigits = %i", nTickDistanceDigits );
+    
+    int   nMinDistIndex=0;
+    float fMinDistance=10000;
+    for ( uint i=0; i<anSaneTickDistances.size(); i++  )
+    {
+        float dist=fabs( pow( 10, nTickDistanceDigits )*anSaneTickDistances[i] -
+                         fCrooctTickDistance );
+        if ( fMinDistance > dist  )
+        {
+            fMinDistance = dist;
+            nMinDistIndex = i;
+        }
+    }
+
+    float fTickDistance=anSaneTickDistances[ nMinDistIndex ] *
+        pow( 10, nTickDistanceDigits );
+
+    qDebug( "fTickDistance       = %f", fTickDistance );
+    
+    float tick_unit=fTickDistance;
+    ASSERT( tick_unit>0 );
+    
     // tick distance in screen-scale
     // We round "on demand" to get exact placement
     float tick_distance_pixel = tick_unit*depth_scale;
