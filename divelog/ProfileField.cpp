@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.4 2001/08/20 11:32:37 markus Exp $             *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.5 2001/08/20 14:15:32 markus Exp $     *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.4 2001/08/20 11:32:37 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: ProfileField.cpp,v 1.5 2001/08/20 14:15:32 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -37,7 +37,7 @@ ProfileField::ProfileField( QWidget *parent=0, const char* name=0 )
 
 void ProfileField::init()
 {
-    // Some sane settings
+    // Some sane(?) settings
     m_depth=40.0; 			//meters
     m_samples=180;      // 180 samples with
     m_secsPerSample=20; //  20 secs/Samples = 1 hour
@@ -52,6 +52,9 @@ void ProfileField::init()
     CHECK_PTR( m_legendFm );
 
     setPalette( QPalette( QColor( 250, 250, 200 ) ) ); // Background color
+
+    // Just to get rid of the warning:
+    mainwidget_cvs_id+=0;
 }
 
 /*
@@ -100,6 +103,9 @@ QSizePolicy ProfileField::sizePolicy() const
 
 void ProfileField::drawCoosy( QPainter* p )
 {
+    ASSERT( m_depth!=0 );
+    float depth_scale=m_depthAxisRect.height()/m_depth;   // a little helper
+
     /*
     || Draw the Labels
     */
@@ -108,7 +114,7 @@ void ProfileField::drawCoosy( QPainter* p )
     p->drawText( m_timeAxisRect.x()
                 +m_timeAxisRect.width()/2
                 -m_legendFm->width( TIME_TEXT )/2,
-                 m_legendFm->height(),
+                 m_legendFm->ascent()-1,
                  TIME_TEXT );
 
     // Rotate the coosy to draw vertical text
@@ -120,7 +126,7 @@ void ProfileField::drawCoosy( QPainter* p )
 
     p->drawText( m_depthAxisRect.height()/2      // draw the text
                 -m_legendFm->width( DEPTH_TEXT )/2,
-                 m_legendFm->height(),
+                 m_legendFm->ascent()-1,
                  DEPTH_TEXT );
 
     p->restore();                         // restore normal state
@@ -131,35 +137,43 @@ void ProfileField::drawCoosy( QPainter* p )
     p->drawLine( m_origin, QPoint( m_timeAxisRect.right(), m_origin.y() ) );
     p->drawLine( m_origin, QPoint( m_origin.x(), m_depthAxisRect.bottom() ) );
 
-    // tick distance in [m] i.e. "world-scale"
-    float tick_distance = qRound( ( (float) m_numberFm->height() * TICK_DISTANCE_FACTOR )/m_depthAxisRect.height()*m_depth );
+    // tick distance in "real-world-scale".
+    // We round here to get sane labels like "5" in stead of "5.11"
+    int   tick_distance_scaled = qRound( (float)m_numberFm->height() * TICK_DISTANCE_FACTOR / depth_scale );
+    ASSERT( tick_distance_scaled>0 );
 
-    ASSERT( tick_distance>0 );
+    // crap. have to draw labels and ticks seperate
+    // since even fonts are scaled below :(
+
+    // tick distance in screen-scale
+    // We round "on demand" to get exact placement
+    float tick_distance_pixel = tick_distance_scaled*depth_scale;
+
+    p->setFont( m_numberFont );
+
+    for ( int i=0; qRound( i*tick_distance_pixel ) < m_depthAxisRect.height(); i++ )
+    {
+        QString number = QString::number( i*tick_distance_scaled );
+        p->drawText( m_origin.x() - TICK_SIZE/2 - m_numberFm->width( number ),
+                     m_origin.y() + qRound( i*tick_distance_pixel ) +m_numberFm->height()/2 -1,
+                     number );
+    }
 
     // scale and translate coosy to use real-world-scale
     p->save();
 
     p->translate( m_origin.x(), m_origin.y() );
-    p->scale( 1, m_depthAxisRect.height()/m_depth );
+    p->scale( 1, depth_scale );
 
-    m_numberFont.setPixelSize(2);
-    setFont( m_numberFont );
-
-    for ( float f=0; f<m_depth; f+=tick_distance )
+    for ( int i=0; i<m_depth; i+=tick_distance_scaled )
     {
-        p->drawLine( -TICK_SIZE/2, f, TICK_SIZE/2, f);
-        QString number = QString::number( f );
-        p->drawText( -TICK_SIZE/2 - m_numberFm->width( number ),
-                     f+m_numberFm->height()/2,
-                     number );
-        qDebug( "f=%f", f );
+        p->drawLine( -TICK_SIZE/2, i, TICK_SIZE/2, i);
     }
 
     p->restore();
-
 }
 
-void ProfileField::paintEvent( QPaintEvent* e )
+void ProfileField::paintEvent( QPaintEvent* )
 {                                     
     QRect    canvasSize=rect();// QRect( 0, 0, width(), height() );
     QPixmap  pix( size() );          		    // Pixmap for double-buffering
@@ -168,7 +182,7 @@ void ProfileField::paintEvent( QPaintEvent* e )
 
 #ifdef DEBUG
     p.drawRect( m_timeAxisRect );
-    p.drawRect( m_depthAxisRect );
+//    p.drawRect( m_depthAxisRect );
 #endif
 
     drawCoosy( &p );
@@ -182,7 +196,7 @@ void ProfileField::paintEvent( QPaintEvent* e )
     bitBlt( this, canvasSize.topLeft(), &pix );
 }
 
-void ProfileField::resizeEvent( QResizeEvent* e )
+void ProfileField::resizeEvent( QResizeEvent* )
 {
     int textHeight = qRound( ( m_legendFm->height()+m_numberFm->height() )*1.1 );
     int textWidth  = qRound( ( m_legendFm->height()+m_numberFm->width( "99" ) )*1.1 );

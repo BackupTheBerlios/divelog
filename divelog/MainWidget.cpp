@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.3 2001/08/16 21:33:31 markus Exp $             *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.4 2001/08/20 14:15:32 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -8,8 +8,8 @@
 * Date of Creation : Sun Aug 12 2001                                          *
 * Modified at      :                                                          *
 * --------------------------------------------------------------------------- *
-* To Do List : add Menu                                                       *
-*              add Seperators                                                 *
+* To Do List : improve mennu                                                  *
+*              improve splitters                                              *
 *              add Profile                                                    *
 *              add Dive List                                                  *
 *              add Multi puropse field                                        *
@@ -17,7 +17,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.3 2001/08/16 21:33:31 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.4 2001/08/20 14:15:32 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -28,7 +28,6 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.3 2001/08/16 21:33
 #include <qmessagebox.h>
 #include <qsplitter.h>
 
-#include <qlistbox.h>
 #include <qlabel.h>
 #include <qlayout.h>
 
@@ -74,15 +73,20 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     */
 
     s1 = new QSplitter( QSplitter::Vertical, this );
-
     s2 = new QSplitter( QSplitter::Horizontal, s1 );
 
-    l1 = new QLabel( "Label1", s1 );
-    l2 = new QLabel( "Label2", s2 );
-    //l3 = new QLabel( "Label3", s2 );
+    l1 = new QLabel( "", s1 );    // DEBUG
+    l2 = new QLabel( "", s2 );    // DEBUG
+
     profile = new ProfileField( s2, "profile field" );
 
+    l1->setText( "Depth="+QString::number( profile->depth() ) );       // DEBUG
+    l2->setText( "Samples="+QString::number( profile->samples() ) );   // DEBUG
+
     setCentralWidget( s1 );
+
+    // just to get rid of the warning:
+    mainwidget_cvs_id+=0;
 }
 
 /*

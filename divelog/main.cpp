@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : main.cpp                                                         *
-* CVS Id 	 : $Id: main.cpp,v 1.4 2001/08/20 11:32:37 markus Exp $             *
+* CVS Id 	 : $Id: main.cpp,v 1.5 2001/08/20 14:15:32 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Main class for divelog program (to be kept small)        *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -15,7 +15,7 @@
 #include <qapplication.h>
 #include "mainwidget.h"
 
-static const char *main_cvs_id="$Id: main.cpp,v 1.4 2001/08/20 11:32:37 markus Exp $";
+static const char *main_cvs_id="$Id: main.cpp,v 1.5 2001/08/20 14:15:32 markus Exp $";
 
 int main( int argc, char* argv[] )
 {
@@ -27,6 +27,9 @@ int main( int argc, char* argv[] )
 
     a.setMainWidget( &mw );
     mw.show();
+
+    // just to get rid of the warning:
+    main_cvs_id+=0;
 
     return a.exec();
 }
