@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.21 2001/10/05 16:12:42 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.22 2001/10/05 17:40:57 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.21 2001/10/05 16:12:42 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.22 2001/10/05 17:40:57 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -33,7 +33,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.21 2001/10/05 16:1
 #include <qabstractlayout.h>
 #include <qfiledialog.h>
 #include <qlistbox.h>
-
+#include <qheader.h>
 #include "myscrollbar.h"
 #include "dive104.dat"
 
@@ -177,10 +177,18 @@ MainWidget::MainWidget( QWidget* parent=0, const char* name=0 )
     /*
     || Set up List Area
     */
-    //m_l2->setText( "Samples="+QString::number( m_profile->samples() ) );   // DEBUG
-    m_diveListView->setBackgroundColor( QColor ( 250, 250, 200 ) );
+    m_diveListView->addColumn( "#" );
+    m_diveListView->addColumn( "Date" );
+    m_diveListView->addColumn( "Time" );
+
+    m_diveListView->setColumnWidthMode( 0, QListView::Maximum );
+    m_diveListView->setColumnWidthMode( 1, QListView::Maximum );
+    m_diveListView->setColumnWidthMode( 2, QListView::Maximum );
+
+    m_diveListView->setAllColumnsShowFocus( TRUE );
 
     setCentralWidget( m_s1 );
+
 
     // just to get rid of the warning: `const char * xxx_cvs_id' defined but not used
     mainwidget_cvs_id+=0;
@@ -217,6 +225,7 @@ void MainWidget::fileOpen()
         qDebug( "Group Index:\t%ld", m_udcfData->groupIndex );
 
         m_udcfGroup = m_udcfData->groupList;
+        int count=0;
 
         for ( int group=0; group<=m_udcfData->groupIndex; group++)
         {
@@ -229,9 +238,20 @@ void MainWidget::fileOpen()
                         m_udcfGroup[group].diveList[dive].year,
                         m_udcfGroup[group].diveList[dive].hour,
                         m_udcfGroup[group].diveList[dive].minute );
+
+                count++;
+
+                QString number;
+                QString date;
+                QString time;
+
+                number.sprintf( "%02d", count );
+                date.sprintf( "%02d.%02d.%04d", m_udcfGroup[group].diveList[dive].day, m_udcfGroup[group].diveList[dive].month, m_udcfGroup[group].diveList[dive].year );
+                time.sprintf( "%02d:%02d", m_udcfGroup[group].diveList[dive].hour, m_udcfGroup[group].diveList[dive].minute );
+
+                (void) new QListViewItem( m_diveListView, number, date, time );
             }
         }
-
         UDCFFree( m_udcfData );
     }
 }
