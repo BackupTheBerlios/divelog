@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.42 2001/12/21 12:43:56 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.43 2002/01/23 08:06:50 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.42 2001/12/21 12:43:56 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.43 2002/01/23 08:06:50 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -260,17 +260,24 @@ void MainWidget::dbImport()
 }
 
 void MainWidget::dbNewDiver()
+// -------------------------------------------------
+// Use : Open a dialog to enter data about a new Diver
+//			 and insert into the database
+// -------------------------------------------------
 {
     int result=0;
+    // Create the modal dialog...
     NewDiverFrm newDiverFrm( this, "newDiverFrm", true ); // parent, name, modal
 
+    // ... and show it.
     result=newDiverFrm.exec();
-    if ( result )
+    if ( result ) // Dialog left with "Ok" = we have some data
     {
         /*
         || Insert the diver into the database
         */
-				DiverVO diver( 0, // Auto increment
+        // i.e. fill in the value object
+        DiverVO diver( 0, // Auto increment
                        newDiverFrm.m_FirstName->text().latin1(),
                        newDiverFrm.m_LastName->text().latin1(),
                        newDiverFrm.m_Brevet->text().latin1(),
@@ -282,14 +289,14 @@ void MainWidget::dbNewDiver()
                        newDiverFrm.m_EMail->text().latin1()
                      );
 
-        DivelogDAO db;
+        DivelogDAO db; // connect to the database
         try
         {
-            db.insertDiver( diver );
+            db.insertDiver( diver ); // and insert the data.
         }
         catch( DivelogDAOException e )
         {
-            cerr << e << endl;
+            cerr << e << endl; // show error mesages
         }
     }
 }

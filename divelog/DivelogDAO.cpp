@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.15 2001/12/21 12:43:56 markus Exp $      *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.16 2002/01/23 08:06:50 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.15 2001/12/21 12:43:56 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.16 2002/01/23 08:06:50 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "FillingStationVO.h"
@@ -76,11 +76,11 @@ void DivelogDAO::importUDCFFile( const char* filename ) throw ( DivelogDAOExcept
     try
     {
         Connection con( use_exceptions );
-        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
-        // Here I broke making the connection into two calls.
-        // The first one creates the Connection object with the 
-        // use exceptions option turned on and the second one
-        // makes the connection
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
         
         Query query = con.query();
         query << "select * from divecomputer where serial_number=\"" << udcfData->serialID <<"\"";
@@ -165,8 +165,12 @@ void DivelogDAO::insertDiver( const DiverVO& diver ) throw ( DivelogDAOException
     try
     {
         Connection con( use_exceptions );
-        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
-
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
+        
         Query query = con.query();
         query << "insert into diver values( "
             << diver.number() << ", "
@@ -215,7 +219,12 @@ void DivelogDAO::insertFillingStation( const FillingStationVO& fillingStation ) 
     try
     {
         Connection con( use_exceptions );
-        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
+        
 
         Query query = con.query();
         query << "insert into filling_station values( "
@@ -258,7 +267,12 @@ void DivelogDAO::insertDiveType( const DiveTypeVO& diveType ) throw ( DivelogDAO
     try
     {
         Connection con( use_exceptions );
-        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
+        
 
         Query query = con.query();
         query << "insert into divetype values( "
@@ -322,8 +336,12 @@ void DivelogDAO::insertDiveComputer( const DiveComputerVO& diveComputer ) throw 
     try
     {
         Connection con( use_exceptions );
-        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
-
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
+        
         Query query = con.query();
         query << "insert into divecomputer values( "
               << "\"" << diveComputer.serial_number() << "\", "
@@ -360,8 +378,12 @@ vector<DiverVO> DivelogDAO::searchDiver( const DiverVO& d, const string& mask="0
     try
     {
         Connection con( use_exceptions );
-        con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
-        
+        if ( ! con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD ) )
+        {
+            // FIXME: Better errormessage
+            throw DivelogDAOException( "Could not connect to MySQL Server." );
+        }
+
         Query query = con.query();
         query << "select * from diver";
 
