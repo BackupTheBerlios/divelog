@@ -1,5 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.2 2001/08/16 16:24:00 markus Exp $             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets                                            *
@@ -16,6 +17,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.2 2001/08/16 16:24:00 markus Exp $";
 
 #include "mainwidget.h"
 
