@@ -14,8 +14,8 @@ Database</comment>
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>290</width>
-            <height>371</height>
+            <width>283</width>
+            <height>373</height>
         </rect>
     </property>
     <property stdset="1">
@@ -300,7 +300,7 @@ Database</comment>
                     <class>QLayoutWidget</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>Layout21</cstring>
+                        <cstring>Layout19</cstring>
                     </property>
                     <vbox>
                         <property stdset="1">
@@ -333,11 +333,60 @@ Database</comment>
                             </property>
                         </widget>
                         <widget>
-                            <class>QLineEdit</class>
+                            <class>QLayoutWidget</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>m_Street</cstring>
+                                <cstring>Layout18</cstring>
                             </property>
+                            <hbox>
+                                <property stdset="1">
+                                    <name>margin</name>
+                                    <number>0</number>
+                                </property>
+                                <property stdset="1">
+                                    <name>spacing</name>
+                                    <number>6</number>
+                                </property>
+                                <widget>
+                                    <class>QLineEdit</class>
+                                    <property stdset="1">
+                                        <name>name</name>
+                                        <cstring>m_Street</cstring>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>sizePolicy</name>
+                                        <sizepolicy>
+                                            <hsizetype>3</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                        </sizepolicy>
+                                    </property>
+                                </widget>
+                                <widget>
+                                    <class>QLabel</class>
+                                    <property stdset="1">
+                                        <name>name</name>
+                                        <cstring>m_HouseNumberLbl</cstring>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>text</name>
+                                        <string>Nr.</string>
+                                    </property>
+                                </widget>
+                                <widget>
+                                    <class>QLineEdit</class>
+                                    <property stdset="1">
+                                        <name>name</name>
+                                        <cstring>m_HouseNumber</cstring>
+                                    </property>
+                                    <property stdset="1">
+                                        <name>sizePolicy</name>
+                                        <sizepolicy>
+                                            <hsizetype>4</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                        </sizepolicy>
+                                    </property>
+                                </widget>
+                            </hbox>
                         </widget>
                         <widget>
                             <class>QLineEdit</class>

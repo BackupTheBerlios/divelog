@@ -2,7 +2,7 @@
 #define DIVERVO_H
 /******************************************************************************
 * Filename : DiverVO.h                                                        *
-* CVS Id   : $Id: DiverVO.h,v 1.3 2001/12/01 19:21:35 markus Exp $                                                             *
+* CVS Id   : $Id: DiverVO.h,v 1.4 2001/12/05 06:39:07 markus Exp $                                                             *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header File for DiverVO.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -23,13 +23,27 @@ public:
     */
     DiverVO();
     DiverVO( const DiverVO& d );
-    DiverVO( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
-    			   const string& street, const string& house_number, const int& zip, const string& place,
-    			   const string& phone, const string& email );
+    DiverVO( const unsigned int& number,
+             const string& first_name,
+             const string& last_name,
+             const string& brevet,
+             const string& street,
+             const string& house_number,
+             const int& zip,
+             const string& place,
+             const string& phone,
+             const string& email );
 
-    void init( const unsigned int& number, const string& first_name, const string& last_name, const string& brevet,
-    			 		 const string& street, const string& house_number, const int& zip, const string& place,
-    			 		 const string& phone, const string& email );
+    void init( const unsigned int& number,
+               const string& first_name,
+               const string& last_name,
+               const string& brevet,
+               const string& street,
+               const string& house_number,
+               const int& zip,
+               const string& place,
+               const string& phone,
+               const string& email );
 
     /*
     || Accessors

@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.22 2001/11/23 14:36:52 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.23 2001/12/05 06:39:08 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -82,7 +82,6 @@ private:
 
     QListView*    m_diveListView;
 
-    NewDiverFrm*					m_newDiverFrm;
     NewFillingStationFrm*	m_newFillingStationFrm;
     NewDiveTypeFrm*				m_newDiveTypeFrm;
     InfoAreaFrm*  				m_infoArea;

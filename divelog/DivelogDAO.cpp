@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : DivelogDAO.cpp                                                   *
-* CVS Id   : $Id: DivelogDAO.cpp,v 1.10 2001/12/01 19:21:35 markus Exp $       *
+* CVS Id   : $Id: DivelogDAO.cpp,v 1.11 2001/12/05 06:39:07 markus Exp $       *
 * --------------------------------------------------------------------------- *
 * Files subject    : Data Access Object (DAO) for the mysql-divelog database  *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -12,7 +12,7 @@
 * --------------------------------------------------------------------------- *
 * Notes :                                                                     *
 ******************************************************************************/
-static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.10 2001/12/01 19:21:35 markus Exp $";
+static char *DivelogDAO_cvs_id="$Id: DivelogDAO.cpp,v 1.11 2001/12/05 06:39:07 markus Exp $";
 #include "DivelogDAO.h"
 #include "DiverVO.h"
 #include "DivelogDAOException.h"
@@ -202,26 +202,42 @@ vector<DiverVO> DivelogDAO::diverList()
     return t;
 }
 
+// -------------------------------------------------
+// Use : Insert a new Diver in the database
+// Parameters   : DiverVO : a Diver Value Object
+//                containing the divers data.
+// Outputs      : None
+// Returns      : None
+// Side-Effects : MySQL-Convention: When the number field
+//                  is 0, the number will be auto-incremented
+// Exceptions   : Throws DivelogDAOException on failure
+//                // FIXME: Does it ? -^-
+// -------------------------------------------------
 void DivelogDAO::insertDiver( const DiverVO& diver ) throw ( DivelogDAOException )
 {
+    if ( diver.first_name() == "" )
+    {
+        throw DivelogDAOException( "DiverVO.first_name() must not be empty !" );
+    }
+
     try
     {
         Connection con( use_exceptions );
         con.connect( MYSQL_DATABASE, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWD );
-        
+
         Query query = con.query();
         query << "insert into diver values( "
-            	<< "\"" << diver.number()     << "\""
-            	<< "\"" << diver.first_name() << "\""
-            	<< ( diver.last_name()=="" 		? "NULL, " : "\"" << diver.last_name() 	  << "\", " )
-            	<< ( diver.brevet()=="" 			? "NULL, " : "\"" << diver.brevet() 		  << "\", " )
-            	<< ( diver.street()=="" 			? "NULL, " : "\"" << diver.street() 		  << "\", " )
-            	<< ( diver.house_number()=="" ? "NULL, " : "\"" << diver.house_number() << "\", " )
-            	<< ( diver.zip()==0  					? "NULL, " : "\"" << diver.zip()          << "\", " )
-            	<< ( diver.place()=="" 				? "NULL, " : "\"" << diver.place() 		    << "\", " )
-            	<< ( diver.phone()=="" 				? "NULL, " : "\"" << diver.phone()        << "\", " )
-              << ( diver.email()=="" 				? "NULL, " : "\"" << diver.email()        << "\", " )
-              << " )";
+            << diver.number() << ", "
+            << "\"" << diver.first_name() << "\", " ;
+        ( diver.last_name()=="" 	 ? query << "NULL, " : query << "\"" << diver.last_name() 	 << "\", " );
+        ( diver.brevet()=="" 			 ? query << "NULL, " : query << "\"" << diver.brevet() 		   << "\", " );
+        ( diver.street()=="" 			 ? query << "NULL, " : query << "\"" << diver.street() 		   << "\", " );
+        ( diver.house_number()=="" ? query << "NULL, " : query << "\"" << diver.house_number() << "\", " );
+        ( diver.zip()==0  				 ? query << "NULL, " : query << "\"" << diver.zip()          << "\", " );
+        ( diver.place()=="" 			 ? query << "NULL, " : query << "\"" << diver.place() 		   << "\", " );
+        ( diver.phone()=="" 			 ? query << "NULL, " : query << "\"" << diver.phone()        << "\", " );
+        ( diver.email()=="" 			 ? query << "NULL  " : query << "\"" << diver.email()        << "\" " );
+        query << " )";
 
         query.execute();
     }

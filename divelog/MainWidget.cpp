@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.37 2001/12/01 19:21:35 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.38 2001/12/05 06:39:08 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,7 +15,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.37 2001/12/01 19:21:35 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.38 2001/12/05 06:39:08 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
@@ -28,7 +28,9 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.37 2001/12/01 19:2
 #include "NewFillingStationFrm.h"
 #include "InfoAreaFrm.h"
 #include "DivelogDAO.h"
+#include "DiverVO.h"
 #include "DiveComputerNotFoundException.h"
+#include "DivelogDAOException.h"
 
 // Qt
 #include <qapplication.h>
@@ -46,6 +48,7 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.37 2001/12/01 19:2
 #include <qheader.h>
 #include <qcombobox.h>
 
+#include <string>
 // others
 
 #define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
@@ -251,22 +254,46 @@ void MainWidget::dbImport()
 void MainWidget::dbNewDiver()
 {
     int result=0;
-    m_newDiverFrm= new NewDiverFrm( "Test", 0, 0 );
+    NewDiverFrm newDiverFrm( this, "newDiverFrm", true ); // parent, name, modal
 
-    result=m_newDiverFrm->exec();
+    result=newDiverFrm.exec();
     qDebug( "NewDiverFrm->result=%d", result );
     if ( result )
     {
-        qDebug( "First Name:\t%s", m_newDiverFrm->m_FirstName->text().latin1() );
-        qDebug( "Last Name:\t%s",  m_newDiverFrm->m_LastName->text().latin1() );
-        qDebug( "Brevet:\t%s", m_newDiverFrm->m_Brevet->text().latin1() );
-        qDebug( "Street:\t%s", m_newDiverFrm->m_Street->text().latin1() );
-        qDebug( "Zip:\t%s", m_newDiverFrm->m_Zip->text().latin1() );
-        qDebug( "PLace:\t%s", m_newDiverFrm->m_Place->text().latin1() );
-        qDebug( "Phone:\t%s", m_newDiverFrm->m_Phone->text().latin1() );
-        qDebug( "EMail:\t%s", m_newDiverFrm->m_EMail->text().latin1() );
+        qDebug( "First Name:\t%s", newDiverFrm.m_FirstName->text().latin1() );
+        qDebug( "Last Name:\t%s",  newDiverFrm.m_LastName->text().latin1() );
+        qDebug( "Brevet:\t%s", newDiverFrm.m_Brevet->text().latin1() );
+        qDebug( "Street:\t%s", newDiverFrm.m_Street->text().latin1() );
+        qDebug( "Zip:\t%s", newDiverFrm.m_Zip->text().latin1() );
+        qDebug( "PLace:\t%s", newDiverFrm.m_Place->text().latin1() );
+        qDebug( "Phone:\t%s", newDiverFrm.m_Phone->text().latin1() );
+        qDebug( "EMail:\t%s", newDiverFrm.m_EMail->text().latin1() );
+
+        /*
+        || Insert the diver into the database
+        */
+				DiverVO diver( 0, // Auto increment
+                       newDiverFrm.m_FirstName->text().latin1() ,
+                       newDiverFrm.m_LastName->text().latin1() ,
+                       newDiverFrm.m_Brevet->text().latin1() ,
+                       newDiverFrm.m_Street->text().latin1() ,
+                       newDiverFrm.m_HouseNumber->text().latin1() ,
+                       newDiverFrm.m_Zip->text().toUInt() ,
+                       newDiverFrm.m_Place->text().latin1() ,
+                       newDiverFrm.m_Phone->text().latin1() ,
+                       newDiverFrm.m_EMail->text().latin1() );
+
+        DivelogDAO db;
+        try
+        {
+            db.insertDiver( diver );
+        }
+        catch( DivelogDAOException e )
+        {
+            cerr << e << endl;
+            // FIXME: open messagebox, maybe even better: open diver input dialog
+        }
     }
-    delete m_newDiverFrm;
 }
 
 void MainWidget::dbNewFillingStation()
