@@ -1,5 +1,5 @@
 #!/bin/bash
-#$Id: tables,v 1.5 2001/10/26 11:57:42 markus Exp $ 
+# $Id: tables,v 1.6 2001/11/14 16:13:34 markus Exp $ 
 
 mysql -u markus --password='ArPPCa' divelog-test <<EOF
 drop table diver;
