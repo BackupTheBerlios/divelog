@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : profilefield.cpp                                                 *
-* CVS Id 	 : $Id: ProfileField.cpp,v 1.22 2001/10/04 13:49:55 markus Exp $    *
+* CVS Id 	 : $Id: ProfileField.cpp,v 1.23 2001/10/04 21:03:18 markus Exp $    *
 * --------------------------------------------------------------------------- *
 * Files subject    : Draw a graph with the dive-profile                       *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -13,7 +13,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : maybe put timescale in member Variable (more speed!)                *
 ******************************************************************************/
-static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.22 2001/10/04 13:49:55 markus Exp $";
+static const char *profilefield_cvs_id="$Id: ProfileField.cpp,v 1.23 2001/10/04 21:03:18 markus Exp $";
 
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -42,6 +42,7 @@ ProfileField::ProfileField( QWidget *parent=0, const char* name=0 )
 //       constructor and init() function
 // Parameters: parent= parent of the widget
 //             name  = name of the widget
+// -------------------------------------------------
 {
     init();
 }
@@ -54,6 +55,7 @@ ProfileField::ProfileField( QWidget *parent, const char* name, QPointArray profi
 //             name  = name of the widget
 //             profile = profile data to show
 //                       Use an extra class for this sometime!
+// -------------------------------------------------
 {
     init();
     setProfile( profile );
@@ -63,9 +65,10 @@ void ProfileField::init()
 // -------------------------------------------------
 // Use : Main initializing method. Called by every
 //       constructor
+// -------------------------------------------------
 {
     // Some sane(?) settings
-    m_depth=21.4; 						//meters
+    m_depth=21.4; 						// meters
     m_samples=64;
     m_secsPerSample=60;       // seconds/samples
                               // time for the whole dive can be calculated
@@ -203,10 +206,14 @@ void ProfileField::setProfile( QPointArray profile )
 {
     m_profile=profile;
     repaint( FALSE );
-    qDebug( "%s.setProfile: repaint()", this->name() );
 }
 
 void ProfileField::setTimeStart( int start )
+{
+    setTimeStart( start, TRUE );
+}
+
+void ProfileField::setTimeStart( int start, bool doRepaint )
 // -------------------------------------------------
 // Use : set the start of displayed time (offset)
 // Parameters  : start - the first displayed sample
@@ -222,23 +229,33 @@ void ProfileField::setTimeStart( int start )
 
     m_timeStart=start;
     emit timeStartChanged( start );
-    qDebug( "SIGNAL %s->timeStartChanged( %i )",this->name() ,start );
-    //repaint( FALSE );
-    //qDebug( "%s.setTimeStart: repaint()", this->name() );
+    //qDebug( "SIGNAL %s->timeStartChanged( %i )",this->name() ,start );
 
+    if ( doRepaint )
+    {
+        repaint( FALSE );
+    }
 }
 
 void ProfileField::setShowSamples( int showSamples )
+{
+    setShowSamples( showSamples , TRUE );
+}
+
+void ProfileField::setShowSamples( int showSamples, bool doRepaint )
 // -------------------------------------------------
 // Use : set number of samples to show, thus
 //       indirectly set zooming.
 //       see setHideSamples()
 // Parameters  : showSamples - samples to show
+//               doRepaint   - true : signal a repaint
+//                                    after work is done
+//                             false: dont.
 // Side-Effects: sets m_showSamples
 //               emits showSamplesChanged and
 //                 hideSamplesChanged which correspond
 //                 to each other
-//               calls paintEvent
+//               calls paintEvent (if doRepaint)
 // -------------------------------------------------
 {
     if ( showSamples == m_showSamples )
@@ -249,24 +266,33 @@ void ProfileField::setShowSamples( int showSamples )
     m_showSamples=showSamples;
 
     emit showSamplesChanged( showSamples );
-    qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
+    //qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
 
     // the hidden samples are all samples minus the shown ones... doh!
     emit hideSamplesChanged( samples()-showSamples );
-    qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
+    //qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
 
-    //repaint( FALSE );
-    //qDebug( "%s.setShowSamples: repaint()", this->name() );
-
+    if ( doRepaint )
+    {
+       repaint( FALSE );
+    }
 }
 
 void ProfileField::setHideSamples( int hideSamples )
+{
+    setHideSamples( hideSamples, TRUE );
+}
+
+void ProfileField::setHideSamples( int hideSamples, bool doRepaint )
 // -------------------------------------------------
 // Use : set number of samples to hide, thus
 //       indirectly set zooming.
 //       see setShowSamples()
 //       shown samples are all samples minus the hidden ones
 // Parameters  : hideSamples - samples to hide
+//               doRepaint   - true : signal a repaint
+//                                    after work is done
+//                             false: dont.
 // Side-Effects: sets m_showSamples (!)
 //               emits showSamplesChanged and
 //                 hideSamplesChanged which correspond
@@ -274,25 +300,7 @@ void ProfileField::setHideSamples( int hideSamples )
 //               calls paintEvent
 // -------------------------------------------------
 {
-    int showSamples=samples()-hideSamples;
-
-    if ( showSamples == m_showSamples )
-    {
-        return;
-    }
-
-    qDebug( "%s->setHideSamples( %i )", this->name(), samples()-showSamples );
-
-    m_showSamples=showSamples;
-
-    emit hideSamplesChanged( hideSamples );
-    qDebug( "SIGNAL %s->hideSamplesChanged( %i )",this->name(), samples()-showSamples );
-
-    emit showSamplesChanged( showSamples );
-    qDebug( "SIGNAL %s->showSamplesChanged( %i )",this->name(), showSamples );
-    //repaint( FALSE );
-    //qDebug( "%s.setHideSamples: repaint()", this->name() );
-
+    setShowSamples( samples()-hideSamples, doRepaint );
 }
 
 /*
@@ -535,32 +543,13 @@ void ProfileField::paintEvent( QPaintEvent* )
     pix.fill( this, canvasSize.topLeft() ); // fill with widget background
     QPainter p( &pix );
 
-    qDebug( "%s->paintEvent", this->name() );
-
-    qDebug( "m_mouseSelectionRect is :" );
-    if ( !m_mouseSelectionRect.isNull() )
-    {
-        qDebug( "\tnot null" );
-    }
-    else
-    {
-        qDebug( "\tnull" );
-    }
-
-    if ( !m_mouseSelectionRect.isValid() )
-    {
-        qDebug("\tnot valid" );
-    }
-    else
-    {
-        qDebug( "\tvalid" );
-    }
+    //qDebug( "%s->paintEvent", this->name() );
 
     if ( !m_mouseSelectionRect.isNull() )    // draw the selection rectangle
     {
         p.setPen( m_dragColor );
+        p.setBrush( m_dragColor );
         p.drawRect( m_mouseSelectionRect );
-        qDebug("Paint DragRect");
     }
 
     drawCoosy( &p );
@@ -632,7 +621,6 @@ void ProfileField::mouseMoveEvent( QMouseEvent* e )
                 // three samples (otherwise, we treat it as click)
                 m_mouseSelectionRect.setRight( e->x() );
                 repaint( FALSE );
-                qDebug( "%s.mouseMoveEvent: repaint()", this->name() );
 
             }
         }
@@ -689,7 +677,12 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
 //                     setTimeStart
 // -------------------------------------------------
 {
-    qDebug( "%s->mouseReleaseEvent", this->name() );
+    //qDebug( "%s->mouseReleaseEvent", this->name() );
+
+    // Selection Rectangle gets invalid on button release
+    m_mouseSelectionRect.setWidth( 0 );
+    m_mouseSelectionRect.setHeight( 0 );
+
     if ( m_graphRect.contains( e->pos() ) )
     {
         float time_scale=(float) m_timeAxisRect.width()/(m_showSamples-1);
@@ -701,36 +694,16 @@ void ProfileField::mouseReleaseEvent( QMouseEvent* e)
         if ( mouseDragSamples>=3 )
         {
             // Zoom in if mouse dragged over more then two samples
-            setShowSamples( mouseDragSamples );
+            setShowSamples( mouseDragSamples, FALSE );
             setTimeStart( new_start );
         }
         else
         {   // Else tread as single click and zoom out full
-            setShowSamples( samples() );
+            setShowSamples( samples(), FALSE );
             setTimeStart( 0 );
         }
     }
     m_validMousePress=FALSE;
-
-    //m_mouseSelectionRect.setRight( m_mouseSelectionRect.left()-1 );
-    //m_mouseSelectionRect.setBottom( m_mouseSelectionRect.top()-1 );
-
-    m_mouseSelectionRect.setWidth( 0 );
-    m_mouseSelectionRect.setHeight( 0 );
-
-    if ( !m_mouseSelectionRect.isNull() )
-    {
-        qDebug(" is not null " );
-    }
-
-    if ( !m_mouseSelectionRect.isValid() )
-    {
-        qDebug(" is not valid " );
-    }
-
-    repaint( FALSE );
-    qDebug( "%s.mouseReleaseEvent: repaint()", this->name() );
-
 }
 
 

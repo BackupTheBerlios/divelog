@@ -2,7 +2,7 @@
 #define PROFILEFIELD_H
 /******************************************************************************
 * Filename : profilefield.h                                                   *
-* CVS Id 	 : $Id: ProfileField.h,v 1.16 2001/10/02 11:12:07 markus Exp $      *
+* CVS Id 	 : $Id: ProfileField.h,v 1.17 2001/10/04 21:03:18 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for profilefield.cpp                              *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -56,9 +56,12 @@ public slots:
     void setSecsPerSample( int secsPerSample );
     void setProfile( QPointArray profile );
     void setTimeFormat( TimeFormat timeFormat );
-    void setTimeStart( int timeStart );
 
+    void setTimeStart( int timeStart,     bool doRepaint );
+    void setTimeStart( int timeStart );
+    void setShowSamples( int showSamples, bool doRepaint );
     void setShowSamples( int showSamples );
+    void setHideSamples( int hideSamples, bool doRepaint );
     void setHideSamples( int hideSamples );
 
 

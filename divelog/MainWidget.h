@@ -2,7 +2,7 @@
 #define MAINWIDGET_H
 /******************************************************************************
 * Filename : mainwidget.h                                                     *
-* CVS Id 	 : $Id: MainWidget.h,v 1.13 2001/10/02 09:40:14 markus Exp $        *
+* CVS Id 	 : $Id: MainWidget.h,v 1.14 2001/10/04 21:03:17 markus Exp $        *
 * --------------------------------------------------------------------------- *
 * Files subject    : Header for mainwidget.cpp                                *
 * Owner            : Markus Grunwald (MG)                                     *
@@ -14,6 +14,7 @@
 ******************************************************************************/
 
 #include <qmainwindow.h>
+#include <UDCF.h>
 
 // Forward define Classes used by this class.
 // This avoids including header files and speeds
@@ -77,6 +78,16 @@ private:
 
     QSpacerItem*  m_profileMouseDataSpacer; // a spacer which doesn't work :(
 
+
+/*
+=================================================================
+    UDCF Data
+=================================================================
+*/
+
+    UDCF* 				m_udcfData;
+    UDCFGroup*    m_udcfGroup;
+    UDCFDive*     m_udcfDive;
 };
 
 #endif  // MAINWIDGET_H

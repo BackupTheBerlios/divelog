@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.18 2001/10/02 09:40:14 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.19 2001/10/04 21:03:17 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -16,7 +16,7 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.18 2001/10/02 09:40:14 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.19 2001/10/04 21:03:17 markus Exp $";
 
 #include "mainwidget.h"
 #include "profilefield.h"
@@ -30,9 +30,10 @@ static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.18 2001/10/02 09:4
 #include <qhbox.h>
 #include <qlabel.h>
 #include <qpointarray.h>
-#include "myscrollbar.h"
 #include <qabstractlayout.h>
+#include <qfiledialog.h>
 
+#include "myscrollbar.h"
 #include "dive104.dat"
 
 #define MOUSE_TIME_LABEL "Time: "       // Label for time at mouse cursor.
@@ -195,7 +196,26 @@ Slots
 
 void MainWidget::fileOpen()
 {
-    qWarning( "Not Implemented: MainWidget::fileOpen()");
+    QString s( QFileDialog::getOpenFileName( QString::null, "Universal Dive Computer Format (*.profile)", this ) );
+    if ( !s.isEmpty() )
+    {
+        qDebug( "Filename: %s", s.latin1() );
+
+        m_udcfData=UDCFReadFile( (char*) s.latin1() );
+        CHECK_PTR( m_udcfData );
+
+        qDebug( "Version:\t%ld", m_udcfData->version );
+        qDebug( "Vendor:\t%s", m_udcfData->vendor );
+        qDebug( "Model:\t%s", m_udcfData->model );
+        qDebug( "Driver Version:\t%ld", m_udcfData->driverVersion );
+        qDebug( "Personal Info:\t%s", m_udcfData->personalInfo );
+        qDebug( "Total Dives:\t%ld", m_udcfData->totalDives );
+        qDebug( "Serial ID:\t%s", m_udcfData->serialID );
+        qDebug( "Group Size:\t%ld", m_udcfData->groupSize );
+        qDebug( "Group Index:\t%ld", m_udcfData->groupIndex );
+
+        UDCFFree( m_udcfData );
+    }
 }
 
 void MainWidget::fileNew()
