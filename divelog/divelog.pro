@@ -12,7 +12,7 @@ LIBS     = -lUDCF -lsqlplus -lmysqlclient
 
 HEADERS  = MainWidget.h\
            ProfileField.h\
-           MyScrollbar.h\
+           MyScrollBar.h\
            DivelogDAO.h\
            UDCF.h\
            NewDiverFrm.h\
@@ -26,7 +26,7 @@ HEADERS  = MainWidget.h\
 SOURCES  = main.cpp\
            MainWidget.cpp\
            ProfileField.cpp\
-           MyScrollbar.cpp\
+           MyScrollBar.cpp\
            DivelogDAO.cpp\
            NewDiverFrm.cpp\
            InfoAreaFrm.cpp\

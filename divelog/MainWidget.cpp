@@ -1,6 +1,6 @@
 /******************************************************************************
 * Filename : mainwidget.cpp                                                   *
-* CVS Id 	 : $Id: MainWidget.cpp,v 1.34 2001/11/19 19:37:04 markus Exp $      *
+* CVS Id 	 : $Id: MainWidget.cpp,v 1.35 2001/11/19 19:42:05 markus Exp $      *
 * --------------------------------------------------------------------------- *
 * Files subject    : Contains the main widget of the divelog, i.e. most of the*
 *                    other Widgets.                                           *
@@ -15,12 +15,12 @@
 * --------------------------------------------------------------------------- *
 * Notes : mn_ = menu                                                          *
 ******************************************************************************/
-static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.34 2001/11/19 19:37:04 markus Exp $";
+static const char *mainwidget_cvs_id="$Id: MainWidget.cpp,v 1.35 2001/11/19 19:42:05 markus Exp $";
 
 // own headers
 #include "MainWidget.h"
 #include "ProfileField.h"
-#include "MyScrollbar.h"
+#include "MyScrollBar.h"
 #include "dive104.dat"
 #include "NewDiverFrm.h"
 #include "NewDiveTypeFrm.h"
